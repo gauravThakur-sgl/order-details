@@ -19,7 +19,7 @@ export const BuyerBillingDetail = () => {
     },
   ];
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center gap-8 w-full">
       <div className="flex flex-col lg:flex-row lg:justify-between gap-2 w-full">
         <Input type="text" placeholder="First Name" id="firstName" labelData="First name" />
         <Input type="text" placeholder="" required={true} className="" labelData="Last Name" name="lastName" />

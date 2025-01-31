@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { PickupAddress } from "../components/PickupAddress";
 import Input from "../components/ui/Input";
 import Select from "../components/ui/Select";
+import { BuyerBillingDetail } from "../components/BuyerBillingDetail";
 // import CheckBox from "../components/ui/Checkbox";
 
 export const BuyerDetail = () => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckbox = () => {
+    setIsChecked(!isChecked);
+  };
   const countryList = [
     {
       label: "Usa",
@@ -23,6 +30,9 @@ export const BuyerDetail = () => {
   return (
     <div className="font-poppins flex flex-col justify-center items-center bg-white rounded-md p-8 gap-8 m-4">
       <PickupAddress />
+      <span className=" font-semibold text-basis flex justify-start">
+        <h3>Buyer Shipping Details</h3>
+      </span>
       <div className="flex flex-col lg:flex-row lg:justify-between gap-2 w-full">
         <Input type="text" placeholder="First Name" id="firstName" labelData="First name" />
         <Input type="text" placeholder="" required={true} className="" labelData="Last Name" name="lastName" />
@@ -66,7 +76,13 @@ export const BuyerDetail = () => {
         <Input type="text" placeholder="" className="" labelData="State" name="state" required={true} />
         <Select title="State" id="" options={stateList} value="" />
       </div>
-      <div className="inline-flex justify-start items-center text-sm gap-2 mt-6"></div>
+      <div className="flex justify-start items-center text-sm gap-2 mt-6 w-full">
+        <span onClick={handleCheckbox} className="flex gap-2">
+          <input type="checkbox" checked={isChecked} />
+          <p>Shipping & Billing Address are same.</p>
+        </span>
+      </div>
+      {!isChecked && <BuyerBillingDetail />}
     </div>
   );
 };

@@ -7,7 +7,7 @@ export const ProgressPage = () => {
   ];
   return (
     <div className="w-full">
-      <div className="rounded-md m-4 p-4 text-gray-400 font-semibold bg-white space-y-8 flex flex-col justify-start h-full">
+      <div className="rounded-md m-4 p-4 text-gray-400 font-semibold bg-white space-y-8 flex flex-col justify-center">
         {stepData.map((step) => (
           <p key={step.id} className="">
             <span className="rounded-md p-1 px-3 bg-order-primary">
