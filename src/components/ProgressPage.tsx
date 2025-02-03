@@ -6,17 +6,18 @@ export const ProgressPage = () => {
     { id: 4, title: "Place Order" },
   ];
   return (
-    <div className="w-full">
-      <div className="rounded-md m-4 p-4 text-gray-400 font-semibold bg-white space-y-8 flex flex-col justify-center">
-        {stepData.map((step) => (
-          <p key={step.id} className="">
-            <span className="rounded-md p-1 px-3 bg-order-primary">
-              <span className="text-white text-sm">{step.id}</span>
-            </span>
-            <span className="px-4">{step.title}</span>
-          </p>
+    <>
+      <div className="flex flex-col items-center m-4 bg-white p-8 text-nowrap gap-8 rounded-md justify-center">
+        {stepData.map((step, index) => (
+          <div key={index} className="w-full mr-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center font-semibold bg-progress-step text-sm text-white h-8 w-8 rounded-md">{step.id}</div>
+              <div className="font-semibold text-gray-500">{step.title}</div>
+            </div>
+            {/* {index !== stepData.length - 1 && <div className="flex-1 h-0.5 bg-gray-300 w-8"></div>} */}
+          </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };

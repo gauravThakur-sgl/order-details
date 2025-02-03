@@ -20,6 +20,9 @@ export const BuyerBillingDetail = () => {
   ];
   return (
     <div className="flex flex-col justify-center items-center gap-8 w-full">
+      <span className="pt-10 font-semibold text-basis flex justify-start w-full">
+        <h3>Buyer Billing Details</h3>
+      </span>
       <div className="flex flex-col lg:flex-row lg:justify-between gap-2 w-full">
         <Input type="text" placeholder="First Name" id="firstName" labelData="First name" />
         <Input type="text" placeholder="" required={true} className="" labelData="Last Name" name="lastName" />
@@ -28,16 +31,20 @@ export const BuyerBillingDetail = () => {
       <div className="w-full">
         <Select title="Select Country" id="" options={countryList} value="" />
       </div>
-      <div className="flex flex-col lg:flex-row justify-between w-full gap-2">
-        <Input type="text" placeholder="" required={true} className="" labelData="Address 1" name="address1" />
-        <Input
-          type="text"
-          placeholder=""
-          // required="*"
-          className=""
-          labelData="Landmark"
-          name="landMark"
-        />
+      <div className="flex flex-col lg:flex-row justify-between w-full gap-4">
+        <div className="w-full">
+          <Input type="text" placeholder="" required={true} className="" labelData="Address 1" name="address1" />
+        </div>
+        <div className="w-full">
+          <Input
+            type="text"
+            placeholder=""
+            // required="*"
+            className=""
+            labelData="Landmark"
+            name="landMark"
+          />
+        </div>
       </div>
       <div className="w-full">
         <Input type="text" placeholder="" required={true} className="w-full" labelData="Address 2" name="address2" />

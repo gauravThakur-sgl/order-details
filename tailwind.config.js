@@ -23,15 +23,23 @@ module.exports = {
       "poppins": ["Poppins", "sans-serif"],
     },
     extend: {
-      backgroundImage: {
-        'login-image': "url('/authBackground.png')",
-        'mobile-login-page': "url('/loginMobileBg.png')",
+      fontSize: {
+        "label-text": ["1.05rem"],
+        "sub-heading": "calc(1.26rem + 0.12vw)",
       },
-      height: {
-        "event-card": "425px"
+      fontWeight: {
+        light: 300,
+        normal: 400,
+        medium: 500,
+        semibold: 600,
+        bold: 700,
       },
       colors: {
+        "text-primary": "#3F4254",
+        "sub-heading": "#181C32",
         "order-primary": "#009EF7",
+        "progress-step": "#009EF7",
+        "card-background": "#F1FAFF ",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -68,24 +76,6 @@ module.exports = {
       },
       animation: {
         marquee: 'marquee 40s linear infinite',
-      },
-      keyframes: {
-        "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
-        },
-        marquee: {
-          '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-400%)' },
-        },
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
       },
       animation: {
         "caret-blink": "caret-blink 1.25s ease-out infinite",

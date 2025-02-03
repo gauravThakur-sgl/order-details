@@ -17,8 +17,8 @@ interface InputProps {
   errorName?: string;
   children?: React.ReactNode;
   value?: string;
-  props?: any;
-  onKeyPress?: any;
+  props?: React.InputHTMLAttributes<HTMLInputElement>;
+  onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 const inputColors = {
   default: "bg-black-300",
@@ -55,8 +55,8 @@ function Input({
   return (
     <div>
       <div className="flex flex-col justify-start gap-2 appearance-none">
-        <label htmlFor={id} className="text-sm font-normal leading-none">
-          {labelData} <span className="text-red-500 font-medium">{required ? "*": ""}</span>
+        <label htmlFor={id} className="text-sm text-text-primary font-medium leading-none text-black/2">
+          {labelData} <span className="text-red-500">{required ? "*" : ""}</span>
         </label>
         <div className="flex justify-center items-center bg-white rounded-md">
           <input
