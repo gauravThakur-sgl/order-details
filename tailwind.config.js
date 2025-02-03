@@ -40,6 +40,7 @@ module.exports = {
         "order-primary": "#009EF7",
         "progress-step": "#009EF7",
         "card-background": "#F1FAFF ",
+        "price-info": "#F1416C",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -39,7 +39,7 @@ export const Stepper = ({ steps, children }: StepperProps) => {
               onClick={handlePrev}
               className={`${
                 currentStep === 0 ? "hidden" : "block"
-              } text-white bg-progress-step rounded-md p-2 px-4 font-semibold text-base flex justify-center items-center gap-2`}
+              } text-white bg-progress-step rounded-md p-2 px-4 font-medium text-base flex justify-center items-center gap-2`}
             >
               Back{" "}
               <span>
@@ -48,7 +48,7 @@ export const Stepper = ({ steps, children }: StepperProps) => {
             </button>
             <button
               onClick={handleNext}
-              className="text-white bg-progress-step rounded-md p-2 px-4 font-semibold text-base"
+              className="text-white bg-progress-step rounded-md p-2 px-4 font-medium text-base"
             >
               {currentStep === steps.length - 1 ? "Place Order" : "Continue"}
             </button>
