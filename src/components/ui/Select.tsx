@@ -64,7 +64,7 @@ function Select({ title, variant, size, className, options, value, onChange }: I
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <div className="overflow-y-auto pt-2">
+            <div className="overflow-y-auto max-h-60 pt-2">
               {filteredOptions.map((option: { value: string; label: string }) => (
                 <div
                   key={option.value}

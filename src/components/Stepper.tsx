@@ -1,14 +1,10 @@
 import { useState, ReactNode } from "react";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { Step } from "./Step";
 
 interface StepperProps {
   steps: string[];
   children: ReactNode[];
-}
-
-interface StepProps {
-  current: number;
-  stepData: string[];
 }
 
 export const Stepper = ({ steps, children }: StepperProps) => {
@@ -28,7 +24,7 @@ export const Stepper = ({ steps, children }: StepperProps) => {
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center justify-center">
-        <div className="w-full lg:w-1/3">
+        <div className="flex h-full">
           {" "}
           <Step current={currentStep} stepData={steps} />
         </div>
@@ -56,29 +52,5 @@ export const Stepper = ({ steps, children }: StepperProps) => {
         </div>
       </div>
     </>
-  );
-};
-
-const Step = ({ current, stepData }: StepProps) => {
-  return (
-    <div className="flex flex-col items-center m-4 bg-white p-8 text-nowrap gap-8 rounded-md justify-center">
-      {stepData.map((title, index) => (
-        <div key={index} className="relative w-full mr-4">
-          <div className="flex items-center gap-4">
-            <div
-              className={`flex items-center justify-center font-semibold text-sm text-white h-8 w-8 rounded-md ${
-                index <= current ? "bg-blue-500" : "bg-gray-300"
-              }`}
-            >
-              {index < current ? <Check className="" /> : index + 1}
-            </div>
-            <div className={`font-semibold ${index <= current ? "text-gray-500" : "text-gray-500"}`}>{title}</div>
-          </div>
-          {index < stepData.length - 1 && (
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-8 w-px h-8 bg-gray-300 border-dashed"></div>
-          )}{" "}
-        </div>
-      ))}
-    </div>
   );
 };
