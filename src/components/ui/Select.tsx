@@ -29,7 +29,7 @@ function Select({ title, variant, size, className, options, value, onChange }: I
   const ref = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const baseClasses =
-    "flex items-center rounded-md text-text-primary font-medium text-gray-500 bg-gray-100 tracking-tight text-nowrap px-2";
+    "flex items-center rounded-md text-text-primary font-medium text-gray-500 bg-gray-100 tracking-tight px-2";
   const variantClasses = selectColors[variant || "default"];
   const sizeClasses = selectSize[size || "default"];
 

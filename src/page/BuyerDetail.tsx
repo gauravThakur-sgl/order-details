@@ -9,16 +9,19 @@ import { orderSchema } from "../zod/ordersSchema";
 import { z } from "zod";
 import { countryData } from "../config/countryState";
 
+import { useSelector } from "react-redux";
+// import { setBuyerDetail } from "../app/features/order/orderSlice";
+import { RootState } from "../app/store";
+
 type FormData = z.infer<typeof orderSchema>;
-interface BuyerDetailProps {
-  data: FormData;
-  onNext: (data: FormData) => void;
+interface BuyerDetailprop {
+  onNext: (formData: FormData) => void;
 }
-export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
+export const BuyerDetail = ({ onNext }: BuyerDetailprop) => {
+  const data = useSelector((state: RootState) => state.order);
   const [isChecked, setIsChecked] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const [formData, setFormData] = useState<FormData>({} as FormData);
 
   const {
     register,
@@ -39,7 +42,7 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
   }, [data, setValue]);
 
   const onSubmit = (formData: FormData) => {
-    console.log(data, "data");
+    console.log(formData, "formData");
     onNext(formData);
   };
 
@@ -48,10 +51,8 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
   };
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setValue(name as keyof FormData, value);
+    console.log(value, "value");
   };
   const countryList = countryData.map((country) => ({
     label: country.name,
@@ -72,7 +73,7 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
     const countryName = e.target.value;
     setSelectedCountry(countryName);
   };
-  console.log(formData, "formData");
+  console.log(data, "formData");
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="font-poppins flex flex-col items-center gap-8">
@@ -85,9 +86,10 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
             <Input
               {...register("firstName")}
               type="text"
-              placeholder="First Name"
+              placeholder=""
               id="firstName"
               labelData="First name"
+              required={true}
               onChange={handleOnChange}
             />
             {errors.firstName && <p className="text-red-500 text-sm">{String(errors.firstName.message)}</p>}{" "}
@@ -96,20 +98,19 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
             <Input
               {...register("lastName")}
               type="text"
-              placeholder="Last Name"
+              placeholder=""
               required={true}
               className=""
               labelData="Last Name"
               onChange={handleOnChange}
             />
-
             {errors.lastName && <p className="text-red-500 text-sm">{String(errors.lastName.message)}</p>}
           </div>
           <div className="flex flex-col">
             <Input
               {...register("mobileNumber")}
               type="text"
-              placeholder="Mobile No"
+              placeholder=""
               required={true}
               className=""
               labelData="Mobile No"
@@ -205,7 +206,7 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
               placeholder=""
               required={true}
               className=""
-              labelData="pincode"
+              labelData="Pincode"
               name="pincode"
               onChange={handleOnChange}
             />
@@ -219,7 +220,7 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
               required={true}
               className=""
               labelData="City"
-              name="city"
+              name="shippingCity"
               onChange={handleOnChange}
             />
             {errors.shippingcity && <p className="text-red-500 text-sm">{String(errors.shippingcity.message)}</p>}{" "}
@@ -249,7 +250,11 @@ export const BuyerDetail = ({ data, onNext }: BuyerDetailProps) => {
         </div>
         {!isChecked && <BuyerBillingDetail />}
       </div>
-      <button type="submit">Submit</button>
+      <div className="flex justify-end mt-4">
+        <button type="submit" className="text-white bg-progress-step rounded-md p-2 px-4 font-medium text-base">
+          Continue
+        </button>
+      </div>
     </form>
   );
 };

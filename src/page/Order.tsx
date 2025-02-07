@@ -6,50 +6,34 @@ import { Stepper } from "../components/Stepper";
 import { OrderDetails } from "./OrderDetails";
 import { ShippingPartner } from "./ShippingPartner";
 import { PlaceOrder } from "./PlaceOrder";
-import { useState } from "react";
-import {orderSchema} from "../zod/ordersSchema";
+import { orderSchema } from "../zod/ordersSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { setBuyerDetail, nextStep, prevStep } from "../app/features/order/orderSlice";
+import { z } from "zod";
 
-
+type FormData = z.infer<typeof orderSchema>;
 export const Order = () => {
+  const dispatch = useDispatch();
   const stepTitles = ["Buyer Details", "Order Details", "Shipping Partner", "Place Order"];
-  const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({
-    buyerDetail: {
-      pickupAddress: "",
-      firstName: "",
-      lastName: "",
-      mobileNumber: "",
-      alternateMobileNumber: "",
-      email: "",
-      country: "",
-      address1: "",
-      address2: "",
-      shippingcity: "",
-      shippingPincode: "",
-      shippingState: "",
-    },
-    orderDetails: {
-    },
-    shippingPartner: {},
-    placeOrder: {},
-  });
-  const handleNext = (data: typeof orderSchema) => {
-    setFormData((prev) => ({
-      ...prev,
-      [stepTitles[currentStep].toLowerCase().replace(" ", "")]: data,
-    }));
-    setCurrentStep((prev) => prev + 1);
-  };
+  const formData = useSelector((state: RootState) => state.order);
+  const currentStep = useSelector((state: RootState) => state.order.currentStep);
 
-  const handleBack = () => {
-    setCurrentStep((prev) => prev - 1);
+  console.log("data1", formData);
+
+  const handleNext = (formData: FormData) => {
+    switch (currentStep) {
+      case 0: {
+        const validatedData = orderSchema.parse(formData);
+        dispatch(setBuyerDetail(validatedData));
+        break;
+      }
+    }
+    dispatch(nextStep());
   };
-  const stepComponents = [
-    <BuyerDetail data={formData.buyerDetail} onNext={() => handleNext} />,
-    <OrderDetails data={formData.orderDetails} onNext={handleNext} onBack={handleBack} />,
-    <ShippingPartner data={formData.shippingPartner} onNext={handleNext} onBack={handleBack} />,
-    <PlaceOrder data={formData} onBack={handleBack} />,
-  ];
+  
+  const stepComponents = [<BuyerDetail onNext={handleNext} />, <OrderDetails />, <ShippingPartner />, <PlaceOrder />];
+  console.log(formData, "formData");
   return (
     <div>
       <Header />
@@ -59,6 +43,10 @@ export const Order = () => {
           <div className="w-full m-4 flex flex-col lg:flex-row">
             <Stepper steps={stepTitles}>{stepComponents}</Stepper>
           </div>
+          {/* <div>
+            <button onClick={() => dispatch(nextStep())}>Next</button>
+          </div> */}
+          <button onClick={() => dispatch(prevStep())}>Prev</button>
         </Container>
       </div>
     </div>
