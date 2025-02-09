@@ -1,6 +1,6 @@
 // import Errors from "./Errors";
 
-import Errors from "./Errors";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface InputProps {
   type: string;
@@ -19,6 +19,7 @@ interface InputProps {
   value?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
+  register?: UseFormRegisterReturn;
 }
 const inputColors = {
   default: "bg-black-300",
@@ -47,6 +48,7 @@ function Input({
   value,
   props,
   onKeyPress,
+  register,
 }: InputProps) {
   const baseClasses =
     "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
@@ -70,12 +72,12 @@ function Input({
             value={value}
             {...props}
             onKeyDown={onKeyPress}
+            {...register}
           />
           <div>{children}</div>
         </div>
       </div>
-
-      <Errors errorDescription={errorName} />
+      {errorName && <p className="text-red-500 text-sm">{errorName}</p>}
     </div>
   );
 }

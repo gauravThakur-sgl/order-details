@@ -6,34 +6,85 @@ import { Stepper } from "../components/Stepper";
 import { OrderDetails } from "./OrderDetails";
 import { ShippingPartner } from "./ShippingPartner";
 import { PlaceOrder } from "./PlaceOrder";
+import { useState } from "react";
 import { orderSchema } from "../zod/ordersSchema";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import { setBuyerDetail, nextStep, prevStep } from "../app/features/order/orderSlice";
+import { orderDetailsSchema } from "../zod/ordersSchema";
 import { z } from "zod";
 
 type FormData = z.infer<typeof orderSchema>;
+type OrderDetailsFormData = z.infer<typeof orderDetailsSchema>;
 export const Order = () => {
-  const dispatch = useDispatch();
-  const stepTitles = ["Buyer Details", "Order Details", "Shipping Partner", "Place Order"];
-  const formData = useSelector((state: RootState) => state.order);
-  const currentStep = useSelector((state: RootState) => state.order.currentStep);
-
-  console.log("data1", formData);
-
-  const handleNext = (formData: FormData) => {
-    switch (currentStep) {
-      case 0: {
-        const validatedData = orderSchema.parse(formData);
-        dispatch(setBuyerDetail(validatedData));
-        break;
-      }
-    }
-    dispatch(nextStep());
+  const stepKeys = ["buyerDetail", "orderDetails", "shippingPartner", "placeOrder"];
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState({
+    buyerDetail: {
+      pickupAddress: "",
+      firstName: "",
+      lastName: "",
+      mobileNumber: "",
+      alternateMobileNumber: "",
+      email: "",
+      country: "",
+      landMark: "",
+      address1: "",
+      address2: "",
+      shippingcity: "",
+      shippingPincode: "",
+      shippingState: "",
+      billingfirstName: "",
+      billinglastName: "",
+      billingmobileNumber: "",
+      billingCountry: "",
+      billingLandMark: "",
+      billingAddress1: "",
+      billingAddress2: "",
+      billingcity: "",
+      billingPincode: "",
+      billingState: "",
+    },
+    orderDetails: {
+      actualWeight: "",
+      length: "",
+      breadth: "",
+      height: "",
+      invoiceNo: "",
+      invoiceCurrency: "",
+      orderId: "",
+      invoiceDate: "",
+      orderid: "",
+      items: [
+        {
+          productName: "",
+          sku: "",
+          hsn: "",
+          qty: "",
+          unitPrice: "",
+          igst: "",
+        },
+      ],
+    },
+    shippingPartner: {},
+    placeOrder: {},
+  });
+  const handleNext = (data: FormData | OrderDetailsFormData) => {
+    const key = stepKeys[currentStep];
+    setFormData((prev) => ({
+      ...prev,
+      [key]: data,
+    }));
+    setCurrentStep((prev) => prev + 1);
   };
-  
-  const stepComponents = [<BuyerDetail onNext={handleNext} />, <OrderDetails />, <ShippingPartner />, <PlaceOrder />];
-  console.log(formData, "formData");
+
+  const handleBack = () => {
+    setCurrentStep((prev) => prev - 1);
+  };
+  console.log(formData, "BuyerDetailformData");
+  const stepComponents = [
+    <BuyerDetail data={formData.buyerDetail} onNext={handleNext} />,
+    <OrderDetails data={formData.orderDetails} onNext={handleNext} onBack={handleBack} />,
+    <ShippingPartner data={formData.shippingPartner} onNext={handleNext} onBack={handleBack} />,
+    <PlaceOrder data={formData} onBack={handleBack} />,
+  ];
   return (
     <div>
       <Header />
@@ -41,12 +92,10 @@ export const Order = () => {
       <div className="font-poppins pt-40 bg-gray-100 min-h-dvh">
         <Container>
           <div className="w-full m-4 flex flex-col lg:flex-row">
-            <Stepper steps={stepTitles}>{stepComponents}</Stepper>
+            <Stepper steps={stepKeys} currentStep={currentStep}>
+              {stepComponents}
+            </Stepper>
           </div>
-          {/* <div>
-            <button onClick={() => dispatch(nextStep())}>Next</button>
-          </div> */}
-          <button onClick={() => dispatch(prevStep())}>Prev</button>
         </Container>
       </div>
     </div>

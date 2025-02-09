@@ -2,41 +2,36 @@ import { useState } from "react";
 import Input from "./ui/Input";
 import Select from "./ui/Select";
 import { countryData } from "../config/countryState";
-import { useForm } from "react-hook-form";
+import { Controller, Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 import { orderSchema } from "../zod/ordersSchema";
 
 type BillingData = z.infer<typeof orderSchema>;
 
-export const BuyerBillingDetail = () => {
-  const {
-    register,
-    formState: { errors },
-  } = useForm<BillingData>();
+interface BuyerBillingDetailProps {
+  control: Control<BillingData>;
+  register: UseFormRegister<BillingData>;
+  errors: FieldErrors<BillingData>;
+}
+
+export const BuyerBillingDetail = ({ control, register, errors }: BuyerBillingDetailProps) => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
+
   const countryList = countryData.map((country) => ({
     label: country.name,
     value: country.name,
   }));
+
   const getStateList = (countryName: string) => {
     const country = countryData.find((country) => country.name === countryName);
     if (!country) return [];
-
-    return country.states.map((state) => {
-      return {
-        label: state.name,
-        value: state.name,
-      };
-    });
-  };
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const countryName = e.target.value;
-    setSelectedCountry(countryName);
-    setSelectedState(""); // Reset selected state when country changes
+    return country.states.map((state) => ({
+      label: state.name,
+      value: state.name,
+    }));
   };
 
-  const stateList = getStateList(selectedCountry);
   return (
     <div className="flex flex-col justify-center items-center gap-8 w-full">
       <span className="pt-10 font-semibold text-basis flex justify-start w-full">
@@ -45,121 +40,127 @@ export const BuyerBillingDetail = () => {
       <div className="flex flex-col lg:flex-row lg:justify-between gap-2 w-full">
         <div className="w-full">
           <Input
-            {...register("billingfirstName")}
+            register={register("billingfirstName")}
+            required={true}
             type="text"
-            placeholder=""
             id="billingfirstName"
             labelData="First name"
+            errorName={errors.billingfirstName?.message}
           />
-          {errors.billingfirstName && <p className="text-red-500 text-sm">{String(errors.billingfirstName.message)}</p>}
         </div>
         <div className="w-full">
           <Input
-            {...register("billinglastName")}
+            register={register("billinglastName")}
             type="text"
-            placeholder=""
             id="billinglastName"
             labelData="Last name"
+            required={true}
+            errorName={errors.billinglastName?.message}
           />
-          {errors.billinglastName && <p className="text-red-500 text-sm">{String(errors.billinglastName.message)}</p>}
-        </div>{" "}
+        </div>
         <div className="w-full">
           <Input
-            {...register("billingmobileNumber")}
+            register={register("billingmobileNumber")}
             type="text"
-            placeholder=""
             required={true}
-            className=""
             labelData="Mobile No"
+            errorName={errors.billingmobileNumber?.message}
           />
-          {errors.billingmobileNumber && (
-            <p className="text-red-500 text-sm">{String(errors.billingmobileNumber.message)}</p>
-          )}
         </div>
       </div>
       <div className="w-full">
-        <Select
-          {...register("billingCountry")}
-          title="Select Country"
-          id=""
-          options={countryList}
-          value={selectedCountry}
-          onChange={handleCountryChange}
+        <label htmlFor="billingCountry" className="text-sm font-medium">
+          Country <span className="text-red-500">*</span>
+        </label>
+        <Controller
+          control={control}
+          name="billingCountry"
+          render={({ field }) => (
+            <Select
+              title="Select Country"
+              options={countryList}
+              value={field.value}
+              onChange={(value) => {
+                setSelectedCountry(value);
+                field.onChange(value);
+              }}
+              errorName={errors.billingCountry?.message}
+            />
+          )}
         />
-        {errors.billingCountry && <p className="text-red-500 text-sm">{String(errors.billingCountry.message)}</p>}
+        {errors.billingCountry && <p className="text-red-500 text-sm">{errors.billingCountry.message}</p>}
       </div>
-      <div className="flex flex-col lg:flex-row justify-between w-full gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-4">
         <div className="w-full">
           <Input
-            {...register("billingAddress1")}
+            register={register("billingAddress1")}
             type="text"
-            placeholder=""
             required={true}
-            className=""
             labelData="Address 1"
-            name="address1"
+            errorName={errors.billingAddress1?.message}
           />
-          {errors.billingAddress1 && <p className="text-red-500 text-sm">{String(errors.billingAddress1.message)}</p>}
         </div>
         <div className="w-full">
           <Input
+            register={register("billingLandMark")}
             type="text"
-            placeholder=""
-            // required="*"
-            className=""
             labelData="Landmark"
-            name="landMark"
+            errorName={errors.billingLandMark?.message}
           />
         </div>
       </div>
       <div className="w-full">
         <Input
-          {...register("billingAddress2")}
+          register={register("billingAddress2")}
           type="text"
-          placeholder=""
           required={true}
           className="w-full"
           labelData="Address 2"
-          name="address2"
+          errorName={errors.billingAddress2?.message}
         />
-        {errors.billingAddress2 && <p className="text-red-500 text-sm">{String(errors.billingAddress2.message)}</p>}
       </div>
 
-      <div className="flex flex-col lg:flex-row justify-between w-full gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-start w-full gap-4">
         <div className="w-full">
           <Input
-            {...register("billingPincode")}
+            register={register("billingPincode")}
             type="text"
-            placeholder=""
             required={true}
-            className=""
-            labelData="pincode"
-            name="pincode"
+            labelData="Pincode"
+            errorName={errors.billingPincode?.message}
           />
-          {errors.billingPincode && <p className="text-red-500 text-sm">{String(errors.billingPincode.message)}</p>}
         </div>
         <div className="w-full">
           <Input
-            {...register("billingcity")}
+            register={register("billingcity")}
             type="text"
-            placeholder=""
             required={true}
-            className=""
             labelData="City"
-            name="city"
+            errorName={errors.billingcity?.message}
           />
-          {errors.billingcity && <p className="text-red-500 text-sm">{String(errors.billingcity.message)}</p>}
-        </div>{" "}
-        <div className="w-full mt-5">
-          <Select
-            {...register("billingState")}
-            title="State"
-            id=""
-            options={stateList}
-            value={selectedState}
-            onChange={(e) => setSelectedState(e.target.value)}
+        </div>
+        <div className="w-full">
+          <label htmlFor="billingState" className="text-sm font-medium">
+            State <span className="text-red-500">*</span>
+          </label>
+          <Controller
+            control={control}
+            name="billingState"
+            render={({ field }) => (
+              <Select
+                title="Select State"
+                options={getStateList(selectedCountry)}
+                value={field.value}
+                onChange={(value) => {
+                  setSelectedState(value);
+                  field.onChange(value);
+                }}
+                required={true}
+                errorName={errors.billingState?.message}
+              />
+            )}
           />
-          {errors.billingState && <p className="text-red-500 text-sm">{String(errors.billingState.message)}</p>}
+          {errors.billingState && <p className="text-red-500 text-sm">{errors.billingState.message}</p>}
         </div>
       </div>
     </div>

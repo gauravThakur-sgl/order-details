@@ -1,24 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PickupAddress } from "../components/PickupAddress";
 import Input from "../components/ui/Input";
 import Select from "../components/ui/Select";
-import { BuyerBillingDetail } from "../components/BuyerBillingDetail";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { orderSchema } from "../zod/ordersSchema";
 import { z } from "zod";
 import { countryData } from "../config/countryState";
-
-import { useSelector } from "react-redux";
-// import { setBuyerDetail } from "../app/features/order/orderSlice";
-import { RootState } from "../app/store";
+import { BuyerBillingDetail } from "../components/BuyerBillingDetail";
 
 type FormData = z.infer<typeof orderSchema>;
-interface BuyerDetailprop {
+
+interface IBuyerDetailProps {
+  data: FormData;
   onNext: (formData: FormData) => void;
 }
-export const BuyerDetail = ({ onNext }: BuyerDetailprop) => {
-  const data = useSelector((state: RootState) => state.order);
+
+export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
   const [isChecked, setIsChecked] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
@@ -26,34 +24,21 @@ export const BuyerDetail = ({ onNext }: BuyerDetailprop) => {
   const {
     register,
     formState: { errors },
-    setValue,
     handleSubmit,
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(orderSchema),
-    defaultValues: data,
+    defaultValues: {
+      ...data,
+      isChecked: true,
+    },
   });
 
-  useEffect(() => {
-    if (data) {
-      Object.keys(data).forEach((key) => {
-        setValue(key as keyof FormData, data[key as keyof FormData]);
-      });
-    }
-  }, [data, setValue]);
-
   const onSubmit = (formData: FormData) => {
-    console.log(formData, "formData");
+    console.log(formData, "formData After filling the form");
     onNext(formData);
   };
 
-  const handleCheckbox = () => {
-    setIsChecked(!isChecked);
-  };
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValue(name as keyof FormData, value);
-    console.log(value, "value");
-  };
   const countryList = countryData.map((country) => ({
     label: country.name,
     value: country.name,
@@ -69,186 +54,164 @@ export const BuyerDetail = ({ onNext }: BuyerDetailprop) => {
       };
     });
   };
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const countryName = e.target.value;
-    setSelectedCountry(countryName);
+  const handleCheckBox = () => {
+    setIsChecked(!isChecked);
   };
-  console.log(data, "formData");
+  console.log(errors, "errors");
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="font-poppins flex flex-col items-center gap-8">
-        <PickupAddress />
+        <PickupAddress control={control} errors={errors} />
         <span className="pt-5 font-semibold text-basis flex justify-start w-full">
           <h3>Buyer Shipping Details</h3>
         </span>
-        <div className="flex flex-col lg:flex-row lg:justify-between gap-2 w-full">
+        <div className="flex flex-col lg:flex-row lg:justify-between items-start gap-2 w-full">
           <div className="flex flex-col">
             <Input
-              {...register("firstName")}
+              register={register("firstName")}
               type="text"
-              placeholder=""
               id="firstName"
               labelData="First name"
               required={true}
-              onChange={handleOnChange}
+              errorName={errors.firstName?.message}
             />
-            {errors.firstName && <p className="text-red-500 text-sm">{String(errors.firstName.message)}</p>}{" "}
           </div>
           <div className="flex flex-col">
             <Input
-              {...register("lastName")}
+              register={register("lastName")}
               type="text"
-              placeholder=""
               required={true}
-              className=""
               labelData="Last Name"
-              onChange={handleOnChange}
+              errorName={errors.lastName?.message}
             />
-            {errors.lastName && <p className="text-red-500 text-sm">{String(errors.lastName.message)}</p>}
           </div>
           <div className="flex flex-col">
             <Input
-              {...register("mobileNumber")}
+              register={register("mobileNumber")}
               type="text"
-              placeholder=""
               required={true}
-              className=""
               labelData="Mobile No"
-              onChange={handleOnChange}
+              errorName={errors.mobileNumber?.message}
             />
-            {errors.mobileNumber && <p className="text-red-500 text-sm">{String(errors.mobileNumber.message)}</p>}{" "}
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row lg:justify-between items-center gap-2 w-full ">
+        <div className="flex flex-col lg:flex-row lg:justify-between items-start gap-2 w-full ">
           <div className="w-full lg:w-auto">
             <Input
-              {...register("alternateMobileNumber")}
+              register={register("alternateMobileNumber")}
               type="text"
-              placeholder=""
-              className="w-full"
               labelData="Alternate Mobile No."
-              name="alternateMobileNumber"
-              onChange={handleOnChange}
+              errorName={errors.alternateMobileNumber?.message}
             />
           </div>
           <div className="w-full">
             <Input
-              {...register("email")}
+              register={register("email")}
               type="email"
-              placeholder=""
-              className="w-full"
               labelData="Email Id."
-              name="email"
               required={true}
-              onChange={handleOnChange}
+              errorName={errors.email?.message}
             />
-            {errors.email && <p className="text-red-500 text-sm">{String(errors.email.message)}</p>}{" "}
           </div>
         </div>
         <div className="w-full">
           <label htmlFor="country" className="text-sm font-medium">
             Country <span className="text-red-500 text-sm">*</span>
           </label>
-          <Select
-            {...register("country")}
-            title="Select Country"
-            id=""
-            options={countryList}
-            value={selectedCountry}
-            onChange={handleCountryChange}
+          <Controller
+            control={control}
+            name="country"
+            render={({ field }) => (
+              <Select
+                title="Select Country"
+                options={countryList}
+                value={field.value}
+                onChange={(value) => {
+                  setSelectedCountry(value);
+                  field.onChange(value);
+                }}
+                errorName={errors.country?.message}
+              />
+            )}
           />
-          {errors.country && <p className="text-red-500 text-sm">{String(errors.country.message)}</p>}{" "}
         </div>
         <div className="flex flex-col lg:flex-row justify-between w-full gap-4">
           <div className="w-full">
             <Input
-              {...register("address1")}
+              register={register("address1")}
               type="text"
-              placeholder=""
               required={true}
-              className=""
               labelData="Address 1"
-              name="address1"
-              onChange={handleOnChange}
+              errorName={errors.address1?.message}
             />
-            {errors.address1 && <p className="text-red-500 text-sm">{String(errors.address1.message)}</p>}{" "}
           </div>
           <div className="w-full">
             <Input
+              register={register("landMark")}
               type="text"
-              placeholder=""
-              // required="*"
-              className=""
               labelData="Landmark"
-              name="landMark"
-              onChange={handleOnChange}
+              errorName={errors.landMark?.message}
             />
           </div>
         </div>
         <div className="w-full">
           <Input
-            {...register("address2")}
+            register={register("address2")}
             type="text"
-            placeholder=""
             required={true}
-            className="w-full"
             labelData="Address 2"
-            name="address2"
-            onChange={handleOnChange}
+            errorName={errors.address2?.message}
           />
-          {errors.address2 && <p className="text-red-500 text-sm">{String(errors.address2.message)}</p>}{" "}
         </div>
-        <div className="w-full flex flex-col lg:flex-row justify-center lg:justify-between gap-2">
+        <div className="w-full flex flex-col lg:flex-row justify-center lg:justify-between items-start gap-2">
           <div className="w-full">
             <Input
-              {...register("shippingPincode")}
+              register={register("shippingPincode")}
               type="text"
-              placeholder=""
               required={true}
-              className=""
               labelData="Pincode"
-              name="pincode"
-              onChange={handleOnChange}
+              errorName={errors.shippingPincode?.message}
             />
-            {errors.shippingPincode && <p className="text-red-500 text-sm">{String(errors.shippingPincode.message)}</p>}{" "}
           </div>
           <div className="w-full">
             <Input
-              {...register("shippingcity")}
+              register={register("shippingcity")}
               type="text"
-              placeholder=""
               required={true}
-              className=""
               labelData="City"
-              name="shippingCity"
-              onChange={handleOnChange}
+              errorName={errors.shippingcity?.message}
             />
-            {errors.shippingcity && <p className="text-red-500 text-sm">{String(errors.shippingcity.message)}</p>}{" "}
           </div>
           <div className="w-full">
-            <label htmlFor="country" className="text-sm font-medium">
-              Country <span className="text-red-500 text-sm">*</span>
+            <label htmlFor="state" className="text-sm font-medium">
+              State <span className="text-red-500 text-sm">*</span>
             </label>
-            <Select
-              {...register("shippingState")}
-              title="Select State"
-              id=""
-              options={getStateList(selectedCountry)}
-              value={selectedState}
-              className=""
-              onChange={(e) => setSelectedState(e.target.value)}
-              required={true}
+            <Controller
+              control={control}
+              name="shippingState"
+              render={({ field }) => (
+                <Select
+                  title="Select State"
+                  options={getStateList(selectedCountry)}
+                  value={selectedState}
+                  onChange={(e) => {
+                    setSelectedState(e);
+                    field.onChange(e);
+                  }}
+                  required={true}
+                  errorName={errors.shippingState?.message}
+                />
+              )}
             />
-            {errors.shippingState && <p className="text-red-500 text-sm">{String(errors.shippingState.message)}</p>}{" "}
           </div>
         </div>
         <div className="flex justify-start items-center text-sm gap-2 mt-6 w-full">
-          <span onClick={handleCheckbox} className="flex gap-2">
-            <input type="checkbox" checked={isChecked} />
+          <span onClick={handleCheckBox} className="flex gap-2">
+            <input type="checkbox" checked={isChecked} {...register("isChecked")} />
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
-        {!isChecked && <BuyerBillingDetail />}
+        {!isChecked && <BuyerBillingDetail control={control} register={register} errors={errors} />}
       </div>
       <div className="flex justify-end mt-4">
         <button type="submit" className="text-white bg-progress-step rounded-md p-2 px-4 font-medium text-base">

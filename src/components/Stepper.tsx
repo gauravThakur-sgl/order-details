@@ -1,15 +1,13 @@
 import { ReactNode } from "react";
 import { Step } from "./Step";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
 
 interface StepperProps {
   steps: string[];
   children: ReactNode[];
+  currentStep: number;
 }
 
-export const Stepper = ({ steps, children }: StepperProps) => {
-  const currentStep = useSelector((state: RootState) => state.order.currentStep);
+export const Stepper = ({ steps, children, currentStep }: StepperProps) => {
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center justify-center">

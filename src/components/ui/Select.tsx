@@ -1,17 +1,18 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import Input from "./Input";
-
 interface ISelectProps {
   title: string;
-  id: string;
+  id?: string;
   variant?: keyof typeof selectColors;
   size?: keyof typeof selectSize;
   className?: string;
   options: { value: string; label: string }[];
   value: string;
   required?: boolean;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  onChange?: (value: string) => void;
+  name?: string;
+  errorName?: string;
 }
 
 const selectColors = {
@@ -24,7 +25,7 @@ const selectSize = {
   sm: "h-8 text-sm",
   lg: "h-12 text-lg",
 };
-function Select({ title, variant, size, className, options, value, onChange }: ISelectProps) {
+function Select({ title, variant, size, className, options, value, onChange, name, errorName }: ISelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
@@ -63,6 +64,7 @@ function Select({ title, variant, size, className, options, value, onChange }: I
               className="w-full p-1 border-b border-gray-300 mx-3"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              name={name}
             />
             <div className="overflow-y-auto max-h-60 pt-2">
               {filteredOptions.map((option: { value: string; label: string }) => (
@@ -71,7 +73,7 @@ function Select({ title, variant, size, className, options, value, onChange }: I
                   className="p-2 px-4 hover:bg-progress-step hover:text-white text-progress-step bg-blue-50 text-sm cursor-pointer"
                   onClick={() => {
                     if (onChange) {
-                      onChange({ target: { value: option.value } } as React.ChangeEvent<HTMLSelectElement>);
+                      onChange(option.value);
                     }
                     setIsOpen(false);
                   }}
@@ -83,6 +85,7 @@ function Select({ title, variant, size, className, options, value, onChange }: I
           </div>
         )}
       </div>
+      {errorName && <p className="text-red-500 text-sm">{errorName}</p>}
     </div>
   );
 }

@@ -1,59 +1,44 @@
-import { useState } from "react";
-import Select from "../components/demo";
-import { ShipMentCard } from "../components/ShipMentCard";
-import { ShipMentMeasurement } from "../components/ShipMentMeasurement";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Select from "../components/ui/Select";
 import Input from "../components/ui/Input";
 import { DeleteIcon } from "lucide-react";
+import { z } from "zod";
+import { orderDetailsSchema } from "../zod/ordersSchema";
+import { ShipMentCard } from "../components/ShipMentCard";
+import { ShipMentMeasurement } from "../components/ShipMentMeasurement";
 
-export const OrderDetails = () => {
-  const orderDetails = [
-    { name: "Invoice No.", required: true },
-    { name: "Invoice Date", required: true },
-    {
-      name: "Invoice Currency",
-      required: true,
-      currencyData: [
-        { label: "USD", value: "USD" },
-        { label: "INR", value: "INR" },
-      ],
-    },
-    { name: "OrderId/RefId", required: true },
-    { name: "IOSS Number", required: true },
-  ];
-  const [products, setProducts] = useState([
-    { productName: "", sku: "", hsn: "", qty: "", unitPrice: "", igst: "", required: true },
-  ]);
+type FormData = z.infer<typeof orderDetailsSchema>;
 
-  // Add Product
-  const addProduct = () => {
-    setProducts([...products, { productName: "", sku: "", hsn: "", qty: "", unitPrice: "", igst: "", required: true }]);
-    console.log(products);
+interface IOrderDetailsProps {
+  data: FormData;
+  onNext: (formData: FormData) => void;
+  onBack: () => void;
+}
+
+export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(orderDetailsSchema),
+    defaultValues: data,
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "items",
+  });
+
+  const onSubmit = (formData: FormData) => {
+    console.log(formData, "OrderDetails formData");
+    onNext(formData);
   };
 
-  // Removes Product
-  interface Product {
-    productName: string;
-    sku: string;
-    hsn: string;
-    qty: string;
-    unitPrice: string;
-    igst: string;
-    required: boolean;
-  }
-
-  const removeProduct = (index: number) => {
-    const updatedProducts: Product[] = [];
-    for (let i = 0; i < products.length; i++) {
-      if (i !== index) {
-        updatedProducts.push(products[i]);
-      }
-      console.log(index);
-    }
-    setProducts(updatedProducts);
-    console.log(updatedProducts);
-  };
   return (
-    <div className="pb-20">
+    <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full">ShipMent Type</h2>
       <p className="text-xs text-gray-400 font-medium pt-2">
         Please select the shipment Mode. Note: CSB-V Shipments can only be sent through ShipGlobal Direct. If other
@@ -76,96 +61,143 @@ export const OrderDetails = () => {
       <ShipMentMeasurement />
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Order Details</h2>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-5">
-        {orderDetails.map((data, index) => (
-          <div className="flex justify-center items-end">
-            <div className="w-full">
-              {data.currencyData ? (
-                <Select key={index} title={data.name} className="appearence-none  z-10" options={data.currencyData} />
-              ) : (
-                <Input
-                  key={index}
-                  name={data.name}
-                  labelData={data.name}
-                  required={data.required}
-                  type="text"
-                  className="appearence-none z-10"
-                />
-              )}
-            </div>
-          </div>
-        ))}
+        <Input
+          register={register("actualWeight")}
+          labelData="Actual Weight"
+          required={true}
+          type="text"
+          errorName={errors.actualWeight?.message}
+        />
+        <Input
+          register={register("length")}
+          labelData="Length"
+          required={true}
+          type="text"
+          errorName={errors.length?.message}
+        />
+        <Input
+          register={register("breadth")}
+          labelData="Breadth"
+          required={true}
+          type="text"
+          errorName={errors.breadth?.message}
+        />
+        <Input
+          register={register("height")}
+          labelData="Height"
+          required={true}
+          type="text"
+          errorName={errors.height?.message}
+        />
       </div>
+
+      <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Order Details</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-5 items-start">
+        <Input
+          register={register("invoiceNo")}
+          labelData="Invoice No."
+          required={true}
+          type="text"
+          errorName={errors.invoiceNo?.message}
+        />
+        <Input
+          register={register("invoiceDate")}
+          labelData="Invoice Date"
+          required={true}
+          type="date"
+          errorName={errors.invoiceDate?.message}
+        />
+        <Controller
+          control={control}
+          name="invoiceCurrency"
+          render={({ field }) => (
+            <Select
+              title="Invoice Currency"
+              options={[
+                { label: "USD", value: "USD" },
+                { label: "INR", value: "INR" },
+              ]}
+              value={field.value}
+              onChange={(value) => field.onChange(value)}
+              errorName={errors.invoiceCurrency?.message}
+            />
+          )}
+        />
+        <Input
+          register={register("orderid")}
+          labelData="Order ID/Ref ID"
+          required={true}
+          type="text"
+          errorName={errors.orderid?.message}
+        />
+      </div>
+
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Items Details</h2>
-      <div>
-        {products.map((products, index) => (
-          <div
-            key={index}
-            className={`flex flex-col justify-center items-center md:flex-row gap-2 mt-4 w-full ${
-              index > 0 ? "pr-2" : "pr-[35px]"
-            }`}
-          >
-            <Input
-              key={index}
-              name={products.productName}
-              labelData="Product Name"
-              required={products.required}
-              type="text"
-              className="appearence-none z-10"
-            />
-            <Input
-              key={index}
-              name={products.sku}
-              labelData="SKU"
-              required={products.required}
-              type="text"
-              className="appearence-none z-10"
-            />
-            <Input
-              key={index}
-              name={products.hsn}
-              labelData="HSN"
-              required={products.required}
-              type="text"
-              className="appearence-none"
-            />
-            <Input
-              key={index}
-              name={products.qty}
-              labelData="Qty"
-              required={products.required}
-              type="text"
-              className="appearence-none z-10"
-            />
-            <Input
-              key={index}
-              name={products.unitPrice}
-              labelData="Unit Price(INR)"
-              required={products.required}
-              type="text"
-              className="appearence-none z-10"
-            />
-            <Input
-              key={index}
-              name={products.igst}
-              labelData="IGST"
-              required={products.required}
-              type="text"
-              className="appearence-none z-10"
-            />
-            {index > 0 && (
-              <div className="mt-4" onClick={() => removeProduct(index)}>
-                <DeleteIcon className="h-[20px] w-[20px] mt-2 text-red-primary cursor-pointer" />
-              </div>
-            )}
-          </div>
-        ))}
-        <button
-          className="text-progress-step bg-card-background rounded-md p-2 px-4 text-base flex justify-center items-center gap-2 mt-5"
-          onClick={addProduct}
-        >
-          <span>+</span>Add
+      {fields.map((item, index) => (
+        <div key={item.id} className="grid grid-cols-1 lg:grid-cols-7 gap-2 items-start mt-4">
+          <Input
+            register={register(`items.${index}.productName` as const)}
+            labelData="Product Name"
+            required={true}
+            type="text"
+            errorName={errors.items?.[index]?.productName?.message}
+          />
+          <Input
+            register={register(`items.${index}.sku` as const)}
+            labelData="SKU"
+            required={false}
+            type="text"
+            errorName={errors.items?.[index]?.sku?.message}
+          />
+          <Input
+            register={register(`items.${index}.hsn` as const)}
+            labelData="HSN"
+            required={true}
+            type="text"
+            errorName={errors.items?.[index]?.hsn?.message}
+          />
+          <Input
+            register={register(`items.${index}.qty` as const)}
+            labelData="Qty"
+            required={true}
+            type="text"
+            errorName={errors.items?.[index]?.qty?.message}
+          />
+          <Input
+            register={register(`items.${index}.unitPrice` as const)}
+            labelData="Unit Price (INR)"
+            required={true}
+            type="text"
+            errorName={errors.items?.[index]?.unitPrice?.message}
+          />
+          <Input
+            register={register(`items.${index}.igst` as const)}
+            labelData="IGST"
+            required={true}
+            type="text"
+            errorName={errors.items?.[index]?.igst?.message}
+          />
+          <button type="button" onClick={() => remove(index)}>
+            <DeleteIcon className="h-5 w-5 text-red-500" />
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        className="text-progress-step bg-card-background rounded-md p-2 px-4 mt-5"
+        onClick={() => append({ productName: "", sku: "", hsn: "", qty: "", unitPrice: "", igst: "" })}
+      >
+        + Add Item
+      </button>
+
+      <div className="flex justify-between mt-10">
+        <button type="button" className="text-white bg-gray-500 rounded-md p-2 px-4" onClick={onBack}>
+          Back
+        </button>
+        <button type="submit" className="text-white bg-progress-step rounded-md p-2 px-4">
+          Continue
         </button>
       </div>
-    </div>
+    </form>
   );
 };
