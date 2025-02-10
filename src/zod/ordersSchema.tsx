@@ -97,10 +97,7 @@ const iteamArray = z.object({
     .string()
     .min(1, { message: "Product price is required" })
     .regex(/^\d+(\.\d{1,2})?$/, "Unit price must be a valid number with up to two decimal places"),
-  igst: z
-    .string()
-    .min(1, { message: "IGST is required" })
-    .regex(/^\d+(\.\d{1,2})?$/, "IGST must be a valid percentage or number with up to two decimal places"),
+  igst: z.string().optional(),
   qty: z
     .string()
     .min(1, { message: "Quantity is required" })
@@ -125,7 +122,7 @@ export const orderDetailsSchema = z.object({
 
   // Order Details
   invoiceNo: z.string().nonempty("The invoice value is required."),
-  invoiceDate: z.string().nonempty("The invoice date is required."),
+  invoiceDate: z.string().optional(),
   invoiceCurrency: z.string().nonempty("The invoice currency is required."),
   orderid: z.string().nonempty("The order id is required."),
   items: z.array(iteamArray),

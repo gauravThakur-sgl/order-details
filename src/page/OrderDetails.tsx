@@ -111,46 +111,62 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
 
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Items Details</h2>
       {fields.map((item, index) => (
-        <div key={item.id} className={`grid grid-cols-1 lg:grid-cols-7 gap-1 items-start mt-4 animate-fadeIn`}>
-          <Input
-            register={register(`items.${index}.productName` as const)}
-            labelData="Product Name"
-            required={true}
-            type="text"
-            className=""
-            errorName={errors.items?.[index]?.productName?.message}
-          />
-          <Input
-            register={register(`items.${index}.sku` as const)}
-            labelData="SKU"
-            required={false}
-            type="text"
-            errorName={errors.items?.[index]?.sku?.message}
-          />
-          <Input
-            register={register(`items.${index}.hsn` as const)}
-            labelData="HSN"
-            required={true}
-            type="text"
-            errorName={errors.items?.[index]?.hsn?.message}
-          />
-          <Input
-            register={register(`items.${index}.qty` as const)}
-            labelData="Qty"
-            required={true}
-            type="text"
-            errorName={errors.items?.[index]?.qty?.message}
-          />
-          <Input
-            register={register(`items.${index}.unitPrice` as const)}
-            labelData="Unit Price (INR)"
-            required={true}
-            type="text"
-            errorName={errors.items?.[index]?.unitPrice?.message}
-          />
-          <Igst control={control} errors={errors} />
+        <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-start mt-4 animate-fadeIn`}>
+          <div className="w-full">
+            <Input
+              register={register(`items.${index}.productName` as const)}
+              labelData="Product Name"
+              required={true}
+              type="text"
+              className="md:max-w-64"
+              errorName={errors.items?.[index]?.productName?.message}
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              register={register(`items.${index}.sku` as const)}
+              labelData="SKU"
+              required={false}
+              type="text"
+              className="w-full md:max-w-24"
+              errorName={errors.items?.[index]?.sku?.message}
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              register={register(`items.${index}.hsn` as const)}
+              labelData="HSN"
+              required={true}
+              type="text"
+              className="md:max-w-56"
+              errorName={errors.items?.[index]?.hsn?.message}
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              register={register(`items.${index}.qty` as const)}
+              labelData="Qty"
+              required={true}
+              type="text"
+              className="md:max-w-32"
+              errorName={errors.items?.[index]?.qty?.message}
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              register={register(`items.${index}.unitPrice` as const)}
+              labelData="Unit Price (INR)"
+              required={true}
+              type="text"
+              className="md:max-w-40"
+              errorName={errors.items?.[index]?.unitPrice?.message}
+            />
+          </div>
+          <div className="w-full">
+            <Igst control={control} errors={errors} />
+          </div>
           {fields.length > 1 && (
-            <button type="button" onClick={() => remove(index)}>
+            <button type="button" onClick={() => remove(index)} className="">
               <Trash2 className="h-4 w-4 mt-8 text-red-500 bg-red-50" />
             </button>
           )}
@@ -167,7 +183,7 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
       <div className="flex justify-between items-center mt-10">
         <button
           type="button"
-          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4 mt-5"
+          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4"
           onClick={onBack}
         >
           <span>

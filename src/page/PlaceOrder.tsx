@@ -23,10 +23,16 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
   const pickupAddress = buyerDetail.pickupAddress;
   const [name, address, city, pincode] = pickupAddress.split("-");
 
+  const handlePlaceOrder = () => {
+    console.log("Order Placed");
+    localStorage.removeItem("formData");
+    window.location.href = "/";
+  };
+
   return (
     <div>
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full pb-10">Order Details</h2>
-      <div className="flex justify-between items-start gap-56 mb-12">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-56 mb-12">
         <div>
           <h4 className="text-gray-500 fs-5 font-semibold">Pickup Address:</h4>
           <p className="text-gray-800 fs-6 font-medium mt-4">Head OFFICE</p>
@@ -49,13 +55,12 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
               {buyerDetail.shippingState} - {buyerDetail.shippingPincode}
             </p>
             <p>{buyerDetail.country}</p>
-
             <p>{buyerDetail.mobileNumber}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-start mb-12 md:pr-12">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start mb-12 md:pr-12">
         <div>
           <h3 className="text-gray-600 fs-5 font-medium">Shipping Partner</h3>
           <p className="text-gray-800 fs-6 font-medium">{shippingPartner.shippingPartner}</p>
@@ -71,10 +76,10 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
         </div>
       </div>
 
-      <div className="flex justify-end w-full pb-12 md:pr-20">
+      <div className="flex justify-start sm:justify-end w-full pb-12 md:pr-20">
         <div className="text-gray-400 font-semibold text-sm">
           <div className="flex justify-between gap-8">
-            <span>logistic Fee:</span> <span className="text-gray-800 fs-6 font-medium">{price}</span>
+            <span>logistic Fee:</span> <span className="text-gray-800 fs-6 font-medium">{price}.00</span>
           </div>
           <div className="flex justify-between gap-8">
             <span>GST:</span> <span className="text-gray-800 fs-6 font-medium">{gstPrice}</span>
@@ -88,7 +93,7 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
       <div className="flex justify-between items-center mt-10">
         <button
           type="button"
-          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4 mt-5"
+          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4"
           onClick={onBack}
         >
           <span>
@@ -98,8 +103,8 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
         </button>
         <button
           type="button"
-          className="text-white bg-order-button rounded-md p-3 px-4"
-          // onClick={/* function to submit final order */}
+          className="text-white bg-order-button text-xs md:text-base rounded-md p-3 px-2 sm:px-4"
+          onClick={handlePlaceOrder}
         >
           Pay & Add Order
         </button>

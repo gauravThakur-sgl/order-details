@@ -16,7 +16,7 @@ const formattedToday = today.toISOString().split("T")[0];
 
 export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col z-10">
       <label htmlFor="invoiceDate" className="text-sm text-text-primary font-medium leading-none text-black/2 mb-1">
         Invoice Date <span className="text-red-500 text-sm">*</span>
       </label>

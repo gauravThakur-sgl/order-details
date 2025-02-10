@@ -83,7 +83,7 @@ export const ShippingPartner = ({ data, onNext, onBack }: ShippingPartnerProps) 
                 onChange={() => setSelectedPartner(data.name)}
                 className="mr-3 w-6 h-6"
               />
-              <div className="flex justify-between w-full">
+              <div className="flex flex-col sm:justify-between w-full">
                 <div className="flex flex-col items-start">
                   <h3 className="font-semibold text-base flex justify-start w-full">
                     {data.name}{" "}
@@ -95,7 +95,7 @@ export const ShippingPartner = ({ data, onNext, onBack }: ShippingPartnerProps) 
                   <p className="text-sm text-gray-500 font-medium pt-2">{data.est}</p>
                 </div>
                 <div className="flex items-center">
-                  <div className="font-semibold text-2xl text-basis flex items-baseline">
+                  <div className="font-semibold text-xl md:text-2xl text-basis flex items-baseline">
                     <span className="text-sm">Rs.</span>
                     {data.price}
                   </div>
@@ -108,7 +108,7 @@ export const ShippingPartner = ({ data, onNext, onBack }: ShippingPartnerProps) 
       <div className="flex justify-between items-center mt-10">
         <button
           type="button"
-          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4 mt-5 "
+          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4"
           onClick={onBack}
         >
           <span>
@@ -131,7 +131,7 @@ const WeightInfo = () => {
     { weight: "1.00 KG", info: "Billed Weight" },
   ];
   return (
-    <div className="flex justify-center items-center p-4 gap-4">
+    <div className="flex flex-col sm:flex-row justify-center items-start sm:items-center p-4 gap-4">
       {infoData.map((data, index) => (
         <div
           key={index}

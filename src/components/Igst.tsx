@@ -31,12 +31,12 @@ export const Igst = ({ control, errors }: IPickupAddressProps) => {
       <Controller
         control={control}
         name="items.0.igst"
-        defaultValue="0"
+        defaultValue={igstOptions[0].value}
         render={({ field }) => (
           <Select
             title="IGST"
             options={igstOptions}
-            value={field.value}
+            value={field.value ?? ""}
             onChange={(value) => {
               field.onChange(value);
               handleSelectChange(value);
