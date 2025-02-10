@@ -83,7 +83,7 @@ export const ShippingPartner = ({ data, onNext, onBack }: ShippingPartnerProps) 
                 onChange={() => setSelectedPartner(data.name)}
                 className="mr-3 w-6 h-6"
               />
-              <div className="flex flex-col sm:justify-between w-full">
+              <div className="flex flex-col md:justify-between md:flex-row w-full">
                 <div className="flex flex-col items-start">
                   <h3 className="font-semibold text-base flex justify-start w-full">
                     {data.name}{" "}
