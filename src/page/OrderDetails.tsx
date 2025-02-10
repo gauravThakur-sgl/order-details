@@ -7,6 +7,7 @@ import { z } from "zod";
 import { orderDetailsSchema } from "../zod/ordersSchema";
 import { ShipMentCard } from "../components/ShipMentCard";
 import { ShipMentMeasurement } from "../components/ShipMentMeasurement";
+import { DateComponent } from "../components/Date";
 
 type FormData = z.infer<typeof orderDetailsSchema>;
 
@@ -36,7 +37,6 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
     console.log(formData, "OrderDetails formData");
     onNext(formData);
   };
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
@@ -70,13 +70,8 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
           type="text"
           errorName={errors.invoiceNo?.message}
         />
-        <Input
-          register={register("invoiceDate")}
-          labelData="Invoice Date"
-          required={true}
-          type="date"
-          errorName={errors.invoiceDate?.message}
-        />
+
+        <DateComponent control={control} errors={errors} />
         <div>
           <label htmlFor="invoiceCurrency" className="text-sm text-text-primary font-medium leading-none text-black/2">
             Invoice Currency <span className="text-red-500 text-sm">*</span>
@@ -88,8 +83,14 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
               <Select
                 title="Invoice Currency"
                 options={[
-                  { label: "USD", value: "USD" },
+                  { label: "AED", value: "AED" },
+                  { label: "AUD", value: "AUD" },
+                  { label: "CAD", value: "CAD" },
+                  { label: "EUR", value: "EUR" },
+                  { label: "GBP", value: "GBP" },
                   { label: "INR", value: "INR" },
+                  { label: "SAR", value: "SAR" },
+                  { label: "USD", value: "USD" },
                 ]}
                 value={field.value}
                 onChange={(value) => field.onChange(value)}
