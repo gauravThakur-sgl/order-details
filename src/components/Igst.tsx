@@ -1,6 +1,23 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-import Input from "./Input";
+import Input from "./ui/Input";
+
+const igstOptions = [
+    { label: "0%", value: "0" },
+    { label: "3%", value: "3" },
+    { label: "5%", value: "5" },
+    { label: "12%", value: "12" },
+    { label: "18%", value: "18" },
+    { label: "28%", value: "28" },
+  ];
+export const Igst = () => {
+  return (
+    <div><Select ></div>
+  )
+}
+
+
+
 interface ISelectProps {
   title: string;
   id?: string;
@@ -34,19 +51,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
   const variantClasses = selectColors[variant || "default"];
   const sizeClasses = selectSize[size || "default"];
 
-  const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
-
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [isOpen]);
+  
   return (
     <div ref={ref}>
       <div className="relative">
@@ -57,15 +62,6 @@ function Select({ title, variant, size, className, options, value, onChange, nam
           {value ? options.find((option) => option.value === value)?.label : title}
           <ChevronDown className="absolute top-3 right-3 h-4 w-4" />
         </div>
-        {isOpen && (
-          <div className="absolute z-10 pt-2 w-full bg-white border border-gray-300 shadow-lg">
-            <Input
-              type="text"
-              className="w-full p-1 border-b border-gray-300 mx-3"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              name={name}
-            />
             <div className="overflow-y-auto max-h-60 pt-2">
               {filteredOptions.map((option: { value: string; label: string }) => (
                 <div
@@ -89,5 +85,3 @@ function Select({ title, variant, size, className, options, value, onChange, nam
     </div>
   );
 }
-
-export default Select;

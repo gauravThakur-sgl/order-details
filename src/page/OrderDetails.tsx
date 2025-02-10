@@ -2,7 +2,7 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Select from "../components/ui/Select";
 import Input from "../components/ui/Input";
-import { DeleteIcon } from "lucide-react";
+import { ArrowLeft, DeleteIcon } from "lucide-react";
 import { z } from "zod";
 import { orderDetailsSchema } from "../zod/ordersSchema";
 import { ShipMentCard } from "../components/ShipMentCard";
@@ -37,6 +37,7 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
     onNext(formData);
   };
 
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full">ShipMent Type</h2>
@@ -58,38 +59,7 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
           <span className="text-progress-step text-sm font-semibold">Help Page</span>
         </a>
       </p>
-      <ShipMentMeasurement />
-      <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Order Details</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-5">
-        <Input
-          register={register("actualWeight")}
-          labelData="Actual Weight"
-          required={true}
-          type="text"
-          errorName={errors.actualWeight?.message}
-        />
-        <Input
-          register={register("length")}
-          labelData="Length"
-          required={true}
-          type="text"
-          errorName={errors.length?.message}
-        />
-        <Input
-          register={register("breadth")}
-          labelData="Breadth"
-          required={true}
-          type="text"
-          errorName={errors.breadth?.message}
-        />
-        <Input
-          register={register("height")}
-          labelData="Height"
-          required={true}
-          type="text"
-          errorName={errors.height?.message}
-        />
-      </div>
+      <ShipMentMeasurement register={register} errors={errors} />
 
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Order Details</h2>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-5 items-start">
@@ -107,22 +77,27 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
           type="date"
           errorName={errors.invoiceDate?.message}
         />
-        <Controller
-          control={control}
-          name="invoiceCurrency"
-          render={({ field }) => (
-            <Select
-              title="Invoice Currency"
-              options={[
-                { label: "USD", value: "USD" },
-                { label: "INR", value: "INR" },
-              ]}
-              value={field.value}
-              onChange={(value) => field.onChange(value)}
-              errorName={errors.invoiceCurrency?.message}
-            />
-          )}
-        />
+        <div>
+          <label htmlFor="invoiceCurrency" className="text-sm text-text-primary font-medium leading-none text-black/2">
+            Invoice Currency <span className="text-red-500 text-sm">*</span>
+          </label>
+          <Controller
+            control={control}
+            name="invoiceCurrency"
+            render={({ field }) => (
+              <Select
+                title="Invoice Currency"
+                options={[
+                  { label: "USD", value: "USD" },
+                  { label: "INR", value: "INR" },
+                ]}
+                value={field.value}
+                onChange={(value) => field.onChange(value)}
+                errorName={errors.invoiceCurrency?.message}
+              />
+            )}
+          />
+        </div>
         <Input
           register={register("orderid")}
           labelData="Order ID/Ref ID"
@@ -177,9 +152,11 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
             type="text"
             errorName={errors.items?.[index]?.igst?.message}
           />
-          <button type="button" onClick={() => remove(index)}>
-            <DeleteIcon className="h-5 w-5 text-red-500" />
-          </button>
+          {fields.length > 1 && (
+            <button type="button" onClick={() => remove(index)}>
+              <DeleteIcon className="h-5 w-5 mt-8 text-red-500" />
+            </button>
+          )}
         </div>
       ))}
       <button
@@ -187,11 +164,18 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
         className="text-progress-step bg-card-background rounded-md p-2 px-4 mt-5"
         onClick={() => append({ productName: "", sku: "", hsn: "", qty: "", unitPrice: "", igst: "" })}
       >
-        + Add Item
+        + <span className="font-medium ">Add Item</span>
       </button>
 
-      <div className="flex justify-between mt-10">
-        <button type="button" className="text-white bg-gray-500 rounded-md p-2 px-4" onClick={onBack}>
+      <div className="flex justify-between items-center mt-10">
+        <button
+          type="button"
+          className="flex justify-center items-center gap-1 text-progress-step bg-card-background font-medium rounded-md p-2 px-4 mt-5"
+          onClick={onBack}
+        >
+          <span>
+            <ArrowLeft className="w-4 h-4" />
+          </span>
           Back
         </button>
         <button type="submit" className="text-white bg-progress-step rounded-md p-2 px-4">

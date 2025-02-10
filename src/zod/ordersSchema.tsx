@@ -55,6 +55,7 @@ export const orderSchema = z.object({
     .min(6, "Pincode must be of 6 digit"),
   billingState: z.string().nonempty("The customer shipping state is required."),
 });
+
 {
   /* 
   // Buyer Billing Details
@@ -94,7 +95,7 @@ const iteamArray = z.object({
     .regex(/^\d{4,8}$/, "HSN must be between 4 and 8 digits"),
   unitPrice: z
     .string()
-    .min(1, { message: "Unit price is required" })
+    .min(1, { message: "Product price is required" })
     .regex(/^\d+(\.\d{1,2})?$/, "Unit price must be a valid number with up to two decimal places"),
   igst: z
     .string()

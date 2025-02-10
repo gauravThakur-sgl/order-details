@@ -41,6 +41,7 @@ module.exports = {
         "progress-step": "#009EF7",
         "card-background": "#F1FAFF ",
         "price-info": "#F1416C",
+        "order-button": "#50CD89",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

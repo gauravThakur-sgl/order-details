@@ -7,7 +7,7 @@ interface StepProps {
 
 export const Step = ({ current, stepData }: StepProps) => {
   return (
-    <div className="flex flex-col items-center mx-6 bg-white p-8 text-nowrap gap-8 rounded-md justify-center">
+    <div className="flex flex-col items-center mx-6 bg-white p-8 text-nowrap gap-8 rounded-md justify-center mb-4">
       {stepData.map((title, index) => (
         <div key={index} className="relative w-full mr-4">
           <div className="flex items-center gap-4">

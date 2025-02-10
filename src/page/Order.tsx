@@ -13,6 +13,7 @@ import { z } from "zod";
 
 type FormData = z.infer<typeof orderSchema>;
 type OrderDetailsFormData = z.infer<typeof orderDetailsSchema>;
+type ShippingPartnerFormData = { shippingPartner: string; est: string; price: string };
 export const Order = () => {
   const stepKeys = ["buyerDetail", "orderDetails", "shippingPartner", "placeOrder"];
   const [currentStep, setCurrentStep] = useState(0);
@@ -63,10 +64,10 @@ export const Order = () => {
         },
       ],
     },
-    shippingPartner: {},
+    shippingPartner: { shippingPartner: "", est: "", price: "" },
     placeOrder: {},
   });
-  const handleNext = (data: FormData | OrderDetailsFormData) => {
+  const handleNext = (data: FormData | OrderDetailsFormData | ShippingPartnerFormData) => {
     const key = stepKeys[currentStep];
     setFormData((prev) => ({
       ...prev,

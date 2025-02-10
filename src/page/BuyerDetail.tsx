@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PickupAddress } from "../components/PickupAddress";
 import Input from "../components/ui/Input";
 import Select from "../components/ui/Select";
@@ -26,23 +26,66 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
     formState: { errors },
     handleSubmit,
     control,
+    setValue,
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(orderSchema),
-    defaultValues: {
-      ...data,
-      isChecked: true,
-    },
+    defaultValues: data,
   });
 
   const onSubmit = (formData: FormData) => {
+    if (isChecked) {
+      formData.billingfirstName = formData.firstName;
+      formData.billinglastName = formData.lastName;
+      formData.billingmobileNumber = formData.mobileNumber;
+      formData.billingCountry = formData.country;
+      formData.billingAddress1 = formData.address1;
+      formData.billingAddress2 = formData.address2;
+      formData.billingLandMark = formData.landMark;
+      formData.billingcity = formData.shippingcity;
+      formData.billingPincode = formData.shippingPincode;
+      formData.billingState = formData.shippingState;
+    }
     console.log(formData, "formData After filling the form");
     onNext(formData);
   };
+
+  const handleCheckBox = () => {
+    setIsChecked(!isChecked);
+  };
+
+  const shippingFields = watch([
+    "firstName",
+    "lastName",
+    "mobileNumber",
+    "country",
+    "address1",
+    "address2",
+    "landMark",
+    "shippingcity",
+    "shippingPincode",
+    "shippingState",
+  ]);
+  useEffect(() => {
+    if (isChecked) {
+      setValue("billingfirstName", shippingFields[0]);
+      setValue("billinglastName", shippingFields[1]);
+      setValue("billingmobileNumber", shippingFields[2]);
+      setValue("billingCountry", shippingFields[3]);
+      setValue("billingAddress1", shippingFields[4]);
+      setValue("billingAddress2", shippingFields[5]);
+      setValue("billingLandMark", shippingFields[6]);
+      setValue("billingcity", shippingFields[7]);
+      setValue("billingPincode", shippingFields[8]);
+      setValue("billingState", shippingFields[9]);
+    }
+  }, [isChecked, shippingFields, setValue]);
 
   const countryList = countryData.map((country) => ({
     label: country.name,
     value: country.name,
   }));
+
   const getStateList = (countryName: string) => {
     const country = countryData.find((country) => country.name === countryName);
     if (!country) return [];
@@ -54,9 +97,7 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
       };
     });
   };
-  const handleCheckBox = () => {
-    setIsChecked(!isChecked);
-  };
+
   console.log(errors, "errors");
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -66,7 +107,7 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
           <h3>Buyer Shipping Details</h3>
         </span>
         <div className="flex flex-col lg:flex-row lg:justify-between items-start gap-2 w-full">
-          <div className="flex flex-col">
+          <div className="w-full">
             <Input
               register={register("firstName")}
               type="text"
@@ -76,7 +117,7 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
               errorName={errors.firstName?.message}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="w-full">
             <Input
               register={register("lastName")}
               type="text"
@@ -85,7 +126,7 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
               errorName={errors.lastName?.message}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="w-full">
             <Input
               register={register("mobileNumber")}
               type="text"
@@ -206,8 +247,8 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
           </div>
         </div>
         <div className="flex justify-start items-center text-sm gap-2 mt-6 w-full">
-          <span onClick={handleCheckBox} className="flex gap-2">
-            <input type="checkbox" checked={isChecked} {...register("isChecked")} />
+          <span onClick={handleCheckBox} className="flex  items-center gap-2 cursor-pointer">
+            <input type="checkbox" className="h-4 w-4" checked={isChecked} {...register("isChecked")} />
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
