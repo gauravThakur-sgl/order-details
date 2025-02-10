@@ -248,7 +248,12 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
         </div>
         <div className="flex justify-start items-center text-sm gap-2 mt-6 w-full">
           <span onClick={handleCheckBox} className="flex  items-center gap-2 cursor-pointer">
-            <input type="checkbox" className="h-4 w-4" checked={isChecked} {...register("isChecked")} />
+            <input
+              type="checkbox"
+              className="h-5 w-5 rounded-sm border border-gray-800 text-white appearance-none checked:bg-progress-step checked:border-transparent checked:focus:ring-0"
+              checked={isChecked}
+              {...register("isChecked")}
+            />
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>

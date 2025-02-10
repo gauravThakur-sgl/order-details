@@ -149,7 +149,9 @@ export const Order = () => {
   return (
     <div>
       <Header />
-      <SideBar />
+      <div className="flex">
+        <SideBar />
+      </div>
       <div className="font-poppins pt-40 bg-gray-100 min-h-dvh">
         <Container>
           <div className="m-4 flex flex-col lg:flex-row">
