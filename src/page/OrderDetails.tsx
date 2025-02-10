@@ -2,12 +2,13 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Select from "../components/ui/Select";
 import Input from "../components/ui/Input";
-import { ArrowLeft, DeleteIcon } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import { z } from "zod";
 import { orderDetailsSchema } from "../zod/ordersSchema";
 import { ShipMentCard } from "../components/ShipMentCard";
 import { ShipMentMeasurement } from "../components/ShipMentMeasurement";
 import { DateComponent } from "../components/Date";
+import { Igst } from "../components/Igst";
 
 type FormData = z.infer<typeof orderDetailsSchema>;
 
@@ -110,12 +111,13 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
 
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Items Details</h2>
       {fields.map((item, index) => (
-        <div key={item.id} className="grid grid-cols-1 lg:grid-cols-7 gap-2 items-start mt-4">
+        <div key={item.id} className={`grid grid-cols-1 lg:grid-cols-7 gap-1 items-start mt-4 animate-fadeIn`}>
           <Input
             register={register(`items.${index}.productName` as const)}
             labelData="Product Name"
             required={true}
             type="text"
+            className=""
             errorName={errors.items?.[index]?.productName?.message}
           />
           <Input
@@ -146,16 +148,10 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
             type="text"
             errorName={errors.items?.[index]?.unitPrice?.message}
           />
-          <Input
-            register={register(`items.${index}.igst` as const)}
-            labelData="IGST"
-            required={true}
-            type="text"
-            errorName={errors.items?.[index]?.igst?.message}
-          />
+          <Igst control={control} errors={errors} />
           {fields.length > 1 && (
             <button type="button" onClick={() => remove(index)}>
-              <DeleteIcon className="h-5 w-5 mt-8 text-red-500" />
+              <Trash2 className="h-4 w-4 mt-8 text-red-500 bg-red-50" />
             </button>
           )}
         </div>

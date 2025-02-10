@@ -16,23 +16,33 @@ interface PlaceOrderProps {
 
 export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
   const { buyerDetail, orderDetails, shippingPartner } = data;
-  const gstPrice = (parseFloat(parseFloat(shippingPartner.price).toPrecision(2)) / 100) * 18;
+  const price = parseFloat(shippingPartner.price);
+  const gstPrice = ((price / 100) * 18).toFixed(2);
+  const totalPrice = (price + parseFloat(gstPrice)).toFixed(2);
 
+  const pickupAddress = buyerDetail.pickupAddress;
+  const [name, address, city, pincode] = pickupAddress.split("-");
 
   return (
     <div>
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full pb-10">Order Details</h2>
-      <div className="flex justify-between items-start gap-2 mb-12">
+      <div className="flex justify-between items-start gap-56 mb-12">
         <div>
-          <h4 className="text-gray-600 fs-5 font-medium">Pickup Address:</h4>
-          <p>{buyerDetail.pickupAddress}</p>
+          <h4 className="text-gray-500 fs-5 font-semibold">Pickup Address:</h4>
+          <p className="text-gray-800 fs-6 font-medium mt-4">Head OFFICE</p>
+          <div className="text-xs font-medium text-gray-500">
+            <p>{name}</p>
+            <p>{address}</p>
+            <p>{city}</p>
+            <p>{pincode}</p>
+          </div>
         </div>
         <div className="w-full">
-          <h4 className="text-gray-600 fs-5 font-medium">Delivery Address:</h4>
-          <p className="text-gray-800 fs-6 font-medium">
+          <h4 className="text-gray-500 fs-5 font-semibold">Delivery Address:</h4>
+          <p className="text-gray-800 fs-6 font-medium mt-4">
             {buyerDetail.firstName} {buyerDetail.lastName}
           </p>
-          <div className="text-gray-400 font-semibold fw-bold text-xs">
+          <div className="text-xs font-medium text-gray-500">
             <p>{buyerDetail.address1}</p>
             <p>{buyerDetail.shippingcity}</p>
             <p>
@@ -45,7 +55,7 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
         </div>
       </div>
 
-      <div className="flex justify-between items-start mb-12">
+      <div className="flex justify-between items-start mb-12 md:pr-12">
         <div>
           <h3 className="text-gray-600 fs-5 font-medium">Shipping Partner</h3>
           <p className="text-gray-800 fs-6 font-medium">{shippingPartner.shippingPartner}</p>
@@ -61,16 +71,16 @@ export const PlaceOrder = ({ data, onBack }: PlaceOrderProps) => {
         </div>
       </div>
 
-      <div className="flex justify-end w-full pb-12">
+      <div className="flex justify-end w-full pb-12 md:pr-20">
         <div className="text-gray-400 font-semibold text-sm">
           <div className="flex justify-between gap-8">
-            <span>logistic Fee:</span> <span className="text-gray-800 fs-6 font-medium">{shippingPartner.price}</span>
+            <span>logistic Fee:</span> <span className="text-gray-800 fs-6 font-medium">{price}</span>
           </div>
           <div className="flex justify-between gap-8">
             <span>GST:</span> <span className="text-gray-800 fs-6 font-medium">{gstPrice}</span>
           </div>
           <div className="flex justify-between gap-8">
-            Total <span className="text-gray-800 fs-6 font-medium">{parseFloat(shippingPartner.price) + gstPrice}</span>
+            Total <span className="text-gray-800 fs-6 font-medium">{totalPrice}</span>
           </div>
         </div>
       </div>
