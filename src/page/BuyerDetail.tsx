@@ -255,7 +255,7 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
               checked={isChecked}
               {...register("isChecked")}
             />
-            <span className="absolute text-white"><Check className="h-5 w-5 "/></span>
+            <span className="absolute text-transparent peer-checked:text-white"><Check className="h-5 w-5 "/></span>
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>

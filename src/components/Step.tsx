@@ -11,7 +11,7 @@ export const Step = ({ current, stepData, onStepChange }: StepProps) => {
     <div className="flex flex-col items-center bg-white p-8 text-nowrap gap-8 rounded-md justify-center w-full">
       {stepData.map((title, index) => (
         <div key={index} className="relative w-full mr-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 cursor-pointer">
             <div
               className={`flex items-center justify-center font-semibold text-sm text-white h-8 w-8 rounded-md ${
                 index <= current ? "bg-progress-step" : "bg-gray-300"
