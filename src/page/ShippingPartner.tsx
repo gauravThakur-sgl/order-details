@@ -131,7 +131,7 @@ const WeightInfo = () => {
     { weight: "1.00 KG", info: "Billed Weight" },
   ];
   return (
-    <div className="flex flex-col sm:flex-row justify-center items-start sm:items-center p-4 gap-4">
+    <div className="flex justify-center items-start sm:items-center p-4 gap-4">
       {infoData.map((data, index) => (
         <div
           key={index}

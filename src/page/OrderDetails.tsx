@@ -108,7 +108,6 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
           errorName={errors.orderid?.message}
         />
       </div>
-
       <h2 className="pt-1 font-semibold text-basis flex justify-start w-full mt-10">Items Details</h2>
       {fields.map((item, index) => (
         <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-start mt-4 animate-fadeIn`}>
@@ -118,7 +117,7 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
               labelData="Product Name"
               required={true}
               type="text"
-              className="md:max-w-64"
+              className="md:max-w-96"
               errorName={errors.items?.[index]?.productName?.message}
             />
           </div>
