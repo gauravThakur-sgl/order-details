@@ -23,6 +23,10 @@ module.exports = {
       "poppins": ["Poppins", "sans-serif"],
     },
     extend: {
+      spacing: {
+        15: "60px",
+        18: "72px"
+      },
       fontSize: {
         "label-text": ["1.05rem"],
         "sub-heading": "calc(1.26rem + 0.12vw)",
@@ -35,6 +39,18 @@ module.exports = {
         bold: 700,
       },
       colors: {
+        "franchise-primary": "#1f499e",
+        "franchise-sectionp": "#040404",
+        "franchise-sections": "#647082",
+        "franchise-textp": "#0A0A0A",
+        "franchise-button-text": "#F8FAFC",
+        "franchise-consignor-text": "#A1A9B5",
+        "franchise-error": "#DD1717",
+        "franchise-tag-bg": "#FFF6E4",
+        "franchise-tag-text": "#E35F5F",
+        "franchise-weight-bg": "#FFF7ED",
+        "franchise-weight-text": "#F59300",
+        
         "text-primary": "#3F4254",
         "sub-heading": "#181C32",
         "order-primary": "#009EF7",
