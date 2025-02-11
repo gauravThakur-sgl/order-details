@@ -155,7 +155,7 @@ export const OrderDetails = ({ data, onNext, onBack }: IOrderDetailsProps) => {
           <div className="w-full">
             <Input
               register={register(`items.${index}.unitPrice` as const)}
-              labelData="Unit Price (INR)"
+              labelData={`Unit Price (${data.invoiceCurrency || "INR"})`}
               required={true}
               type="text"
               className="md:max-w-40"
