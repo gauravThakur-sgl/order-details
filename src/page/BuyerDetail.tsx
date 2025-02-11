@@ -8,6 +8,7 @@ import { orderSchema } from "../zod/ordersSchema";
 import { z } from "zod";
 import { countryData } from "../config/countryState";
 import { BuyerBillingDetail } from "../components/BuyerBillingDetail";
+import { Check } from "lucide-react";
 
 type FormData = z.infer<typeof orderSchema>;
 
@@ -247,13 +248,14 @@ export const BuyerDetail = ({ onNext, data }: IBuyerDetailProps) => {
           </div>
         </div>
         <div className="flex justify-start items-center text-sm gap-2 mt-6 w-full">
-          <span onClick={handleCheckBox} className="flex  items-center gap-2 cursor-pointer">
+          <span onClick={handleCheckBox} className="relative flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
-              className="h-5 w-5 rounded-sm border border-gray-800 text-white appearance-none checked:bg-progress-step checked:border-transparent checked:focus:ring-0"
+              className="peer h-5 w-5 rounded-sm border border-gray-800 text-white appearance-none checked:bg-progress-step checked:border-transparent checked:focus:ring-0"
               checked={isChecked}
               {...register("isChecked")}
             />
+            <span className="absolute text-white"><Check className="h-5 w-5 "/></span>
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
