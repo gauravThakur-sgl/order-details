@@ -3,9 +3,10 @@ import { Check } from "lucide-react";
 interface StepProps {
   current: number;
   stepData: string[];
+  onStepChange?: (step: number) => void;
 }
 
-export const Step = ({ current, stepData }: StepProps) => {
+export const Step = ({ current, stepData, onStepChange }: StepProps) => {
   return (
     <div className="flex flex-col items-center bg-white p-8 text-nowrap gap-8 rounded-md justify-center w-full">
       {stepData.map((title, index) => (
@@ -15,6 +16,7 @@ export const Step = ({ current, stepData }: StepProps) => {
               className={`flex items-center justify-center font-semibold text-sm text-white h-8 w-8 rounded-md ${
                 index <= current ? "bg-progress-step" : "bg-gray-300"
               }`}
+              onClick={() => onStepChange && onStepChange(index)}
             >
               {index < current ? <Check className="w-4 h-4 font-semibold" /> : index + 1}
             </div>

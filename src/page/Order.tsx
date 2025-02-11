@@ -139,6 +139,11 @@ export const Order = () => {
   const handleBack = () => {
     setCurrentStep((prev) => prev - 1);
   };
+  const handleStepChange = (step: number) => {
+    if (step < currentStep) {
+      setCurrentStep(step);
+    }
+  };
   console.log(formData, "BuyerDetailformData");
   const stepComponents = [
     <BuyerDetail data={formData.buyerDetail} onNext={handleNext} />,
@@ -155,7 +160,7 @@ export const Order = () => {
       <div className="font-poppins pt-40 bg-gray-100 min-h-dvh">
         <Container>
           <div className="m-4 flex flex-col lg:flex-row">
-            <Stepper steps={stepKeys} currentStep={currentStep}>
+            <Stepper steps={stepKeys} currentStep={currentStep} onStepChange={handleStepChange}>
               {stepComponents}
             </Stepper>
           </div>
