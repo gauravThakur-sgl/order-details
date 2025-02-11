@@ -12,7 +12,9 @@ import { Stepper } from "../../components/Stepper";
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    consignorDetail: {},
+    consignorDetail: {
+      
+    },
     consigneeDetail: {},
     shipmentInformation: {},
     shippingPartner: {},
@@ -46,13 +48,13 @@ export const AddOrder = () => {
       <SideBar />
       <Container>
         <h3 className="text-2xl leading-none tracking-tight mb-1 font-medium">Create CSB-IV order</h3>
-        <div className="flex justify-center gap-4 mt-10">
-          <div className="flex flex-col items-start w-[2200px] gap-1">
+        <div className="flex justify-center gap-4 mt-10 ">
+          <div className="flex flex-grow flex-col items-start gap-1 overflow-y-scroll">
             {stepComponents.map((item, index) => (
               <div className="w-full">{item}</div>
             ))}
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:block w-[600px]">
             <OrderInformation />
           </div>
         </div>
