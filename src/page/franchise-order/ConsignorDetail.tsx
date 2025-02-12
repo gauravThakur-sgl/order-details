@@ -1,34 +1,83 @@
-import { Accordion } from "./components/Accordion";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import Input from "../../components/ui/Input";
+import { z } from "zod";
+import { consignorDetailSchema } from "../../zod/franchiseOrderSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export const ConsignorDetail = () => {
-  // { firstName: "", lastName: "", mobileNo: "", billingAddress: "", documentType: "", documentDetail: "" },
-
-  const userOption = [
+type ConsignorData = z.infer<typeof consignorDetailSchema>;
+interface IConsignorDetailProps {
+  data: ConsignorData;
+  onNext: (formData: ConsignorData) => void;
+}
+export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
+  const { handleSubmit } = useForm<ConsignorData>({
+    resolver: zodResolver(consignorDetailSchema),
+    defaultValues: data,
+  });
+  const userDetail = [
     {
-      label: "9876785676 / John Doe / john@gmail.com",
-      value: "9876785676 / John Doe / john@gmail.com",
+      firstName: "Murli",
+      lastName: "Chandani",
+      email: "murli@gmail.com",
+      mobileNo: "+91-82399893232",
+      billingAddress:
+        "S/O Assudomal Chandani, House No 6 New Frinds Colony Behind 56 Bhog, Huzur Bhopa, Madhya Pradesh - 462016",
+      documentType: "Aadhar",
+      documentDetail: "786567876545",
     },
   ];
+
+  // const userOption = [
+  //   {
+  //     label: "9876785676 / John Doe / john@gmail.com",
+  //     value: "9876785676 / John Doe / john@gmail.com",
+  //   },
+  // ];
+
+  const onSubmit = (data: ConsignorData) => {
+    console.log(data, "data");
+    onNext(data);
+  };
   return (
-    <div className="w-full">
-      <Accordion
-        items={[
-          {
-            title: "Consignor Details",
-          },
-        ]}
-      >
-        <section>
-          <p className="">Search Customer</p>
-          <button className="w-full rounded-md border mt-2 text-franchise-consignor-text text-left p-2 font-medium">
-            Select Customer
-          </button>
-        </section>
-      </Accordion>
-    </div>
+    <section>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <p className="">Search Customer</p>
+        <button className="w-full rounded-md border mt-2 text-franchise-consignor-text text-left p-2 font-medium">
+          Select Customer
+        </button>
+        <div className="flex flex-col tablet:flex-row justify-start items-center gap-4">
+          {userDetail.map((user) => (
+            <div className="flex flex-col tablet:flex-row justify-start gap-2 py-5">
+              <div className="flex flex-col text-nowrap">
+                <span className="text-franchise-sectionp font-semibold text-sm">
+                  {user.firstName} {user.lastName}
+                </span>
+                <span>{user.email}</span>
+                <span>{user.mobileNo}</span>
+              </div>
+              <div>
+                <p>Address</p>
+                <p>{user.billingAddress}</p>
+              </div>
+              <div>
+                <p>{user.documentType}</p>
+                <p>{user.documentDetail}</p>
+              </div>
+            </div>
+          ))}
+          <div className="flex justify-end mt-4">
+            <button
+              type="submit"
+              className="text-franchise-button-text bg-franchise-primary rounded-md p-1 px-4 font-medium text-lg"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
   );
 };
 

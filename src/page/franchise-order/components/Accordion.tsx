@@ -1,58 +1,52 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-interface AccordionItem {
+interface AccordionItemProps {
   title: string;
-}
-
-interface AccordionProps {
-  className?: string;
-  items: AccordionItem[];
-  activeIndex?: number;
   children: React.ReactNode;
+  stepNumber: number;
+  onToggle?: () => void;
+  isOpen: boolean;
+  activeState?: number;
 }
 
-export const Accordion = ({ className, items, activeIndex = 0, children }: AccordionProps) => {
-  const [openIndex, setOpenIndex] = useState(activeIndex);
+export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activeState = 0 }: AccordionItemProps) => {
+  const [height, setHeight] = useState("0px");
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleToggle = (index: number) => {
-    setOpenIndex(openIndex === index ? -1 : index);
-  };
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
+    }
+  }, [isOpen]);
 
   return (
-    <div className={`w-full border rounded-lg transition ease-in-out delay-150 ${className || ""}`}>
-      {items.map((item, index) => (
-        <div key={index} className="border-b">
-          <button
-            className={`flex justify-between items-center border w-full py-3 px-6 text-left font-semibold ${
-              openIndex === index ? "bg-gray-50" : "bg-white"
-            }`}
-            onClick={() => handleToggle(index)}
-            aria-expanded={openIndex === index}
+    <div className="border-b border-gray-300 w-full">
+      <div
+        className={`flex justify-between items-center p-3 rounded-sm cursor-pointer border ${
+          isOpen ? "bg-gray-50" : "bg-white"
+        }`}
+        onClick={onToggle}
+      >
+        <h2 className="text-black font-medium">
+          <span
+            className={` rounded p-1 mr-2 text-white text-sm bg-black px-2 ${
+              stepNumber < activeState ? "bg-green-500" : "bg-black"
+            }
+            `}
           >
-            <span className="text-sm  text-black">
-              <span className="rounded p-1 px-2 bg-franchise-sectionp text-franchise-button-text mr-4">1</span>
-              {item.title}
-            </span>
-            <span className="text-sm">
-              {openIndex === index ? (
-                <span className="text-franchise-primary font-medium">
-                  <u>Change</u>
-                </span>
-              ) : (
-                ""
-              )}
-            </span>
-          </button>
-          <div
-            className={`px-6 bg-white overflow-hidden transition-[max-height] duration-500 ease-in-out ${
-              openIndex === index ? "max-h-[2000px]" : "max-h-0"
-            }`}
-            style={{ maxHeight: openIndex === index ? "2000px" : "0" }}
-          >
-            <div className="py-3">{children}</div>
-          </div>
-        </div>
-      ))}
+            {stepNumber < activeState ? <span className="text-white text-sm px">✓</span> : stepNumber}
+          </span>{" "}
+          {title}
+        </h2>
+        <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
+      </div>
+      <div
+        ref={contentRef}
+        style={{ maxHeight: height }}
+        className="overflow-hidden transition-max-height duration-300 ease-in-out"
+      >
+        <div className="p-4 text-gray-700 bg-white">{children}</div>
+      </div>
     </div>
   );
 };

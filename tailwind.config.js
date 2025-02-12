@@ -11,6 +11,7 @@ module.exports = {
     screens: {
       xs: "375px",
       sm: "640px",
+      tablet: "768px",
       md: "1000px",
       lg: "1200px",
       xl: "1280px",
@@ -30,6 +31,7 @@ module.exports = {
       fontSize: {
         "label-text": ["1.05rem"],
         "sub-heading": "calc(1.26rem + 0.12vw)",
+        "accordion-title": [".875rem"],
       },
       fontWeight: {
         light: 300,
@@ -50,7 +52,7 @@ module.exports = {
         "franchise-tag-text": "#E35F5F",
         "franchise-weight-bg": "#FFF7ED",
         "franchise-weight-text": "#F59300",
-        
+
         "text-primary": "#3F4254",
         "sub-heading": "#181C32",
         "order-primary": "#009EF7",
