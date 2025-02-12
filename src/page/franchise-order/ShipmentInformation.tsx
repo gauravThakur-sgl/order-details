@@ -29,6 +29,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     name: "items",
   });
 
+
   const onSubmit = (formData: FormData) => {
     console.log(formData, "OrderDetails formData");
     onNext(formData);

@@ -100,13 +100,14 @@ export const AddOrder = () => {
   const stepComponents = [
     <ConsignorDetail data={formData.consignorDetail} onNext={handleNext} />,
     <ConsigneeDetail data={formData.consigneeDetail} onNext={handleNext} />,
-    <ShipmentInformation data={formData.shipmentInformation} onNext={handleNext} onBack={handleBack} />,
+    <ShipmentInformation data={formData.shipmentInformation} onNext={handleNext} />,
     <ShippingPartner data={formData.selectShippingPartner} onBack={handleBack} />,
   ];
 
   const stepTiles = ["consignorDetail", "consigneeDetail", "shipmentInformation", "selectShippingPartner"];
+  
   const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? -1 : index);
+    setOpenIndex(openIndex === index ? null : index);
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -119,7 +120,7 @@ export const AddOrder = () => {
         <h3 className="text-2xl leading-none tracking-tight mb-1 font-medium">Create CSB-IV order</h3>
         <div className="flex justify-center gap-4 mt-10 ">
           <div
-            className="flex flex-grow flex-col items-start gap-1 overflow-auto max-h[80vh] lg:w-2/3"
+            className="flex flex-grow flex-col items-start gap-1 overflow-auto lg:w-2/3"
             ref={containerRef}
           >
             {stepComponents.map((item, index) => (

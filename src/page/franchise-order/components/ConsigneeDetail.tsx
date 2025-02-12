@@ -3,11 +3,12 @@ import Input from "../../../components/ui/Input";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { orderSchema } from "../../../zod/franchiseOrderSchema";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConsigneeBillingDetail } from "./ConsigneeBillingDetail";
-
+import { useCountries, useStates } from "../hooks/countryState";
+import Select from "./ui/Select";
 
 type FormData = z.infer<typeof orderSchema>;
 interface IBuyerDetailProps {
@@ -28,6 +29,20 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     resolver: zodResolver(orderSchema),
     defaultValues: data,
   });
+
+  const { countries } = useCountries();
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const { states } = useStates(selectedCountry);
+
+  const countryOptions = countries.map((country) => ({
+    value: country.code,
+    label: country.name,
+  }));
+  console.log(countryOptions);
+  const stateOptions = states.map((state) => ({
+    value: state.code,
+    label: state.name,
+  }));
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -90,7 +105,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             labelData="First Name"
             required={true}
             placeholder="Enter First name . . ."
-            errorName={errors.shippingcity?.message}
+            errorName={errors.firstName?.message}
           />
           <Input
             register={register("lastName")}
@@ -142,8 +157,47 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             placeholder="Enter LandMark . . ."
             errorName={errors.landMark?.message}
           />
-          <Input register={register("country")} type="text" labelData="Country" required={true} placeholder="Country . . ." />
-          <Input register={register("shippingState")} type="text" labelData="state" required={true} placeholder="state . . ." />
+          <div>
+            <label htmlFor="billingCountry" className="text-franchise-sectionp">
+              Country <span className="text-red-500">*</span>
+            </label>
+            <Controller
+              control={control}
+              name="country"
+              render={({ field }) => (
+                <Select
+                  title="Country"
+                  options={countryOptions}
+                  value={field.value}
+                  onChange={(value) => {
+                    setSelectedCountry(value);
+                    field.onChange(value);
+                  }}
+                  errorName={errors.country?.message}
+                />
+              )}
+            />
+          </div>
+          <div>
+            <label htmlFor="billingCountry" className="text-franchise-sectionp">
+              State <span className="text-red-500">*</span>
+            </label>
+            <Controller
+              control={control}
+              name="shippingState"
+              render={({ field }) => (
+                <Select
+                  title="Select State"
+                  options={stateOptions}
+                  value={field.value}
+                  onChange={(value) => {
+                    field.onChange(value);
+                  }}
+                  errorName={errors.country?.message}
+                />
+              )}
+            />
+          </div>
           <Input
             register={register("shippingcity")}
             type="text"
@@ -175,7 +229,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
-        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} />}
+        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} control={control} />}
         <div className="flex justify-end mt-4">
           <button
             type="submit"

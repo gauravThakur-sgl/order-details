@@ -1,11 +1,54 @@
 import { CheckCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface IShippingPartnerProps {
-  data: FormData;
+  data: {
+    consigneeDetail: {
+      shippingPincode: string;
+      countryCode: string;
+    };
+  };
   onNext: (formData: FormData) => void;
 }
+interface ShippingRate {
+  provider_code: string;
+  display_name: string;
+  helper_text: string;
+  image: string;
+  transit_time: string;
+  rate: number;
+  bill_weight_kg: number;
+}
+export const ShippingPartner = ({ data }: IShippingPartnerProps) => {
+  const [shippingPartner, setShippingPartner] = useState<ShippingRate[]>([]);
 
-export const ShippingPartner = ({data}: IShippingPartnerProps) => {
+  useEffect(() => {
+    const getShippingRate = async () => {
+      try {
+        // const consigneeDetail = data.consigneeDetail;
+        const payload = {
+          customer_shipping_postcode: "87654321",
+          customer_shipping_country_code: "AU",
+          package_weight: 15,
+          package_length: 16,
+          package_breadth: 53,
+          package_height: 92,
+        };
+        const res = await axios.post("https://api.fr.stg.shipglobal.in/api/v1/orders/get-shipper-rates", payload, {
+          headers: {
+            Authorization:
+              "eyJ0eXAiOiJKV1QiLCeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbnRpdHlJZCI6MzAwNjcsImNyZWF0ZWRfYXQiOnsiZGF0ZSI6IjIwMjUtMDItMTEgMTI6MjA6NDIuODQ0NjI1IiwidGltZXpvbmVfdHlwZSI6MywidGltZXpvbmUiOiJBc2lhL0tvbGthdGEifSwiZXhwaXJlc19hdCI6eyJkYXRlIjoiMjAyNS0wMy0xMyAxMjoyMDo0Mi44NDQ2MjgiLCJ0aW1lem9uZV90eXBlIjozLCJ0aW1lem9uZSI6IkFzaWEvS29sa2F0YSJ9LCJpZCI6ImUyY2QxMzNmLWQ3NjEtNDQ1Ni05MWZmLTUwYjM4MWFkNWY1ZSIsInJlbW90ZV9lbnRpdHlfaWQiOjB9.entPw4bJC4KDSaS2_ObCHAMm28En5vxtlLAIDV5WZrMJhbGciOiJIUzI1NiJ9.eyJlbnRpdHlJZCI6MzAwNjcsImNyZWF0ZWRfYXQiOnsiZGF0ZSI6IjIwMjUtMDItMTEgMTI6MjA6NDIuODQ0NjI1IiwidGltZXpvbmVfdHlwZSI6MywidGltZXpvbmUiOiJBc2lhL0tvbGthdGEifSwiZXhwaXJlc19hdCI6eyJkYXRlIjoiMjAyNS0wMy0xMyAxMjoyMDo0Mi44NDQ2MjgiLCJ0aW1lem9uZV90eXBlIjozLCJ0aW1lem9uZSI6IkFzaWEvS29sa2F0YSJ9LCJpZCI6ImUyY2QxMzNmLWQ3NjEtNDQ1Ni05MWZmLTUwYjM4MWFkNWY1ZSIsInJlbW90ZV9lbnRpdHlfaWQiOjB9.entPw4bJC4KDSaS2_ObCHAMm28En5vxtlLAIDV5WZrM",
+          },
+        });
+        setShippingPartner(res.data.data);
+      } catch (error) {
+        console.error("Error fetching shipping rate:", error);
+      }
+    };
+    getShippingRate();
+  }, [data]);
+  console.log(shippingPartner, "shippingPartner");
   return (
     <div>
       <div>

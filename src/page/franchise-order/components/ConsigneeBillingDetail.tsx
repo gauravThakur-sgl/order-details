@@ -1,14 +1,31 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 import { orderSchema } from "../../../zod/franchiseOrderSchema";
 import Input from "../../../components/ui/Input";
+import Select from "./ui/Select";
+import { useCountries, useStates } from "../hooks/countryState";
+import { useState } from "react";
 
 type BillingData = z.infer<typeof orderSchema>;
 interface ConsigneeBillingDetailProps {
   register: UseFormRegister<BillingData>;
   errors: FieldErrors<BillingData>;
+  control: Control<BillingData>;
 }
-export const ConsigneeBillingDetail = ({ register, errors }: ConsigneeBillingDetailProps) => {
+export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeBillingDetailProps) => {
+  const { countries } = useCountries();
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const { states } = useStates(selectedCountry);
+
+  const countryOptions = countries.map((country) => ({
+    value: country.code,
+    label: country.name,
+  }));
+  console.log(countryOptions);
+  const stateOptions = states.map((state) => ({
+    value: state.code,
+    label: state.name,
+  }));
   return (
     <section className="mt-5">
       <h2 className="text-sm font-semibold">Buyer Shipping Details</h2>
@@ -61,20 +78,47 @@ export const ConsigneeBillingDetail = ({ register, errors }: ConsigneeBillingDet
           placeholder="Address 2 . . ."
           errorName={errors.billingAddress2?.message}
         />
-        <Input
-          register={register("billingCountry")}
-          type="text"
-          labelData="Country"
-          required={true}
-          placeholder="Country . . ."
-        />
-        <Input
-          register={register("billingState")}
-          type="text"
-          labelData="state"
-          required={true}
-          placeholder="state . . ."
-        />
+        <div>
+          <label htmlFor="billingCountry" className="text-franchise-sectionp">
+            Country <span className="text-red-500">*</span>
+          </label>
+          <Controller
+            control={control}
+            name="country"
+            render={({ field }) => (
+              <Select
+                title="Country"
+                options={countryOptions}
+                value={field.value}
+                onChange={(value) => {
+                  setSelectedCountry(value);
+                  field.onChange(value);
+                }}
+                errorName={errors.country?.message}
+              />
+            )}
+          />
+        </div>
+        <div>
+          <label htmlFor="billingCountry" className="text-franchise-sectionp">
+            State <span className="text-red-500">*</span>
+          </label>
+          <Controller
+            control={control}
+            name="shippingState"
+            render={({ field }) => (
+              <Select
+                title="Select State"
+                options={stateOptions}
+                value={field.value}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                errorName={errors.country?.message}
+              />
+            )}
+          />
+        </div>
         <Input
           register={register("billingcity")}
           type="text"
