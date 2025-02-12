@@ -52,6 +52,7 @@ module.exports = {
         "franchise-tag-text": "#E35F5F",
         "franchise-weight-bg": "#FFF7ED",
         "franchise-weight-text": "#F59300",
+        "franchise-select-bg": "#F4F7FA",
 
         "text-primary": "#3F4254",
         "sub-heading": "#181C32",

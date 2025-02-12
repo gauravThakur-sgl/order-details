@@ -58,34 +58,6 @@ export const orderSchema = z.object({
   billingState: z.string().nonempty("The customer shipping state is required."),
 });
 
-{
-  /* 
-  // Buyer Billing Details
-  billingfirstName: z
-    .string()
-    .nonempty("The customer shipping first name is required.")
-    .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
-  billinglastName: z
-    .string()
-    .nonempty("The customer shipping last name is required.")
-    .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
-  billingmobileNumber: z
-    .string()
-    .nonempty("The customer mobile number is required.")
-    .min(10, "Mobile number must be 10 digits")
-    .max(10, "Mobile number must be 10 digits")
-    .regex(/^[0-9]+$/, "Please enter numeric characters"),
-  billingCountry: z.string().nonempty("The customer shipping address 1 is required."),
-  billingAddress1: z.string().nonempty("Address 1 is required"),
-  billingAddress2: z.string().nonempty("Address 2 is required"),
-  billingcity: z.string().nonempty("The customer shipping city is required."),
-  billingPincode: z
-    .string()
-    .nonempty("The customer shipping postcode is required.")
-    .min(6, "Pincode must be of 6 digit"),
-  billingState: z.string().nonempty("The customer shipping state is required."),
-  */
-}
 
 const iteamArray = z.object({
   // Items Details

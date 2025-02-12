@@ -2,11 +2,13 @@ import { Check } from "lucide-react";
 import Input from "../../../components/ui/Input";
 import { useEffect, useState } from "react";
 import z from "zod";
-import { orderSchema } from "../../../zod/ordersSchema";
+import { orderSchema } from "../../../zod/franchiseOrderSchema";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConsigneeBillingDetail } from "./ConsigneeBillingDetail";
+
+
 type FormData = z.infer<typeof orderSchema>;
 interface IBuyerDetailProps {
   data: FormData;
@@ -76,6 +78,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     }
   }, [isChecked, shippingFields, setValue]);
 
+  console.log(errors, "errors");
   return (
     <div className="w-full">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -139,8 +142,8 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             placeholder="Enter LandMark . . ."
             errorName={errors.landMark?.message}
           />
-          <Input type="text" labelData="Country" required={true} placeholder="Country . . ." />
-          <Input type="text" labelData="state" required={true} placeholder="state . . ." />
+          <Input register={register("country")} type="text" labelData="Country" required={true} placeholder="Country . . ." />
+          <Input register={register("shippingState")} type="text" labelData="state" required={true} placeholder="state . . ." />
           <Input
             register={register("shippingcity")}
             type="text"

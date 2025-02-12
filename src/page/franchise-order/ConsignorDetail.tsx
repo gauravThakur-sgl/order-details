@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Input from "../../components/ui/Input";
 import { z } from "zod";
 import { consignorDetailSchema } from "../../zod/franchiseOrderSchema";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type ConsignorData = z.infer<typeof consignorDetailSchema>;
@@ -12,7 +12,11 @@ interface IConsignorDetailProps {
   onNext: (formData: ConsignorData) => void;
 }
 export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
-  const { handleSubmit } = useForm<ConsignorData>({
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<ConsignorData>({
     resolver: zodResolver(consignorDetailSchema),
     defaultValues: data,
   });
@@ -21,7 +25,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
       firstName: "Murli",
       lastName: "Chandani",
       email: "murli@gmail.com",
-      mobileNo: "+91-82399893232",
+      mobileNo: "+91-8239989323",
       billingAddress:
         "S/O Assudomal Chandani, House No 6 New Frinds Colony Behind 56 Bhog, Huzur Bhopa, Madhya Pradesh - 462016",
       documentType: "Aadhar",
@@ -29,24 +33,45 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
     },
   ];
 
-  // const userOption = [
-  //   {
-  //     label: "9876785676 / John Doe / john@gmail.com",
-  //     value: "9876785676 / John Doe / john@gmail.com",
-  //   },
-  // ];
+  const userOption = userDetail.map((user) => ({
+    label: `${user.mobileNo.slice(4)} / ${user.firstName} ${user.lastName} / ${user.email}`,
+    value: JSON.stringify({
+      mobileNo: user.mobileNo.slice(4),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      billingAddress: user.billingAddress,
+      documentType: user.documentType,
+      documentDetail: user.documentDetail,
+    }),
+  }));
 
   const onSubmit = (data: ConsignorData) => {
     console.log(data, "data");
     onNext(data);
   };
+  console.log(data.pickupAddress.slice(0, 10), "pickupAddress");
   return (
     <section>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p className="">Search Customer</p>
-        <button className="w-full rounded-md border mt-2 text-franchise-consignor-text text-left p-2 font-medium">
-          Select Customer
-        </button>
+        <div className="w-4/5">
+          <Controller
+            control={control}
+            name="pickupAddress"
+            render={({ field }) => (
+              <Select
+                title="Select Customer"
+                options={userOption}
+                value={field.value}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                errorName={errors.pickupAddress?.message}
+              />
+            )}
+          />
+        </div>
+
         <div className="flex flex-col tablet:flex-row justify-start items-center gap-4">
           {userDetail.map((user) => (
             <div className="flex flex-col tablet:flex-row justify-start gap-2 py-5">
@@ -110,7 +135,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
   const ref = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const baseClasses =
-    "flex items-center rounded-md text-text-primary font-medium text-gray-400 bg-gray-100 tracking-tight px-2";
+    "flex items-center border rounded-md text-text-primary font-medium text-franchise-consignor-text text-sm font-semibold tracking-tight px-2";
   const variantClasses = selectColors[variant || "default"];
   const sizeClasses = selectSize[size || "default"];
 
@@ -152,7 +177,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
               {filteredOptions.map((option: { value: string; label: string }) => (
                 <div
                   key={option.value}
-                  className="p-2 px-4 hover:bg-progress-step hover:text-white text-progress-step bg-blue-50 text-sm cursor-pointer"
+                  className="p-2 px-4 bg-white hover:text-franchise-primary hover:bg-franchise-select-bg text-sm cursor-pointer"
                   onClick={() => {
                     if (onChange) {
                       onChange(option.value);
@@ -164,6 +189,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
                 </div>
               ))}
             </div>
+            <span className="text-franchise-primary px-4 text-label-text font-medium underline">+Add new Customer</span>
           </div>
         )}
       </div>

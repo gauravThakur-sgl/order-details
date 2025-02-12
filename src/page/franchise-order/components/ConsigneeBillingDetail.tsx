@@ -1,6 +1,6 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
-import { orderSchema } from "../../../zod/ordersSchema";
+import { orderSchema } from "../../../zod/franchiseOrderSchema";
 import Input from "../../../components/ui/Input";
 
 type BillingData = z.infer<typeof orderSchema>;
@@ -61,8 +61,20 @@ export const ConsigneeBillingDetail = ({ register, errors }: ConsigneeBillingDet
           placeholder="Address 2 . . ."
           errorName={errors.billingAddress2?.message}
         />
-        <Input type="text" labelData="Country" required={true} placeholder="Country . . ." />
-        <Input type="text" labelData="state" required={true} placeholder="state . . ." />
+        <Input
+          register={register("billingCountry")}
+          type="text"
+          labelData="Country"
+          required={true}
+          placeholder="Country . . ."
+        />
+        <Input
+          register={register("billingState")}
+          type="text"
+          labelData="state"
+          required={true}
+          placeholder="state . . ."
+        />
         <Input
           register={register("billingcity")}
           type="text"

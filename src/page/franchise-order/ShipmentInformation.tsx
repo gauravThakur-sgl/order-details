@@ -1,5 +1,5 @@
 import z from "zod";
-import { orderDetailsSchema } from "../../zod/ordersSchema";
+import { orderDetailsSchema } from "../../zod/franchiseOrderSchema";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,10 +12,9 @@ type FormData = z.infer<typeof orderDetailsSchema>;
 interface IOrderDetailsProps {
   data: FormData;
   onNext: (formData: FormData) => void;
-  onBack: () => void;
 }
 
-export const ShipmentInformation = ({ data, onNext, onBack }: IOrderDetailsProps) => {
+export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
   const {
     register,
     control,
@@ -34,7 +33,7 @@ export const ShipmentInformation = ({ data, onNext, onBack }: IOrderDetailsProps
     console.log(formData, "OrderDetails formData");
     onNext(formData);
   };
-
+  console.log(errors, "errors");
   return (
     <section>
       <form action="" className="space-y-2" onSubmit={handleSubmit(onSubmit)}>

@@ -3,7 +3,7 @@ import Input from "../../../components/ui/Input";
 import { orderDetailsSchema } from "../../../zod/ordersSchema";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 const shipmentData = [
-  { name: "DeadWeight", required: true, default: "Kg" },
+  { name: "actualWeight", required: true, default: "Kg" },
   { name: "length", required: true, default: "cm" },
   { name: "breadth", required: true, default: "cm" },
   { name: "height", required: true, default: "cm" },
@@ -29,7 +29,7 @@ export const BoxMeasurement = ({ register, errors }: IShipMentMeasurementProps) 
                   key={index}
                   register={register(data.name as keyof FormData)}
                   name={data.name}
-                  labelData={data.name}
+                  labelData={data.name === 'actualWeight' ? 'Dead Weight' : data.name}
                   required={data.required}
                   type="text"
                   className="appearence-none rounded-r-none z-10"
