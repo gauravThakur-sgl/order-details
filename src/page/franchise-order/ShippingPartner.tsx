@@ -1,12 +1,17 @@
 import { CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import axios from "axios";
-
 interface IShippingPartnerProps {
   data: {
     consigneeDetail: {
       shippingPincode: string;
-      countryCode: string;
+      country: string;
+      shippingPincodee: string;
+    };
+    shipmentInformation: {
+      actualWeight: number;
+      length: number;
+      height: number;
+      breadth: number;
     };
   };
   onNext: (formData: FormData) => void;
@@ -20,35 +25,28 @@ interface ShippingRate {
   rate: number;
   bill_weight_kg: number;
 }
-export const ShippingPartner = ({ data }: IShippingPartnerProps) => {
-  const [shippingPartner, setShippingPartner] = useState<ShippingRate[]>([]);
-
+export const ShippingPartner = ({ data }: IShippingPartnerProps | FormData) => {
+  const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
+  const [weightData, setWeightData] = useState({
+    deadWeight: 0,
+    volumetricWeight: 0,
+    billedWeight: 0,
+  });
   useEffect(() => {
-    const getShippingRate = async () => {
-      try {
-        // const consigneeDetail = data.consigneeDetail;
-        const payload = {
-          customer_shipping_postcode: "87654321",
-          customer_shipping_country_code: "AU",
-          package_weight: 15,
-          package_length: 16,
-          package_breadth: 53,
-          package_height: 92,
-        };
-        const res = await axios.post("https://api.fr.stg.shipglobal.in/api/v1/orders/get-shipper-rates", payload, {
-          headers: {
-            Authorization:
-              "eyJ0eXAiOiJKV1QiLCeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbnRpdHlJZCI6MzAwNjcsImNyZWF0ZWRfYXQiOnsiZGF0ZSI6IjIwMjUtMDItMTEgMTI6MjA6NDIuODQ0NjI1IiwidGltZXpvbmVfdHlwZSI6MywidGltZXpvbmUiOiJBc2lhL0tvbGthdGEifSwiZXhwaXJlc19hdCI6eyJkYXRlIjoiMjAyNS0wMy0xMyAxMjoyMDo0Mi44NDQ2MjgiLCJ0aW1lem9uZV90eXBlIjozLCJ0aW1lem9uZSI6IkFzaWEvS29sa2F0YSJ9LCJpZCI6ImUyY2QxMzNmLWQ3NjEtNDQ1Ni05MWZmLTUwYjM4MWFkNWY1ZSIsInJlbW90ZV9lbnRpdHlfaWQiOjB9.entPw4bJC4KDSaS2_ObCHAMm28En5vxtlLAIDV5WZrMJhbGciOiJIUzI1NiJ9.eyJlbnRpdHlJZCI6MzAwNjcsImNyZWF0ZWRfYXQiOnsiZGF0ZSI6IjIwMjUtMDItMTEgMTI6MjA6NDIuODQ0NjI1IiwidGltZXpvbmVfdHlwZSI6MywidGltZXpvbmUiOiJBc2lhL0tvbGthdGEifSwiZXhwaXJlc19hdCI6eyJkYXRlIjoiMjAyNS0wMy0xMyAxMjoyMDo0Mi44NDQ2MjgiLCJ0aW1lem9uZV90eXBlIjozLCJ0aW1lem9uZSI6IkFzaWEvS29sa2F0YSJ9LCJpZCI6ImUyY2QxMzNmLWQ3NjEtNDQ1Ni05MWZmLTUwYjM4MWFkNWY1ZSIsInJlbW90ZV9lbnRpdHlfaWQiOjB9.entPw4bJC4KDSaS2_ObCHAMm28En5vxtlLAIDV5WZrM",
-          },
-        });
-        setShippingPartner(res.data.data);
-      } catch (error) {
-        console.error("Error fetching shipping rate:", error);
-      }
-    };
-    getShippingRate();
-  }, [data]);
-  console.log(shippingPartner, "shippingPartner");
+    const storedRates = localStorage.getItem("shipperRates");
+    if (storedRates) {
+      const parsedRates = JSON.parse(storedRates);
+      console.log(parsedRates, "parsedRates");
+      setShipperRates(parsedRates.data.rate);
+      setWeightData({
+        deadWeight: parsedRates.data.bill_weight / 1000,
+        volumetricWeight: parsedRates.data.volume_weight / 1000,
+        billedWeight: parsedRates.data.bill_weight / 1000,
+      });
+    }
+  }, [shipperRates]);
+  console.log(shipperRates, "shipperRates");
+  console.log(weightData, "weightData");
   return (
     <div>
       <div>
@@ -64,16 +62,16 @@ export const ShippingPartner = ({ data }: IShippingPartnerProps) => {
           </a>
         </p>
         <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
-          <div className="flex flex-col justify-center items-center border rounded-md bg-white py-2 px-5">
-            <p>1 KG</p>
+          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 py-2 px-5">
+            <p>{weightData.deadWeight}</p>
             <p className="text-sm">Dead Weight</p>
           </div>
-          <div className="flex flex-col justify-center items-center border rounded-md bg-white py-2 px-5">
-            <p>1 KG</p>
-            <p className="text-sm">Dead Weight</p>
+          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 py-2 px-5">
+            <p>{weightData.volumetricWeight}</p>
+            <p className="text-sm">Volumetric Weight</p>
           </div>
           <div className="flex flex-col justify-center items-center border border-orange-600 rounded-md bg-franchise-weight-bg text-franchise-weight-text py-2 px-5">
-            <p>1 KG</p>
+            <p>{weightData.billedWeight}</p>
             <p className="text-sm">Billed Weight</p>
           </div>
         </div>
@@ -82,7 +80,7 @@ export const ShippingPartner = ({ data }: IShippingPartnerProps) => {
           <p>Showing 1 Results</p>
         </div>
         <div className="flex flex-col justify-center mt-5">
-          <table className="border-seperate border-spacing-2 border">
+          <table className="border-seperate">
             <thead>
               <tr className="bg-gray-50 text-gray-500">
                 <th className="font-thin p-2 rounded-l-lg text-left pl-4">Courier Partner</th>
@@ -91,15 +89,17 @@ export const ShippingPartner = ({ data }: IShippingPartnerProps) => {
                 <th className="font-thin p-2 rounded-r-lg">Select</th>
               </tr>
             </thead>
-            <tbody className="">
-              <tr className="border">
-                <td className="pl-4 py-2">Ups</td>
-                <td>4-7</td>
-                <td>Rs.159044</td>
-                <td>
-                  <CheckCircle />
-                </td>
-              </tr>
+            <tbody className="mt-2">
+              {shipperRates.map((rate, index) => (
+                <tr key={index} className="border">
+                  <td>{rate.display_name}</td>
+                  <td>{rate.transit_time}</td>
+                  <td>{rate.rate}</td>
+                  <td>
+                    <CheckCircle />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import clsx from "clsx";
+import React from "react";
 
 interface AccordionItemProps {
   title: string;
@@ -10,42 +11,36 @@ interface AccordionItemProps {
 }
 
 export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activeState = 0 }: AccordionItemProps) => {
-  const [height, setHeight] = useState("0px");
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
-    }
-  }, [isOpen]);
-
   return (
     <div className="border-b border-gray-300 w-full">
       <div
-        className={`flex justify-between items-center p-3 rounded-sm cursor-pointer border ${
-          isOpen ? "bg-gray-50" : "bg-white"
+        className={`flex justify-between items-center p-3 rounded-sm border ${isOpen ? "bg-gray-50" : "bg-white"} ${
+          stepNumber <= activeState ? "cursor-pointer" : "cursor-default"
         }`}
-        onClick={onToggle}
       >
-        <h2 className="text-black font-medium">
+        <h2 className="text-black text-sm font-medium">
           <span
-            className={` rounded p-1 mr-2 text-white text-sm bg-black px-2 ${
-              stepNumber < activeState ? "bg-green-500" : "bg-black"
-            }
-            `}
+            className={clsx("py-1 mx-3 rounded-sm font-semibold text-xs", {
+              "px-2 bg-green-500 text-white": stepNumber < activeState,
+              "px-2 bg-black text-white": stepNumber >= activeState,
+            })}
           >
             {stepNumber < activeState ? <span className="text-white text-sm px">✓</span> : stepNumber}
-          </span>{" "}
+          </span>
           {title}
         </h2>
-        <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
+        {stepNumber < activeState && (
+          <div className="text-franchise-primary font-medium" onClick={onToggle}>
+            <u>Change</u>
+          </div>
+        )}
       </div>
       <div
-        ref={contentRef}
-        style={{ maxHeight: height }}
-        className="overflow-hidden transition-max-height duration-300 ease-in-out"
+        className={`overflow-hidden transition-max-height duration-300 ease-in-out ${
+          isOpen ? "max-h-[2000px]" : "max-h-0"
+        }`}
       >
-        <div className="p-4 text-gray-700 bg-white">{children}</div>
+        <div className="py-4 px-7 text-gray-700 bg-white border">{children}</div>
       </div>
     </div>
   );

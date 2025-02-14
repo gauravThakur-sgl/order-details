@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import Input from "../../../components/ui/Input";
+import Input from "../components/ui/Input";
 import { useEffect, useState } from "react";
 import z from "zod";
 import { orderSchema } from "../../../zod/franchiseOrderSchema";
@@ -18,6 +18,8 @@ interface IBuyerDetailProps {
 
 export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   const [isChecked, setIsChecked] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+
   const {
     register,
     formState: { errors },
@@ -31,14 +33,12 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   });
 
   const { countries } = useCountries();
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
   const { states } = useStates(selectedCountry);
 
   const countryOptions = countries.map((country) => ({
     value: country.code,
     label: country.name,
   }));
-  console.log(countryOptions);
   const stateOptions = states.map((state) => ({
     value: state.code,
     label: state.name,
@@ -47,21 +47,24 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
   };
-  const onSubmit = (formata: FormData) => {
+  const onSubmit = (formData: FormData) => {
     if (isChecked) {
-      formata.billingfirstName = formata.firstName;
-      formata.billinglastName = formata.lastName;
-      formata.billingmobileNumber = formata.mobileNumber;
-      formata.billingCountry = formata.country;
-      formata.billingAddress1 = formata.address1;
-      formata.billingAddress2 = formata.address2;
-      formata.billingLandMark = formata.landMark;
-      formata.billingcity = formata.shippingcity;
-      formata.billingPincode = formata.shippingPincode;
-      formata.billingState = formata.shippingState;
+      formData.billingfirstName = formData.firstName;
+      formData.billinglastName = formData.lastName;
+      formData.billingmobileNumber = formData.mobileNumber;
+      formData.billingCountry = formData.country;
+      formData.billingAddress1 = formData.address1;
+      formData.billingAddress2 = formData.address2;
+      formData.billingLandMark = formData.landMark;
+      formData.billingcity = formData.shippingcity;
+      formData.billingPincode = formData.shippingPincode;
+      formData.billingState = formData.shippingState;
+      formData.billingCountry = formData.country;
     }
-    console.log(formata, "formData After filling the form");
-    onNext(formata);
+    console.log(formData, "formData After filling the form");
+    localStorage.setItem("country", formData.country);
+    localStorage.setItem("pincode", formData.shippingPincode);
+    onNext(formData);
   };
 
   const shippingFields = watch([
@@ -97,7 +100,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   return (
     <div className="w-full">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="text-sm font-semibold"> Personal Details</h2>
+        <h2 className="text-sm font-semibold">Personal Details</h2>
         <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-center gap-4 mt-2 `}>
           <Input
             register={register("firstName")}
@@ -233,7 +236,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
         <div className="flex justify-end mt-4">
           <button
             type="submit"
-            className="text-franchise-button-text bg-franchise-primary rounded-md p-2 px-6 font-medium text-lg"
+            className="text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 font-medium text-sm"
           >
             Continue
           </button>

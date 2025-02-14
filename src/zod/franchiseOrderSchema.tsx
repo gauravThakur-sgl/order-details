@@ -40,7 +40,7 @@ export const orderSchema = z.object({
     .string()
     .nonempty("The customer shipping last name is required.")
     .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
-  billingmobileNumber: z
+  billingmobileNumber: z.coerce
     .string()
     .nonempty("The customer mobile number is required.")
     .min(10, "Mobile number must be 10 digits")
@@ -51,28 +51,27 @@ export const orderSchema = z.object({
   billingLandMark: z.string(),
   billingAddress2: z.string().nonempty("Address 2 is required"),
   billingcity: z.string().nonempty("The customer shipping city is required."),
-  billingPincode: z
+  billingPincode: z.coerce
     .string()
     .nonempty("The customer shipping postcode is required.")
     .min(6, "Pincode must be of 6 digit"),
   billingState: z.string().nonempty("The customer shipping state is required."),
 });
 
-
 const iteamArray = z.object({
   // Items Details
   productName: z.string().nonempty("The product name is required."),
-  sku: z.string().optional(),
-  hsn: z
+  sku: z.coerce.string().optional(),
+  hsn: z.coerce
     .string()
     .min(1, { message: "HSN is required" })
     .regex(/^\d{4,8}$/, "HSN must be between 4 and 8 digits"),
-  unitPrice: z
+  unitPrice: z.coerce
     .string()
     .min(1, { message: "Product price is required" })
     .regex(/^\d+(\.\d{1,2})?$/, "Unit price must be a valid number with up to two decimal places"),
-  igst: z.string().optional(),
-  qty: z
+  igst: z.coerce.string().optional(),
+  qty: z.coerce
     .string()
     .min(1, { message: "Quantity is required" })
     .regex(/^\d+(\.\d+)?$/, "Quantity must be a valid number"),
@@ -80,25 +79,25 @@ const iteamArray = z.object({
 
 export const orderDetailsSchema = z.object({
   // ShipMent Details
-  actualWeight: z
+  actualWeight: z.coerce
     .string()
     .nonempty("The actual weight is required.")
     .regex(/^[0-9]+$/, "Please enter numeric characters"),
-  length: z
+  length: z.coerce
     .string()
     .nonempty("The length is required.")
     .regex(/^[0-9]+$/, "Please enter numeric characters"),
-  breadth: z
+  breadth: z.coerce
     .string()
     .nonempty("The breadth is required.")
     .regex(/^[0-9]+$/, "Please enter numeric characters"),
-  height: z.string().nonempty("The height is required."),
+  height: z.coerce.string().nonempty("The height is required."),
 
   // Order Details
   invoiceNo: z.string().nonempty("The invoice value is required."),
   invoiceDate: z.string().optional(),
   invoiceCurrency: z.string().nonempty("The invoice currency is required."),
   orderid: z.string().nonempty("The order id is required."),
-  iossNumber: z.string().optional(),
+  iossNumber: z.coerce.string().optional(),
   items: z.array(iteamArray),
 });

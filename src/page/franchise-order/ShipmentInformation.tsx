@@ -7,7 +7,10 @@ import Input from "../../components/ui/Input";
 import { DateComponent } from "../../components/Date";
 import { BoxMeasurement } from "./components/BoxMeasurement";
 import { Trash2 } from "lucide-react";
-type FormData = z.infer<typeof orderDetailsSchema>;
+import { Igst } from "./components/Igst";
+import { useEffect, useState } from "react";
+import apiClient from "./api/apiClient";
+type FormData = z.infer<typeof orderDetailsSchema> & { shippingPincode: string; country: string };
 
 interface IOrderDetailsProps {
   data: FormData;
@@ -15,6 +18,15 @@ interface IOrderDetailsProps {
 }
 
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
+  const [resError, setResError] = useState<string | null>(null);
+  console.log(data, "data");
+  const country = localStorage.getItem("country");
+  const shippingPincode = localStorage.getItem("pincode");
+  const [rate, setRate] = useState([]);
+
+  console.log(country, "country");
+  console.log(shippingPincode, "shippingPincode");
+
   const {
     register,
     control,
@@ -29,11 +41,64 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     name: "items",
   });
 
-
   const onSubmit = (formData: FormData) => {
     console.log(formData, "OrderDetails formData");
+    localStorage.setItem("shipperRates", JSON.stringify(rate));
     onNext(formData);
   };
+  console.log(data, "data");
+  useEffect(() => {
+    const validateData = async (data: FormData) => {
+      try {
+        const payload = {
+          csbv: "0",
+          currency_code: data.invoiceCurrency,
+          package_weight: data.actualWeight,
+          package_height: data.height,
+          package_length: data.length,
+          package_breadth: data.breadth,
+          vendor_order_item: [
+            {
+              vendor_order_item_name: data.items[0].productName,
+              vendor_order_item_sku: data.items[0].sku,
+              vendor_order_item_quantity: data.items[0].qty,
+              vendor_order_item_unit_price: data.items[0].unitPrice,
+              vendor_order_item_hsn: data.items[0].hsn,
+              vendor_order_item_tax_rate: data.items[0].igst,
+            },
+          ],
+        };
+        const response = await apiClient.post("/orders/validate-order-invoice", payload);
+        console.log(response.data, "response");
+      } catch (error) {
+        console.error("Error validating order invoice:", error);
+      }
+    };
+    validateData(data);
+  }, [data]);
+
+  useEffect(() => {
+    const getRate = async (data: FormData) => {
+      try {
+        const payload = {
+          customer_shipping_postcode: shippingPincode,
+          customer_shipping_country_code: country,
+          package_weight: data.actualWeight,
+          package_length: data.length,
+          package_breadth: data.breadth,
+          package_height: data.height,
+        };
+        const response = await apiClient.post("/orders/get-shipper-rates", payload);
+        console.log(response.data, "response");
+        setRate(response.data);
+      } catch (error) {
+        console.error("Error validating order invoice:", error);
+        setResError(String(error));
+      }
+    };
+    getRate(data);
+  }, [data, country, shippingPincode]);
+  console.log(rate, "rate");
   console.log(errors, "errors");
   return (
     <section>
@@ -75,13 +140,12 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           </span>
         </p>
         {fields.map((item, index) => (
-          <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-start mt-4 animate-fadeIn`}>
+          <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-end mt-4 animate-fadeIn`}>
             <Input
               register={register(`items.${index}.productName` as const)}
               labelData="Product Name"
               required={true}
               type="text"
-              className="md:max-w-96"
               errorName={errors.items?.[index]?.productName?.message}
             />
             <Input
@@ -89,7 +153,6 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData="SKU"
               required={false}
               type="text"
-              className="w-full md:max-w-24"
               errorName={errors.items?.[index]?.sku?.message}
             />
             <Input
@@ -97,7 +160,6 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData="HSN"
               required={true}
               type="text"
-              className="md:max-w-56"
               errorName={errors.items?.[index]?.hsn?.message}
             />
             <Input
@@ -105,7 +167,6 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData="Qty"
               required={true}
               type="text"
-              className="md:max-w-32"
               errorName={errors.items?.[index]?.qty?.message}
             />
             <Input
@@ -113,10 +174,11 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData={`Unit Price (${data.invoiceCurrency || "INR"})`}
               required={true}
               type="text"
-              className="md:max-w-40"
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
-
+            <div>
+              <Igst control={control} errors={errors} />
+            </div>
             {fields.length > 1 && (
               <button type="button" onClick={() => remove(index)} className="">
                 <Trash2 className="h-4 w-4 mt-8 text-red-500 bg-red-50" />
@@ -134,6 +196,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           </button>
           <p className=" font-semibold pt-5">Total Price: USD 500</p>
         </div>
+
         <div className="flex justify-end py-6">
           <button
             type="submit"

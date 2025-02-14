@@ -57,7 +57,7 @@ function Input({
   return (
     <div>
       <div className="flex flex-col justify-start gap-2 appearance-none">
-        <label htmlFor={id} className="text-sm text-franchise-sectionp font-medium leading-none text-black/2">
+        <label htmlFor={id} className="text-sm text-franchise-sectionp leading-none text-black/2">
           {" "}
           {/*text-text-primary */}
           {labelData} <span className="text-red-500">{required ? "*" : ""}</span>
@@ -79,7 +79,7 @@ function Input({
           <div>{children}</div>
         </div>
       </div>
-      {errorName && <p className="text-franchise-error text-xs font-semibold">{errorName}</p>}
+      {errorName && <p className="text-franchise-error text-xs font-medium">{errorName}</p>}
     </div>
   );
 }

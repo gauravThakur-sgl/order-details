@@ -21,7 +21,6 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
     value: country.code,
     label: country.name,
   }));
-  console.log(countryOptions);
   const stateOptions = states.map((state) => ({
     value: state.code,
     label: state.name,
@@ -84,7 +83,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
           </label>
           <Controller
             control={control}
-            name="country"
+            name="billingCountry"
             render={({ field }) => (
               <Select
                 title="Country"
@@ -105,7 +104,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
           </label>
           <Controller
             control={control}
-            name="shippingState"
+            name="billingState"
             render={({ field }) => (
               <Select
                 title="Select State"
