@@ -50,12 +50,12 @@ function Select({ title, variant, size, className, options, value, onChange, nam
   }, [isOpen]);
   return (
     <div ref={ref}>
-      <div className="relative">
+      <div className="relative z-20">
         <div
           className={`${baseClasses} ${variantClasses} ${sizeClasses} ${className || ""}`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <div className="truncate whitespace-nowrap overflow-hidden pr-4">
+          <div className="truncate whitespace-nowrap overflow-hidden pr-4 font-normal">
             {value ? options.find((option) => option.value === value)?.label : title}
           </div>
           <ChevronDown className="absolute top-3 right-3 h-4 w-4" />
@@ -88,7 +88,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
           </div>
         )}
       </div>
-      {errorName && <p className="text-price-info text-xs">{errorName}</p>}
+      {errorName && <p className="text-franchise-error text-xs font-medium">{errorName}</p>}
     </div>
   );
 }

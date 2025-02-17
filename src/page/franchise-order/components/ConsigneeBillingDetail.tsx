@@ -92,6 +92,8 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
                 onChange={(value) => {
                   setSelectedCountry(value);
                   field.onChange(value);
+                  const selectedCountryOption = countryOptions.find((option) => option.value === value);
+                  localStorage.setItem("billingCountry", selectedCountryOption?.label || "");
                 }}
                 errorName={errors.country?.message}
               />

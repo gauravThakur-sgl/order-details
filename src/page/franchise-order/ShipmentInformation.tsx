@@ -1,15 +1,16 @@
 import z from "zod";
 import { orderDetailsSchema } from "../../zod/franchiseOrderSchema";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "../../components/ui/Input";
+import Input from "./components/ui/Input";
 import { DateComponent } from "../../components/Date";
 import { BoxMeasurement } from "./components/BoxMeasurement";
 import { Trash2 } from "lucide-react";
 import { Igst } from "./components/Igst";
 import { useEffect, useState } from "react";
 import apiClient from "./api/apiClient";
+import Select from "./components/ui/Select";
 type FormData = z.infer<typeof orderDetailsSchema> & { shippingPincode: string; country: string };
 
 interface IOrderDetailsProps {
@@ -31,6 +32,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(orderDetailsSchema),
@@ -40,13 +42,15 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     control,
     name: "items",
   });
+  const currency = watch("invoiceCurrency");
 
   const onSubmit = (formData: FormData) => {
     console.log(formData, "OrderDetails formData");
     localStorage.setItem("shipperRates", JSON.stringify(rate));
     onNext(formData);
   };
-  console.log(data, "data");
+  // console.log(data, "data");
+  console.log(resError, "resError");
   useEffect(() => {
     const validateData = async (data: FormData) => {
       try {
@@ -72,10 +76,11 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         console.log(response.data, "response");
       } catch (error) {
         console.error("Error validating order invoice:", error);
+        setResError(String(error.response.data.message));
       }
     };
     validateData(data);
-  }, [data]);
+  }, [data, resError]);
 
   useEffect(() => {
     const getRate = async (data: FormData) => {
@@ -91,9 +96,9 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         const response = await apiClient.post("/orders/get-shipper-rates", payload);
         console.log(response.data, "response");
         setRate(response.data);
+        localStorage.setItem("shipperRates", JSON.stringify(response.data));
       } catch (error) {
         console.error("Error validating order invoice:", error);
-        setResError(String(error));
       }
     };
     getRate(data);
@@ -112,13 +117,38 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             errorName={errors.invoiceNo?.message}
           />
           <DateComponent control={control} errors={errors} />
-          <Input
-            register={register("invoiceCurrency")}
-            labelData="Invoice Currency"
-            required={true}
-            type="text"
-            errorName={errors.invoiceCurrency?.message}
-          />
+
+          <div className="relative">
+            <label
+              htmlFor="invoiceCurrency"
+              className="text-sm text-text-primary font-medium leading-none text-black/2"
+            >
+              Invoice Currency <span className="text-red-500 text-sm">*</span>
+            </label>
+            <Controller
+              control={control}
+              name="invoiceCurrency"
+              render={({ field }) => (
+                <Select
+                  title="Invoice Currency"
+                  options={[
+                    { label: "AED", value: "AED" },
+                    { label: "AUD", value: "AUD" },
+                    { label: "CAD", value: "CAD" },
+                    { label: "EUR", value: "EUR" },
+                    { label: "GBP", value: "GBP" },
+                    { label: "INR", value: "INR" },
+                    { label: "SAR", value: "SAR" },
+                    { label: "USD", value: "USD" },
+                  ]}
+                  value={field.value}
+                  className="z-40"
+                  onChange={(value) => field.onChange(value)}
+                  errorName={errors.invoiceCurrency?.message}
+                />
+              )}
+            />
+          </div>
           <Input
             register={register("orderid")}
             labelData="Order/Reference ID"
@@ -140,7 +170,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           </span>
         </p>
         {fields.map((item, index) => (
-          <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-end mt-4 animate-fadeIn`}>
+          <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-end mt-4 animate-fadeIn w-full`}>
             <Input
               register={register(`items.${index}.productName` as const)}
               labelData="Product Name"
@@ -171,12 +201,12 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             />
             <Input
               register={register(`items.${index}.unitPrice` as const)}
-              labelData={`Unit Price (${data.invoiceCurrency || "INR"})`}
+              labelData={`Unit Price (${currency})`}
               required={true}
               type="text"
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
-            <div>
+            <div className="w-full">
               <Igst control={control} errors={errors} />
             </div>
             {fields.length > 1 && (
@@ -186,6 +216,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             )}
           </div>
         ))}
+        {resError && <p className="text-franchise-error text-xs font-medium">{resError}</p>}
         <div className="flex justify-between items-center">
           <button
             type="button"

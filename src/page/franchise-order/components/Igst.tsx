@@ -27,7 +27,7 @@ export const Igst = ({ control, errors }: IPickupAddressProps) => {
   };
 
   return (
-    <div className="-mt-1">
+    <div className="-mt-1 w-full">
       <Controller
         control={control}
         name="items.0.igst"
@@ -86,7 +86,7 @@ function Select({
   errorName,
 }: ISelectProps) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} w-full`}>
       <label className="block text-sm font-medium text-franchise-sectionp">
         {title}
         <span className="text-sm text-price-info"> *</span>
@@ -98,12 +98,16 @@ function Select({
         className={`mt-1 block w-full pl-3 pr-10 py-2 text-base bg-white border focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${selectColors[variant]} ${selectSize[size]}`}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value} className="text-franchise-primary rounded-md">
+          <option
+            key={option.value}
+            value={option.value}
+            className="text-franchise-primary rounded-md bg-franchise-select-bg"
+          >
             {option.label}
           </option>
         ))}
       </select>
-      {errorName && <span className="text-red-500 text-xs">{errorName}</span>}
+      {errorName && <span className="text-franchise-error text-xs font-medium">{errorName}</span>}
       <ChevronDown className="absolute inset-y-0 right-2 top-8 flex items-center pr-2 pointer-events-none" />
     </div>
   );

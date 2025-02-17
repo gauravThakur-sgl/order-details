@@ -178,7 +178,7 @@ export const AddOrder = () => {
                   <>
                     <DataAccordion title="Consignor Detail" data={formData.consignorDetail} />
                     <DataAccordion title="Consignee Detail" data={formData.consigneeDetail} />
-                    <DataAccordion title="Shipment Information" data={formData.shipmentInformation} />
+                    <DataAccordion title="Item Details" data={formData.shipmentInformation} />
                   </>
                 )}
               </>

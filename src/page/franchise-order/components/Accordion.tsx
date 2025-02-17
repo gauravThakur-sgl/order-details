@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Check } from "lucide-react";
 import React from "react";
 
 interface AccordionItemProps {
@@ -18,16 +19,22 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
           stepNumber <= activeState ? "cursor-pointer" : "cursor-default"
         }`}
       >
-        <h2 className="text-black text-sm font-medium">
+        <h2 className="text-black text-sm font-medium flex justify-center">
           <span
             className={clsx("py-1 mx-3 rounded-sm font-semibold text-xs", {
-              "px-2 bg-green-500 text-white": stepNumber < activeState,
+              // "px-2 bg-green-500 text-white": stepNumber < activeState,
               "px-2 bg-black text-white": stepNumber >= activeState,
             })}
           >
-            {stepNumber < activeState ? <span className="text-white text-sm px">✓</span> : stepNumber}
+            {stepNumber < activeState ? (
+              <span className="text-white text-sm">
+                <Check className="bg-green-500 rounded-sm w-5 h-5 text-white" />
+              </span>
+            ) : (
+              <span className="h-5 w-5">{stepNumber}</span>
+            )}
           </span>
-          {title}
+          <span className="pt-1">{title}</span>
         </h2>
         {stepNumber < activeState && (
           <div className="text-franchise-primary font-medium" onClick={onToggle}>

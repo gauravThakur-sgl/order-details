@@ -12,6 +12,10 @@ interface IConsignorDetailProps {
   onNext: (formData: ConsignorData) => void;
 }
 export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const handleUserSelect = (user:string) => {
+    setSelectedUser(user);
+  }
   const {
     handleSubmit,
     formState: { errors },

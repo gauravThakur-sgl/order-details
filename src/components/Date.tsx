@@ -3,6 +3,7 @@ import z from "zod";
 import { orderDetailsSchema } from "../zod/franchiseOrderSchema";
 import { Calendar } from "../components/ui/Calendar";
 import { useState, useRef, useEffect } from "react";
+import { CalendarIcon } from "lucide-react";
 
 type FormData = z.infer<typeof orderDetailsSchema>;
 
@@ -32,7 +33,7 @@ export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col z-10">
+    <div className="relative flex flex-col z-20">
       <label htmlFor="invoiceDate" className="text-sm text-text-primary font-medium leading-none text-black/2 mb-1">
         Invoice Date <span className="text-red-500 text-sm">*</span>
       </label>
@@ -45,17 +46,34 @@ export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
             <input
               type="text"
               readOnly
-              value={field.value ? new Date(field.value).toLocaleDateString() : ""}
+              value={
+                field.value
+                  ? new Date(field.value).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : ""
+              }
               onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-              className="w-full text-left p-2 border rounded"
+              className="w-full text-left p-2 border rounded text-sm hover:focus-visible:border-franchise-primary pl-3"
+              placeholder="Pick a Date"
             />
+            <span className="absolute right-3 top-3">
+              <CalendarIcon className="h-4 w-4 text-gray-400 " />
+            </span>
             {isCalendarOpen && (
               <div ref={calendarRef} className="absolute z-200 bg-white border rounded shadow-lg mt-2">
                 <Calendar
                   mode="single"
                   selected={field.value ? new Date(field.value as string) : undefined}
                   onSelect={(date) => {
-                    field.onChange(date ? date.toISOString().split("T")[0] : "");
+                    if (date) {
+                      const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+                      field.onChange(adjustedDate.toISOString().split("T")[0]);
+                    } else {
+                      field.onChange("");
+                    }
                     setIsCalendarOpen(false);
                   }}
                   disabled={(date) => date < new Date() || date < new Date("1900-01-01")}

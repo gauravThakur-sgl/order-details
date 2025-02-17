@@ -25,7 +25,7 @@ interface ShippingRate {
   rate: number;
   bill_weight_kg: number;
 }
-export const ShippingPartner = ({ data }: IShippingPartnerProps | FormData) => {
+export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
   const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
   const [weightData, setWeightData] = useState({
     deadWeight: 0,
@@ -36,15 +36,15 @@ export const ShippingPartner = ({ data }: IShippingPartnerProps | FormData) => {
     const storedRates = localStorage.getItem("shipperRates");
     if (storedRates) {
       const parsedRates = JSON.parse(storedRates);
-      console.log(parsedRates, "parsedRates");
       setShipperRates(parsedRates.data.rate);
       setWeightData({
         deadWeight: parsedRates.data.bill_weight / 1000,
         volumetricWeight: parsedRates.data.volume_weight / 1000,
         billedWeight: parsedRates.data.bill_weight / 1000,
       });
+      console.log("parsedRates", parsedRates);
     }
-  }, [shipperRates]);
+  }, []);
   console.log(shipperRates, "shipperRates");
   console.log(weightData, "weightData");
   return (
@@ -80,22 +80,23 @@ export const ShippingPartner = ({ data }: IShippingPartnerProps | FormData) => {
           <p>Showing 1 Results</p>
         </div>
         <div className="flex flex-col justify-center mt-5">
-          <table className="border-seperate">
-            <thead>
-              <tr className="bg-gray-50 text-gray-500">
-                <th className="font-thin p-2 rounded-l-lg text-left pl-4">Courier Partner</th>
-                <th className="font-thin text-left">Delivery Time</th>
-                <th className="font-thin text-left">Shipment Rate</th>
-                <th className="font-thin p-2 rounded-r-lg">Select</th>
+          <table className="">
+            <thead className="border rounded-xl">
+              <tr className="bg-gray-100 text-gray-700 border-seperate">
+                <th className="font-xs font-normal p-2 rounded-l-lg text-left pl-4">Courier Partner</th>
+                <th className="font-xs font-normal text-left">Delivery Time</th>
+                <th className="font-xs font-normal text-left">Shipment Rate</th>
+                <th className="font-xs font-normal p-2 rounded-r-lg">Select</th>
               </tr>
             </thead>
-            <tbody className="mt-2">
+            <div className="p-1"></div>
+            <tbody className="mt-2 border-spacing-2">
               {shipperRates.map((rate, index) => (
-                <tr key={index} className="border">
-                  <td>{rate.display_name}</td>
+                <tr key={index} className="">
+                  <td className="rounded-l-lg bg-blue-50 p-2 pl-4">{rate.display_name}</td>
                   <td>{rate.transit_time}</td>
-                  <td>{rate.rate}</td>
-                  <td>
+                  <td className="pl-8">{rate.rate}</td>
+                  <td className="rounded-l-lg pl-8">
                     <CheckCircle />
                   </td>
                 </tr>

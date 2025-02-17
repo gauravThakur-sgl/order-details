@@ -55,7 +55,7 @@ function Input({
   const variantClasses = inputColors[variant] || inputColors.default;
   const sizeClasses = inputSize[size] || inputSize.default;
   return (
-    <div>
+    <div className="w-full">
       <div className="flex flex-col justify-start gap-2 appearance-none">
         <label htmlFor={id} className="text-sm text-franchise-sectionp leading-none text-black/2">
           {" "}
