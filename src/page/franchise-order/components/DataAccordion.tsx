@@ -32,18 +32,32 @@ interface DataAccordionProps {
     qty?: string;
     total?: string;
     productName?: string;
-    HSN: string;
-    SKU: string;
+    hsn: string;
+    sku: string;
+    items: {
+      productName: string;
+      hsn: string;
+      sku: string;
+      qty: string;
+      unitPrice: string;
+    }[];
   };
 }
 
 export const DataAccordion = ({ title, data }: DataAccordionProps) => {
   const [isOpen, setIsOpen] = useState(true);
   // const [country, setCountry] = useState<string | null>(null);
+  const [showMore, setShowMore] = useState(false);
   const countryName = localStorage.getItem("countryName");
   console.log(countryName, "countryName");
   console.log(data.pickupAddress, "pickupAddress");
   const addressData = data.pickupAddress ? JSON.parse(data.pickupAddress) : {};
+  const handleShowMore = () => {
+    setShowMore(!showMore);
+  };
+  const handleHide = () => {
+    setShowMore(false);
+  };
 
   const extractRelevantData = (key: string, data: DataAccordionProps["data"]) => {
     switch (key) {
@@ -75,12 +89,16 @@ export const DataAccordion = ({ title, data }: DataAccordionProps) => {
         return {
           weight: data.actualWeight,
           dimensions: `${data.length} x ${data.breadth} x ${data.height}`,
-          invoiceNo: data.invoiceNo,
-          product: data.productName,
-          hsn: data.HSN,
-          sku: data.SKU,
-          qty: data.qty,
-          unit: data.unit,
+          items: data.items.map(
+            (item: { productName: string; hsn: string; sku: string; qty: string; unitPrice: string }) => ({
+              product: item.productName,
+              hsn: item.hsn,
+              sku: item.sku,
+              qty: item.qty,
+              unit: item.unitPrice,
+              total: Number(item.qty) * Number(item.unitPrice),
+            }),
+          ),
         };
       case "Select Shipping Partner":
         return {
@@ -137,7 +155,7 @@ export const DataAccordion = ({ title, data }: DataAccordionProps) => {
       );
     } else if (title === "Item Details") {
       return (
-        <>
+        <div>
           <div className="flex justify-between pr-10">
             <div className="space-y-1">
               <h3 className="text-franchise-consignor-text">Billed Weight</h3>
@@ -148,35 +166,65 @@ export const DataAccordion = ({ title, data }: DataAccordionProps) => {
               <p className="text-franchise-sectionp font-medium">{`${relevantData.dimensions}`}</p>
             </div>
           </div>
-          <div className="flex justify-between pr-10 pt-4">
-            <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">Product</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.product}`}</p>
+          {relevantData.items &&
+            relevantData.items.map((item, index) => (
+              <div key={index}>
+                {index === 0 || showMore ? (
+                  <>
+                    <div key={index} className="flex justify-between pr-10 pt-4">
+                      <div className="space-y-1">
+                        <h3 className="text-franchise-consignor-text">Product</h3>
+                        <p className="text-franchise-sectionp font-medium">{`${item.product}`}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-franchise-consignor-text">HSN</h3>
+                        <p className="text-franchise-sectionp font-medium">{`${item.hsn}`}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-franchise-consignor-text">SKU</h3>
+                        <p className="text-franchise-sectionp font-medium">{`${item.sku}`}</p>
+                      </div>
+                    </div>
+                    <div className="flex justify-between pr-10 pt-4">
+                      <div className="space-y-1">
+                        <h3 className="text-franchise-consignor-text">Qty</h3>
+                        <p className="text-franchise-sectionp font-medium">{`${item.qty}`}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-franchise-consignor-text">Unit Price</h3>
+                        <p className="text-franchise-sectionp font-medium">{`${item.unit}`}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-franchise-consignor-text">Total</h3>
+                        <p className="text-franchise-sectionp font-medium">{`${item.total}`}</p>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            ))}
+          {relevantData.items && relevantData.items.length > 1 && (
+            <div className="pt-4">
+              {!showMore ? (
+                <span className="flex justify-between">
+                  <span className="text-franchise-weight-text text-xs font-medium">{`+${
+                    relevantData.items.length - 1
+                  } more products...`}</span>
+                  <button onClick={handleShowMore} className="underline text-franchise-primary text-sm font-medium">
+                    View
+                  </button>
+                </span>
+              ) : (
+                <button
+                  onClick={handleHide}
+                  className="underline text-franchise-primary text-sm font-medium flex w-full justify-end"
+                >
+                  Hide
+                </button>
+              )}
             </div>
-            <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">HSN</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.hsn}`}</p>
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">SKU</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.sku}`}</p>
-            </div>
-          </div>
-          <div className="flex justify-between pr-10 pt-4">
-            <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">Qty</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.qty}`}</p>
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">Unit Price</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.unit}`}</p>
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">Total</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData}`}</p>
-            </div>
-          </div>
-        </>
+          )}
+        </div>
       );
     } else if (title === "Select Shipping Partner") {
       return (

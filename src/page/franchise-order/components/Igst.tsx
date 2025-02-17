@@ -87,7 +87,7 @@ function Select({
 }: ISelectProps) {
   return (
     <div className={`relative ${className} w-full`}>
-      <label className="block text-sm font-medium text-franchise-sectionp">
+      <label className="block text-sm text-franchise-sectionp">
         {title}
         <span className="text-sm text-price-info"> *</span>
       </label>

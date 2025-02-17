@@ -43,6 +43,15 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     name: "items",
   });
   const currency = watch("invoiceCurrency");
+  const quantities = fields.map((_, index) => watch(`items.${index}.qty`));
+  const unitPrices = fields.map((_, index) => watch(`items.${index}.unitPrice`));
+  // const total = Number(quantities) * Number(unitPrices);
+
+  const total = fields.reduce((acc, _, index) => {
+    const qty = watch(`items.${index}.qty`);
+    const unitPrice = watch(`items.${index}.unitPrice`);
+    return acc + Number(qty) * Number(unitPrice);
+  }, 0);
 
   const onSubmit = (formData: FormData) => {
     console.log(formData, "OrderDetails formData");
@@ -61,16 +70,14 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           package_height: data.height,
           package_length: data.length,
           package_breadth: data.breadth,
-          vendor_order_item: [
-            {
-              vendor_order_item_name: data.items[0].productName,
-              vendor_order_item_sku: data.items[0].sku,
-              vendor_order_item_quantity: data.items[0].qty,
-              vendor_order_item_unit_price: data.items[0].unitPrice,
-              vendor_order_item_hsn: data.items[0].hsn,
-              vendor_order_item_tax_rate: data.items[0].igst,
-            },
-          ],
+          vendor_order_item: data.items.map((item) => ({
+            vendor_order_item_name: item.productName,
+            vendor_order_item_sku: item.sku,
+            vendor_order_item_quantity: item.qty,
+            vendor_order_item_unit_price: item.unitPrice,
+            vendor_order_item_hsn: item.hsn,
+            vendor_order_item_tax_rate: item.igst,
+          })),
         };
         const response = await apiClient.post("/orders/validate-order-invoice", payload);
         console.log(response.data, "response");
@@ -80,7 +87,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
       }
     };
     validateData(data);
-  }, [data, resError]);
+  }, [data]);
 
   useEffect(() => {
     const getRate = async (data: FormData) => {
@@ -225,7 +232,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           >
             + <span className="font-medium ">Add another Product</span>
           </button>
-          <p className=" font-semibold pt-5">Total Price: USD 500</p>
+          <p className=" font-semibold pt-5">Total Price: {total}</p>
         </div>
 
         <div className="flex justify-end py-6">

@@ -12,10 +12,10 @@ interface IConsignorDetailProps {
   onNext: (formData: ConsignorData) => void;
 }
 export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
-  const [selectedUser, setSelectedUser] = useState(null);
-  const handleUserSelect = (user:string) => {
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const handleUserSelect = (user: string) => {
     setSelectedUser(user);
-  }
+  };
   const {
     handleSubmit,
     formState: { errors },
@@ -71,6 +71,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
                 value={field.value}
                 onChange={(value) => {
                   field.onChange(value);
+                  handleUserSelect(value);
                 }}
                 errorName={errors.pickupAddress?.message}
               />
@@ -98,6 +99,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
               </div>
             </div>
           ))}
+
           <div className="flex justify-end items-end mt-4">
             <button
               type="submit"
@@ -182,7 +184,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
                 name={name}
               />
               <span className="absolute top-5 left-6">
-                <Search className="w-4 h-4 text-franchise-consignor-text"/>
+                <Search className="w-4 h-4 text-franchise-consignor-text" />
               </span>
             </div>
             <div className="overflow-y-auto max-h-60 pt-2">
@@ -201,7 +203,9 @@ function Select({ title, variant, size, className, options, value, onChange, nam
                 </div>
               ))}
             </div>
-            <span className="text-franchise-primary px-4 text-sm font-medium"><span className="text-base">+ </span>Add new Customer</span>
+            <span className="text-franchise-primary px-4 text-sm font-medium">
+              <span className="text-base">+ </span>Add new Customer
+            </span>
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { CheckCircle } from "lucide-react";
+import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 interface IShippingPartnerProps {
   data: {
@@ -26,25 +26,35 @@ interface ShippingRate {
   bill_weight_kg: number;
 }
 export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
+  const [isSelected, setIsSelected] = useState<number | null>(null);
+  const storedRates = localStorage.getItem("shipperRates");
   const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
   const [weightData, setWeightData] = useState({
     deadWeight: 0,
     volumetricWeight: 0,
     billedWeight: 0,
   });
+  const handleSelectedPrice = (index: number) => {
+    setTimeout(() => {
+      setIsSelected(index);
+    }, 100);
+  };
   useEffect(() => {
-    const storedRates = localStorage.getItem("shipperRates");
     if (storedRates) {
-      const parsedRates = JSON.parse(storedRates);
-      setShipperRates(parsedRates.data.rate);
-      setWeightData({
-        deadWeight: parsedRates.data.bill_weight / 1000,
-        volumetricWeight: parsedRates.data.volume_weight / 1000,
-        billedWeight: parsedRates.data.bill_weight / 1000,
-      });
-      console.log("parsedRates", parsedRates);
+      try {
+        const parsedRates = JSON.parse(storedRates);
+        setShipperRates(parsedRates.data.rate);
+        setWeightData({
+          deadWeight: parsedRates.data.bill_weight / 1000,
+          volumetricWeight: parsedRates.data.volume_weight / 1000,
+          billedWeight: parsedRates.data.bill_weight / 1000,
+        });
+        console.log("parsedRates", parsedRates);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, []);
+  }, [storedRates]);
   console.log(shipperRates, "shipperRates");
   console.log(weightData, "weightData");
   return (
@@ -62,16 +72,16 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
           </a>
         </p>
         <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
-          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 py-2 px-5">
-            <p>{weightData.deadWeight}</p>
-            <p className="text-sm">Dead Weight</p>
+          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
+            <p>{`${weightData.deadWeight} KG`}</p>
+            <p className="text-sm text-slate-400">Dead Weight</p>
           </div>
-          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 py-2 px-5">
-            <p>{weightData.volumetricWeight}</p>
-            <p className="text-sm">Volumetric Weight</p>
+          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
+            <p>{`${weightData.volumetricWeight} KG`}</p>
+            <p className="text-sm text-slate-400">Volumetric Weight</p>
           </div>
           <div className="flex flex-col justify-center items-center border border-orange-600 rounded-md bg-franchise-weight-bg text-franchise-weight-text py-2 px-5">
-            <p>{weightData.billedWeight}</p>
+            <p>{`${weightData.billedWeight} KG`}</p>
             <p className="text-sm">Billed Weight</p>
           </div>
         </div>
@@ -82,8 +92,8 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
         <div className="flex flex-col justify-center mt-5">
           <table className="">
             <thead className="border rounded-xl">
-              <tr className="bg-gray-100 text-gray-700 border-seperate">
-                <th className="font-xs font-normal p-2 rounded-l-lg text-left pl-4">Courier Partner</th>
+              <tr className="bg-gray-100 text-gray-700 border-collapse">
+                <th className="font-xs font-normal p-2 m-8 rounded-l-lg text-left pl-4">Courier Partner</th>
                 <th className="font-xs font-normal text-left">Delivery Time</th>
                 <th className="font-xs font-normal text-left">Shipment Rate</th>
                 <th className="font-xs font-normal p-2 rounded-r-lg">Select</th>
@@ -92,14 +102,33 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
             <div className="p-1"></div>
             <tbody className="mt-2 border-spacing-2">
               {shipperRates.map((rate, index) => (
-                <tr key={index} className="">
-                  <td className="rounded-l-lg bg-blue-50 p-2 pl-4">{rate.display_name}</td>
-                  <td>{rate.transit_time}</td>
-                  <td className="pl-8">{rate.rate}</td>
-                  <td className="rounded-l-lg pl-8">
-                    <CheckCircle />
-                  </td>
-                </tr>
+                <>
+                  <span className="w-full my-1"></span>
+                  <tr className="bg-blue-50 border rounded-md">
+                    <td className="">
+                      <span className="w-full text-xs text-franchise-error pl-4">
+                        Duties will be charged if applicable
+                      </span>
+                    </td>
+                    <td className="text-blue-50"></td>
+                    <td className="text-blue-50"></td>
+                    <td className="text-blue-50"></td>
+                  </tr>
+                  <tr key={index} className="border-b">
+                    <td className="rounded-l-lg p-2 pl-4 border-l rounded-bl-lg">{rate.display_name}</td>
+                    <td>{rate.transit_time}</td>
+                    <td className="pl-8">{rate.rate}</td>
+                    <td className="rounded-l-full pl-8 border-r">
+                      <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
+                        <Check
+                          className={`h-5 w-5 m-4 p-1 text-white rounded-full border-2 border-white ring-2 ${
+                            isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
+                          }  `}
+                        />
+                      </span>
+                    </td>
+                  </tr>
+                </>
               ))}
             </tbody>
           </table>
@@ -107,7 +136,8 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
         <div className="flex justify-end py-6">
           <button
             type="submit"
-            className="text-franchise-button-text bg-franchise-primary rounded-md p-1 px-4 font-medium text-lg"
+            className={`text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 font-medium text-base tracking-tight`}
+            disabled={isSelected === null}
           >
             Pay and Order
           </button>
