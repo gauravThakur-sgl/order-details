@@ -46,6 +46,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
+    localStorage.setItem("isChecked", JSON.stringify(!isChecked));
   };
   const onSubmit = (formData: FormData) => {
     if (isChecked) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface DataAccordionProps {
   title: string;
@@ -49,7 +49,24 @@ interface DataAccordionProps {
 
 export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  // const [country, setCountry] = useState<string | null>(null);
+  const [isSameAddress, setIsSameAddress] = useState(false);
+  const getCheckState = () => {
+    const isChecked = localStorage.getItem("isChecked");
+    return isChecked ? JSON.parse(isChecked) : false;
+  };
+
+  useEffect(() => {
+    const updatedState = () => {
+      setIsSameAddress(getCheckState());
+    };
+    updatedState();
+    window.addEventListener("storage", updatedState);
+    return () => {
+      window.removeEventListener("storage", updatedState);
+    };
+  }, []);
+  console.log(isSameAddress, "isSameAddress");
+
   const [showMore, setShowMore] = useState(false);
   const countryName = localStorage.getItem("countryName");
   console.log(countryName, "countryName");
@@ -120,7 +137,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
   };
 
   const relevantData = extractRelevantData(title, data);
-  const isSameAddress = relevantData.billingAddress === relevantData.shippingAddress;
+  // const isSameAddress = relevantData.billingAddress === relevantData.shippingAddress;
   console.log(relevantData);
   const renderData = () => {
     if (title === "Consignor Detail") {

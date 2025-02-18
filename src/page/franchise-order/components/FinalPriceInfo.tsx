@@ -2,12 +2,22 @@ import { useEffect, useState } from "react";
 
 export const FinalPriceInfo = () => {
   const [finalPrice, setFinalPrice] = useState(0);
-
+  const getFinalPrice = () => {
+    const finalPriceInfo = localStorage.getItem("selectedRate");
+    const price = finalPriceInfo ? JSON.parse(finalPriceInfo) : {};
+    return price.LOGISTIC_FEE || 0;
+  };
+  
   useEffect(() => {
-    const finalPriceInfo = JSON.parse(localStorage.getItem("selectedRate") || "{}");
-    if (finalPriceInfo && finalPriceInfo.LOGISTIC_FEE) {
-      setFinalPrice(finalPriceInfo.LOGISTIC_FEE);
-    }
+    const updateFinalPrice = () => {
+      const logisticFee = getFinalPrice();
+      setFinalPrice(logisticFee);
+    };
+    updateFinalPrice();
+    window.addEventListener("storage", updateFinalPrice);
+    return () => {
+      window.removeEventListener("storage", updateFinalPrice);
+    };
   }, []);
   console.log(finalPrice, "finalPrice");
 

@@ -27,7 +27,6 @@ interface ShippingRate {
 }
 export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
-  const storedRates = localStorage.getItem("shipperRates");
   const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
   const [weightData, setWeightData] = useState({
     deadWeight: 0,
@@ -41,22 +40,31 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
       window.dispatchEvent(new Event("storage"));
     }, 100);
   };
+  const getShipperRates = () => {
+    const storedRates = localStorage.getItem("shipperRates");
+    return storedRates;
+  };
+
   useEffect(() => {
-    if (storedRates) {
-      try {
-        const parsedRates = JSON.parse(storedRates);
-        setShipperRates(parsedRates.data.rate);
+    const updatedShipperRates = () => {
+      const rates = getShipperRates();
+      const parsedRates = rates ? JSON.parse(rates) : null;
+      setShipperRates(parsedRates ? parsedRates.data.rate : []);
+      if (parsedRates) {
         setWeightData({
           deadWeight: parsedRates.data.bill_weight / 1000,
           volumetricWeight: parsedRates.data.volume_weight / 1000,
           billedWeight: parsedRates.data.bill_weight / 1000,
         });
-        console.log("parsedRates", parsedRates);
-      } catch (error) {
-        console.log(error);
       }
-    }
-  }, [storedRates]);
+    };
+    updatedShipperRates();
+    window.addEventListener("storage", updatedShipperRates);
+    return () => {
+      window.removeEventListener("storage", updatedShipperRates);
+    };
+  }, []);
+
   console.log(shipperRates, "shipperRates");
   console.log(weightData, "weightData");
   return (

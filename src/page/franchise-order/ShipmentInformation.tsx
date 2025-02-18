@@ -21,9 +21,41 @@ interface IOrderDetailsProps {
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
   const [resError, setResError] = useState<string | null>(null);
   console.log(data, "data");
-  const country = localStorage.getItem("country");
-  const shippingPincode = localStorage.getItem("pincode");
   const [rate, setRate] = useState([]);
+  const [shippingPincode, setShippingPincode] = useState("");
+  const [country, setCountry] = useState("");
+
+  const getPincode = () => {
+    const pincode = localStorage.getItem("pincode");
+    return pincode;
+  };
+  useEffect(() => {
+    const updatedPinCode = () => {
+      const pincode = getPincode();
+      setShippingPincode(pincode  || "");
+    };
+    updatedPinCode();
+    window.addEventListener("storage", updatedPinCode);
+    return () => {
+      window.removeEventListener("storage", updatedPinCode);
+    };
+  }, []);
+
+  const getCountry = () => {
+    const country = localStorage.getItem("country");
+    return country;
+  };
+  useEffect(() => {
+    const updatedCountry = () => {
+      const country = getCountry();
+      setCountry(country || "");
+    };
+    updatedCountry();
+    window.addEventListener("storage", updatedCountry);
+    return () => {
+      window.removeEventListener("storage", updatedCountry);
+    };
+  }, []);
 
   console.log(country, "country");
   console.log(shippingPincode, "shippingPincode");
@@ -43,9 +75,6 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     name: "items",
   });
   const currency = watch("invoiceCurrency");
-  const quantities = fields.map((_, index) => watch(`items.${index}.qty`));
-  const unitPrices = fields.map((_, index) => watch(`items.${index}.unitPrice`));
-  // const total = Number(quantities) * Number(unitPrices);
 
   const total = fields.reduce((acc, _, index) => {
     const qty = watch(`items.${index}.qty`);
@@ -53,64 +82,63 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     return acc + Number(qty) * Number(unitPrice);
   }, 0);
 
+  const validateData = async (data: FormData) => {
+    const validatePayload = {
+      csbv: "0",
+      currency_code: data.invoiceCurrency,
+      package_weight: data.actualWeight,
+      package_height: data.height,
+      package_length: data.length,
+      package_breadth: data.breadth,
+      vendor_order_item: data.items.map((item) => ({
+        vendor_order_item_name: item.productName,
+        vendor_order_item_sku: item.sku,
+        vendor_order_item_quantity: item.qty,
+        vendor_order_item_unit_price: item.unitPrice,
+        vendor_order_item_hsn: item.hsn,
+        vendor_order_item_tax_rate: item.igst,
+      })),
+    };
+    try {
+      const response = await apiClient.post("/orders/validate-order-invoice", validatePayload);
+      console.log(response.data, "response");
+      setResError(null);
+    } catch (error) {
+      console.error("Error validating order invoice:", error);
+      setResError(String(error.response.data.message));
+    }
+  };
+
+  const getRate = async () => {
+    const ratePayload = {
+      customer_shipping_postcode: shippingPincode,
+      customer_shipping_country_code: country,
+      package_weight: data.actualWeight,
+      package_length: data.length,
+      package_breadth: data.breadth,
+      package_height: data.height,
+    };
+    try {
+      const response = await apiClient.post("/orders/get-shipper-rates", ratePayload);
+      console.log(response.data, "response");
+      setRate(response.data);
+      localStorage.setItem("shipperRates", JSON.stringify(response.data));
+    } catch (error) {
+      console.error("Error validating order invoice:", error);
+    }
+  };
+
   const onSubmit = (formData: FormData) => {
     console.log(formData, "OrderDetails formData");
+    validateData(formData);
+    if (resError) return;
+    getRate();
     localStorage.setItem("shipperRates", JSON.stringify(rate));
     onNext(formData);
   };
   // console.log(data, "data");
   console.log(resError, "resError");
-  useEffect(() => {
-    const validateData = async (data: FormData) => {
-      try {
-        const payload = {
-          csbv: "0",
-          currency_code: data.invoiceCurrency,
-          package_weight: data.actualWeight,
-          package_height: data.height,
-          package_length: data.length,
-          package_breadth: data.breadth,
-          vendor_order_item: data.items.map((item) => ({
-            vendor_order_item_name: item.productName,
-            vendor_order_item_sku: item.sku,
-            vendor_order_item_quantity: item.qty,
-            vendor_order_item_unit_price: item.unitPrice,
-            vendor_order_item_hsn: item.hsn,
-            vendor_order_item_tax_rate: item.igst,
-          })),
-        };
-        const response = await apiClient.post("/orders/validate-order-invoice", payload);
-        console.log(response.data, "response");
-      } catch (error) {
-        console.error("Error validating order invoice:", error);
-        setResError(String(error.response.data.message));
-      }
-    };
-    validateData(data);
-  }, [data]);
 
-  useEffect(() => {
-    const getRate = async (data: FormData) => {
-      try {
-        const payload = {
-          customer_shipping_postcode: shippingPincode,
-          customer_shipping_country_code: country,
-          package_weight: data.actualWeight,
-          package_length: data.length,
-          package_breadth: data.breadth,
-          package_height: data.height,
-        };
-        const response = await apiClient.post("/orders/get-shipper-rates", payload);
-        console.log(response.data, "response");
-        setRate(response.data);
-        localStorage.setItem("shipperRates", JSON.stringify(response.data));
-      } catch (error) {
-        console.error("Error validating order invoice:", error);
-      }
-    };
-    getRate(data);
-  }, [data, country, shippingPincode]);
-  console.log(rate, "rate");
   console.log(errors, "errors");
   return (
     <section>
