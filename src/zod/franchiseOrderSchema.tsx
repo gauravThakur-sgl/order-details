@@ -6,39 +6,42 @@ export const consignorDetailSchema = z.object({
 export const orderSchema = z.object({
   firstName: z
     .string()
-    .nonempty("The customer first name is required.")
+    .nonempty("First name is required.")
     .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
   lastName: z
     .string()
-    .nonempty("The customer last name is required.")
+    .nonempty("Last name is required.")
     .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
   mobileNumber: z
     .string()
-    .nonempty("The customer mobile number is required.")
+    .nonempty("Mobile number is required.")
     .min(10, "Mobile number must be 10 digits")
     .max(10, "Mobile number must be 10 digits")
     .regex(/^[0-9]+$/, "Please enter numeric characters"),
   alternateMobileNumber: z.string(),
 
-  email: z.string().nonempty("Email is required").email("Invalid email address"),
-  country: z.string().nonempty("The customer shipping country is required."),
+  email: z.string().nonempty("Please entetr a valid email address").email("Invalid email address"),
+  country: z.string().nonempty("Country is required."),
   landMark: z.string(),
   address1: z.string().nonempty("Address 1 is required"),
   address2: z.string().nonempty("Address 2 is required"),
-  shippingcity: z.string().nonempty("The customer shipping city is required."),
-  shippingPincode: z.string().nonempty("The customer shipping postcode is required."),
-  shippingState: z.string().nonempty("The customer shipping state is required."),
+  shippingcity: z.string().nonempty("City is required."),
+  shippingPincode: z
+    .string()
+    .nonempty("The customer shipping postcode is required.")
+    .regex(/^(?! )[A-Z0-9 ]*(?<! )$/, "Invalid Pincode"),
+  shippingState: z.string().nonempty("State is required."),
 
   isChecked: z.boolean().optional(),
 
   // Buyer Billing Details
   billingfirstName: z
     .string()
-    .nonempty("The customer shipping first name is required.")
+    .nonempty("First name is required.")
     .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
   billinglastName: z
     .string()
-    .nonempty("The customer shipping last name is required.")
+    .nonempty("Last name is required.")
     .regex(/^[A-Za-z]+$/i, "Please enter alphabetic characters"),
   billingmobileNumber: z.coerce
     .string()
@@ -82,23 +85,29 @@ export const orderDetailsSchema = z.object({
   actualWeight: z.coerce
     .string()
     .nonempty("The actual weight is required.")
-    .regex(/^[1-9]+$/, "Weight must be atleast 0.01 KG"),
+    // .regex(/^[1-9]+$/, "Weight must be atleast 0.1 KG")
+    .regex(/^(?:0\.[1-9]|[1-9]\d{0,2}(?:\.\d{1,2})?|300(?:\.0{1,2})?)$/, "Weight must be between 0.1 and 300 KG"),
   length: z.coerce
     .string()
     .nonempty("The length is required.")
-    .regex(/^[1-9]+$/, "Length must be atleast 1 cm"),
+    .regex(/^[1-9]+$/, "Length must be atleast 1 cm")
+    .regex(/^(?:1[0-1][0-9]|120|[1-9][0-9]?|0\.[1-9])$/, "Dimension must be between 1 and 120 cm"),
+
   breadth: z.coerce
     .string()
     .nonempty("The breadth is required.")
-    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm"),
+    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm")
+    .regex(/^(?:1[0-1][0-9]|120|[1-9][0-9]?|0\.[1-9])$/, "Dimension must be between 1 and 120 cm"),
+
   height: z.coerce
     .string()
     .nonempty("The height is required.")
-    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm"),
+    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm")
+    .regex(/^(?:1[0-1][0-9]|120|[1-9][0-9]?|0\.[1-9])$/, "Dimension must be between 1 and 120 cm"),
 
   // Order Details
   invoiceNo: z.string().nonempty("The invoice value is required."),
-  invoiceDate: z.string().optional(),
+  invoiceDate: z.string().nonempty("The invoice date is required."),
   invoiceCurrency: z.string().nonempty("The invoice currency is required."),
   orderid: z.string().nonempty("The order id is required."),
   iossNumber: z.coerce.string().optional(),

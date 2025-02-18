@@ -79,7 +79,7 @@ function Input({
           <div>{children}</div>
         </div>
       </div>
-      {errorName && <p className="text-franchise-error text-xs font-medium">{errorName}</p>}
+      {errorName && <p className="text-franchise-error text-xs font-medium mt-1">{errorName}</p>}
     </div>
   );
 }

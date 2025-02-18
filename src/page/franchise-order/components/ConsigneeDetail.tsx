@@ -102,7 +102,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     <div className="w-full">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-sm font-semibold">Personal Details</h2>
-        <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-center gap-4 mt-2 `}>
+        <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-start gap-4 mt-2 `}>
           <Input
             register={register("firstName")}
             type="text"
@@ -137,7 +137,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
           />
         </div>
         <h2 className="text-sm font-semibold mt-5"> Shipping Address</h2>
-        <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-center gap-4 mt-2`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-start gap-4 mt-2`}>
           <Input
             register={register("address1")}
             type="text"

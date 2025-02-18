@@ -84,7 +84,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
           {selectedUser && (
             <div className="flex flex-col tablet:flex-row justify-start items-center gap-4">
               {userDetail.map((user) => (
-                <div className="flex flex-col tablet:flex-row justify-start gap-2 py-5 text-xs text-franchise-sectionp pt-6">
+                <div className="flex flex-col tablet:flex-row justify-start gap-4 md:gap-10 py-5 text-xs text-franchise-sectionp pt-6">
                   <div className="flex flex-col text-nowrap">
                     <span className="text-franchise-sectionp font-semibold text-xs">
                       {user.firstName} {user.lastName}
@@ -94,11 +94,11 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
                   </div>
                   <div className="w-full">
                     <p className="font-semibold text-xs text-franchise-consignor-text">Address</p>
-                    <p>{user.billingAddress}</p>
+                    <p className="mt-1">{user.billingAddress}</p>
                   </div>
                   <div className="w-full">
-                    <p className="font-semibold text-xs text-franchise-consignor-text">Documner Type</p>
-                    <p>{user.documentDetail}</p>
+                    <p className="font-medium text-xs text-franchise-consignor-text">Documnet Type</p>
+                    <p className="mt-1">{user.documentDetail}</p>
                   </div>
                 </div>
               ))}

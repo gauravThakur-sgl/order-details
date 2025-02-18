@@ -9,6 +9,7 @@ interface DataAccordionProps {
     email?: string;
     pickupAddress?: string;
     billingAddress1?: string;
+    billingAddress2?: string;
     landMark?: string;
     shippingcity?: string;
     country?: string;
@@ -20,6 +21,7 @@ interface DataAccordionProps {
     billingPincode?: string;
     billingLandMark?: string;
     address1?: string;
+    address2?: string;
     actualWeight?: string;
     length?: string;
     breadth?: string;
@@ -74,12 +76,14 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
           name: `${data.firstName} ${data.lastName}`,
           mobileNumber: data.mobileNumber,
           billingAddress: data.billingAddress1,
+          billingAddress2: data.billingAddress2,
           billingLandMark: data.billingLandMark,
           billingCity: data.billingcity,
           billingCountry: data.billingCountry,
           billingState: data.billingState,
           billingPincode: data.billingPincode,
           shippingAddress: data.address1,
+          shippingAddress2: data.address2,
           landmark: data.landMark,
           city: data.shippingcity,
           country: data.country,
@@ -145,12 +149,12 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
             <p className="text-franchise-sectionp">
               {isSameAddress
                 ? "Same as shipping address"
-                : `${relevantData.billingAddress} ${relevantData.billingLandMark} ${relevantData.billingCity} ${relevantData.billingState} ${relevantData.billingCountry} ${relevantData.billingPincode}`}
+                : `${relevantData.billingAddress} ${relevantData.billingAddress2} ${relevantData.billingLandMark} ${relevantData.billingCity} ${relevantData.billingState} ${relevantData.billingCountry} ${relevantData.billingPincode}`}
             </p>
           </div>
           <div className="space-y-1">
             <h3 className="text-franchise-consignor-text">Shipping Address</h3>
-            <p className="text-franchise-sectionp">{`${relevantData.shippingAddress} ${relevantData.landmark} ${relevantData.city} ${relevantData.state} ${countryName} ${relevantData.pincode}`}</p>
+            <p className="text-franchise-sectionp">{`${relevantData.shippingAddress} ${relevantData.shippingAddress2} ${relevantData.landmark} ${relevantData.city} ${relevantData.state} ${countryName} ${relevantData.pincode}`}</p>
           </div>
         </div>
       );

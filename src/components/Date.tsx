@@ -84,7 +84,9 @@ export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
           </div>
         )}
       />
-      {errors.invoiceDate && <p className="text-red-500 text-xs mt-1">{errors.invoiceDate.message}</p>}
+      {errors.invoiceDate && (
+        <p className="text-franchise-error text-xs mt-error font-medium">{errors.invoiceDate.message}</p>
+      )}
     </div>
   );
 };

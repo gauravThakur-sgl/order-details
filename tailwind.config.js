@@ -26,7 +26,7 @@ module.exports = {
     extend: {
       spacing: {
         15: "60px",
-        18: "72px"
+        18: "72px",
       },
       fontSize: {
         "label-text": ["1.05rem"],
