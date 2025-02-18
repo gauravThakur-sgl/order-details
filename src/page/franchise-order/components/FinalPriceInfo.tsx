@@ -2,35 +2,32 @@ import { useEffect, useState } from "react";
 
 export const FinalPriceInfo = () => {
   const [finalPrice, setFinalPrice] = useState(0);
-  const getFinalPrice = () => {
-    const finalPriceInfo = localStorage.getItem("selectedRate");
-    const price = finalPriceInfo ? JSON.parse(finalPriceInfo) : {};
-    const logisticFee = price.LOGISTIC_FEE;
-    return logisticFee;
-  };
+
   useEffect(() => {
-    const logisticFee = getFinalPrice();
-    setFinalPrice(logisticFee);
-  }, [finalPrice]);
-  
+    const finalPriceInfo = JSON.parse(localStorage.getItem("selectedRate") || "{}");
+    if (finalPriceInfo && finalPriceInfo.LOGISTIC_FEE) {
+      setFinalPrice(finalPriceInfo.LOGISTIC_FEE);
+    }
+  }, []);
   console.log(finalPrice, "finalPrice");
 
   const gst = ((Number(finalPrice) / 100) * 18).toFixed(2);
-  const totalPrice = finalPrice + Number(gst);
+  const totalPrice = (finalPrice + Number(gst)).toFixed(2);
 
   return (
     <div className="border rounded-md bg-franchise-weight-bg mt-2 pb-3">
       <div className="p-4">
-        <h5 className="text-franchise-weight-text pt-2 font-semibold pb-2">Summary</h5>
-        <span className="w-full bg-franchise-weight-text"></span>
+        <h5 className="text-franchise-weight-text pt-2 font-semibold pb-2 border-b border-franchise-weight-text border-opacity-30">
+          Summary
+        </h5>
         <div className="space-y-4 mt-4">
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm">
             <p>Logistic Fee</p>
             <p>{`RS.${finalPrice}.00`}</p>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm">
             <p>GST</p>
-            {`Rs.${gst}`}
+            <p>{`Rs.${gst}`}</p>
           </div>
         </div>
       </div>
