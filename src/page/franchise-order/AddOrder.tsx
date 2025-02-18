@@ -12,6 +12,7 @@ import { z } from "zod";
 import { consignorDetailSchema, orderDetailsSchema, orderSchema } from "../../zod/franchiseOrderSchema";
 import { DataAccordion } from "./components/DataAccordion";
 import { ChevronRight } from "lucide-react";
+import { FinalPriceInfo } from "./components/FinalPriceInfo";
 
 type ConsignorData = z.infer<typeof consignorDetailSchema>;
 type FormData = z.infer<typeof orderSchema>;
@@ -176,9 +177,10 @@ export const AddOrder = () => {
                 )}
                 {currentStep === 4 && (
                   <>
-                    <DataAccordion title="Consignor Detail" data={formData.consignorDetail} />
-                    <DataAccordion title="Consignee Detail" data={formData.consigneeDetail} />
+                    <DataAccordion title="Consignor Detail" data={formData.consignorDetail} initialIsOpen={false} />
+                    <DataAccordion title="Consignee Detail" data={formData.consigneeDetail} initialIsOpen={false} />
                     <DataAccordion title="Item Details" data={formData.shipmentInformation} />
+                    <FinalPriceInfo />
                   </>
                 )}
               </>

@@ -42,9 +42,10 @@ interface DataAccordionProps {
       unitPrice: string;
     }[];
   };
+  initialIsOpen?: boolean;
 }
 
-export const DataAccordion = ({ title, data }: DataAccordionProps) => {
+export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {
   const [isOpen, setIsOpen] = useState(true);
   // const [country, setCountry] = useState<string | null>(null);
   const [showMore, setShowMore] = useState(false);

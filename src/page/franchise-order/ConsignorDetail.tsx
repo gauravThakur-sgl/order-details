@@ -60,13 +60,14 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
     <section>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h5 className="pb-2 text-sm font-normal leading-none text-franchise-sectionp">Select Customer</h5>
-        <div className="w-3/5">
+        <div className="relative w-3/5">
           <Controller
             control={control}
             name="pickupAddress"
             render={({ field }) => (
               <Select
                 title="Select Customer"
+                className="z-100"
                 options={userOption}
                 value={field.value}
                 onChange={(value) => {
@@ -79,28 +80,31 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
           />
         </div>
 
-        <div className="flex flex-col tablet:flex-row justify-start items-center gap-4">
-          {userDetail.map((user) => (
-            <div className="flex flex-col tablet:flex-row justify-start gap-2 py-5 text-xs text-franchise-sectionp pt-6">
-              <div className="flex flex-col text-nowrap">
-                <span className="text-franchise-sectionp font-semibold text-xs">
-                  {user.firstName} {user.lastName}
-                </span>
-                <span className="text-sm">{user.email}</span>
-                <span>{user.mobileNo}</span>
-              </div>
-              <div className="w-full">
-                <p className="font-semibold text-xs text-franchise-consignor-text">Address</p>
-                <p>{user.billingAddress}</p>
-              </div>
-              <div className="w-full">
-                <p className="font-semibold text-xs text-franchise-consignor-text">Documner Type</p>
-                <p>{user.documentDetail}</p>
-              </div>
+        <div className="flex justify-between">
+          {selectedUser && (
+            <div className="flex flex-col tablet:flex-row justify-start items-center gap-4">
+              {userDetail.map((user) => (
+                <div className="flex flex-col tablet:flex-row justify-start gap-2 py-5 text-xs text-franchise-sectionp pt-6">
+                  <div className="flex flex-col text-nowrap">
+                    <span className="text-franchise-sectionp font-semibold text-xs">
+                      {user.firstName} {user.lastName}
+                    </span>
+                    <span className="text-sm">{user.email}</span>
+                    <span>{user.mobileNo}</span>
+                  </div>
+                  <div className="w-full">
+                    <p className="font-semibold text-xs text-franchise-consignor-text">Address</p>
+                    <p>{user.billingAddress}</p>
+                  </div>
+                  <div className="w-full">
+                    <p className="font-semibold text-xs text-franchise-consignor-text">Documner Type</p>
+                    <p>{user.documentDetail}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-
-          <div className="flex justify-end items-end mt-4">
+          )}
+          <div className={`flex justify-end items-end ${!selectedUser && "w-full"} mt-4`}>
             <button
               type="submit"
               className="text-franchise-button-text bg-franchise-primary rounded-md py-2 px-4 font-medium"

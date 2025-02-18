@@ -43,8 +43,8 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
         )}
       </div>
       <div
-        className={`overflow-hidden transition-max-height duration-300 ease-in-out ${
-          isOpen ? "max-h-[2000px]" : "max-h-0"
+        className={`transition-max-height duration-300 ease-in-out ${isOpen ? "max-h-[2000px]" : "max-h-0"} ${
+          activeState === stepNumber ? "" : "overflow-hidden"
         }`}
       >
         <div className="py-4 px-7 text-gray-700 bg-white border">{children}</div>

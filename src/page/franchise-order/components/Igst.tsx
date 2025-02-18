@@ -92,10 +92,11 @@ function Select({
         <span className="text-sm text-price-info"> *</span>
       </label>
       <select
+        disabled
         name={name}
         value={value}
         onChange={(e) => onChange && onChange(e.target.value)}
-        className={`mt-1 block w-full pl-3 pr-10 py-2 text-base bg-white border focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${selectColors[variant]} ${selectSize[size]}`}
+        className={`mt-1 block w-full pl-3 pr-10 py-2 text-base bg-white border cursor-not-allowed focus:cursor-not-allowed focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${selectColors[variant]} ${selectSize[size]}`}
       >
         {options.map((option) => (
           <option

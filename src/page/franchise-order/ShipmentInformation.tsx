@@ -213,9 +213,10 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               type="text"
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
-            <div className="w-full">
+            <div className={`${fields.length < 1 ? "mr-4": "mr-0"}`}>
               <Igst control={control} errors={errors} />
             </div>
+
             {fields.length > 1 && (
               <button type="button" onClick={() => remove(index)} className="">
                 <Trash2 className="h-4 w-4 mt-8 text-red-500 bg-red-50" />
