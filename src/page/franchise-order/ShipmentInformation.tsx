@@ -148,7 +148,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
                     { label: "SAR", value: "SAR" },
                     { label: "USD", value: "USD" },
                   ]}
-                  value={field.value}
+                  value={field.value || "INR"}
                   className="z-40"
                   onChange={(value) => field.onChange(value)}
                   errorName={errors.invoiceCurrency?.message}
@@ -213,7 +213,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               type="text"
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
-            <div className={`${fields.length < 1 ? "mr-4": "mr-0"}`}>
+            <div className={`${fields.length < 1 ? "mr-4" : "mr-0"}`}>
               <Igst control={control} errors={errors} />
             </div>
 
@@ -233,7 +233,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           >
             + <span className="font-medium ">Add another Product</span>
           </button>
-          <p className=" font-semibold pt-5">Total Price: {total}</p>
+          <p className=" font-semibold pt-5">Total Price: {`${currency} ${total}`}</p>
         </div>
 
         <div className="flex justify-end py-6">

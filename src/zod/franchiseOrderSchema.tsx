@@ -82,16 +82,19 @@ export const orderDetailsSchema = z.object({
   actualWeight: z.coerce
     .string()
     .nonempty("The actual weight is required.")
-    .regex(/^[0-9]+$/, "Please enter numeric characters"),
+    .regex(/^[1-9]+$/, "Weight must be atleast 0.01 KG"),
   length: z.coerce
     .string()
     .nonempty("The length is required.")
-    .regex(/^[0-9]+$/, "Please enter numeric characters"),
+    .regex(/^[1-9]+$/, "Length must be atleast 1 cm"),
   breadth: z.coerce
     .string()
     .nonempty("The breadth is required.")
-    .regex(/^[0-9]+$/, "Please enter numeric characters"),
-  height: z.coerce.string().nonempty("The height is required."),
+    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm"),
+  height: z.coerce
+    .string()
+    .nonempty("The height is required.")
+    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm"),
 
   // Order Details
   invoiceNo: z.string().nonempty("The invoice value is required."),

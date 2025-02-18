@@ -42,7 +42,7 @@ export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
         name="invoiceDate"
         defaultValue={formattedToday}
         render={({ field }) => (
-          <div className="relative">
+          <div className="relative cursor-pointer">
             <input
               type="text"
               readOnly
@@ -56,11 +56,11 @@ export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
                   : ""
               }
               onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-              className="w-full text-left p-2 border rounded text-sm hover:focus-visible:border-franchise-primary pl-3"
+              className="w-full text-left p-2 border rounded-md text-sm cursor-pointer hover:border-franchise-primary transition-all pl-3"
               placeholder="Pick a Date"
             />
-            <span className="absolute right-3 top-3">
-              <CalendarIcon className="h-4 w-4 text-gray-400 " />
+            <span className="absolute right-3 top-3" onClick={() => setIsCalendarOpen(!isCalendarOpen)}>
+              <CalendarIcon className="h-4 w-4 text-gray-400 hover:text-blue-300" />
             </span>
             {isCalendarOpen && (
               <div ref={calendarRef} className="absolute z-200 bg-white border rounded shadow-lg mt-2">

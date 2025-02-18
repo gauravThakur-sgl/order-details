@@ -38,6 +38,7 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
     setTimeout(() => {
       setIsSelected(index);
       localStorage.setItem("selectedRate", JSON.stringify(shipperRates[index]));
+      window.dispatchEvent(new Event("storage"));
     }, 100);
   };
   useEffect(() => {

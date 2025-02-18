@@ -50,7 +50,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
   }, [isOpen]);
   return (
     <div ref={ref}>
-      <div className="relative z-20">
+      <div className="relative">
         <div
           className={`${baseClasses} ${variantClasses} ${sizeClasses} ${className || ""}`}
           onClick={() => setIsOpen(!isOpen)}

@@ -31,8 +31,8 @@ export const BoxMeasurement = ({ register, errors }: IShipMentMeasurementProps) 
                   name={data.name}
                   labelData={data.name === "actualWeight" ? "Dead Weight" : data.name}
                   required={data.required}
-                  type="text"
-                  className="appearence-none rounded-r-none z-10"
+                  type="number"
+                  className="appearence-none rounded-r-none"
                   errorName={errors[data.name as keyof FormData]?.message}
                 />
               </div>
