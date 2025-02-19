@@ -97,7 +97,6 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     }
   }, [isChecked, shippingFields, setValue]);
 
-  console.log(errors, "errors");
   return (
     <div className="w-full">
       <form action="" onSubmit={handleSubmit(onSubmit)}>

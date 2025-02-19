@@ -43,12 +43,13 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
     const updatedShipperRates = () => {
       const rates = getShipperRates();
       const parsedRates = rates ? JSON.parse(rates) : null;
-      setShipperRates(parsedRates ? parsedRates.data.rate : []);
+      console.log(parsedRates, "parsedRates");
+      setShipperRates(parsedRates ? parsedRates.rate : []);
       if (parsedRates) {
         setWeightData({
-          deadWeight: parsedRates.data.bill_weight / 1000,
-          volumetricWeight: parsedRates.data.volume_weight / 1000,
-          billedWeight: parsedRates.data.bill_weight / 1000,
+          deadWeight: parsedRates.package_weight / 1000,
+          volumetricWeight: parsedRates.volume_weight / 1000,
+          billedWeight: parsedRates.bill_weight / 1000,
         });
       }
     };

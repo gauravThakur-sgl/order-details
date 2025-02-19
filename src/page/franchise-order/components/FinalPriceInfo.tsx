@@ -19,7 +19,6 @@ export const FinalPriceInfo = () => {
       window.removeEventListener("storage", updateFinalPrice);
     };
   }, []);
-  console.log(finalPrice, "finalPrice");
 
   const gst = ((Number(finalPrice) / 100) * 18).toFixed(2);
   const totalPrice = (finalPrice + Number(gst)).toFixed(2);

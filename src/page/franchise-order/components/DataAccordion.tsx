@@ -65,12 +65,9 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
       window.removeEventListener("storage", updatedState);
     };
   }, []);
-  console.log(isSameAddress, "isSameAddress");
 
   const [showMore, setShowMore] = useState(false);
   const countryName = localStorage.getItem("countryName");
-  console.log(countryName, "countryName");
-  console.log(data.pickupAddress, "pickupAddress");
   const addressData = data.pickupAddress ? JSON.parse(data.pickupAddress) : {};
   const handleShowMore = () => {
     setShowMore(!showMore);
@@ -138,7 +135,6 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
 
   const relevantData = extractRelevantData(title, data);
   // const isSameAddress = relevantData.billingAddress === relevantData.shippingAddress;
-  console.log(relevantData);
   const renderData = () => {
     if (title === "Consignor Detail") {
       return (

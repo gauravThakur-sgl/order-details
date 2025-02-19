@@ -20,7 +20,6 @@ interface IOrderDetailsProps {
 
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
   const [resError, setResError] = useState<string | null>(null);
-  console.log(data, "data");
   const [rate, setRate] = useState([]);
   const [shippingPincode, setShippingPincode] = useState("");
   const [country, setCountry] = useState("");
@@ -57,9 +56,6 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     };
   }, []);
 
-  console.log(country, "country");
-  console.log(shippingPincode, "shippingPincode");
-
   const {
     register,
     control,
@@ -95,15 +91,15 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
       package_breadth: currentBreadth,
       package_height: currentHeight,
     };
-    await apiClient
-      .post("/orders/get-shipper-rates", ratePayload)
-      .then((response) => {
-        console.log(response.data, "Shipper Rates Response");
-        localStorage.setItem("shipperRates", JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        console.error("Error in getting Shipper Rate:", error);
-      });
+    try {
+      const response = await apiClient.post("/orders/get-shipper-rates", ratePayload);
+      console.log(response.data, "Shipper Rates Response");
+      setRate(response.data);
+      localStorage.setItem("shipperRates", JSON.stringify(response.data.data));
+      console.log(response.data, "rate from response");
+    } catch (error) {
+      console.error("Error in getting Shipper Rate:", error);
+    }
   };
 
   const validateData = async (data: FormData) => {
@@ -123,29 +119,27 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         vendor_order_item_tax_rate: item.igst,
       })),
     };
-    await apiClient
-      .post("/orders/validate-order-invoice", validatePayload)
-      .then((response) => {
-        setResError(null);
-        console.log(response.data, "response");
-      })
-      .catch((error) => {
-        setResError(String(error.response.data.message));
-        console.error("Error validating order invoice:", error);
-      });
+    try {
+      const response = await apiClient.post("/orders/validate-order-invoice", validatePayload);
+      setResError(null);
+      console.log(response.data, "Validation successful.");
+      return true;
+    } catch (error) {
+      setResError(String(error.response?.data?.message || "Validation error."));
+      console.error("Error validating order invoice:", error);
+      return false;
+    }
   };
 
-  const onSubmit = (formData: FormData) => {
-    console.log(formData, "OrderDetails formData");
-    validateData(formData);
-    if (resError) return;
-    getRate();
-    // localStorage.setItem("shipperRates", JSON.stringify(rate));
+  const onSubmit = async (formData: FormData) => {
+    const isValid = await validateData(formData);
+    if (!isValid) return;
+    await getRate();
     onNext(formData);
   };
   console.log(resError, "resError");
-
   console.log(errors, "errors");
+
   return (
     <section>
       <form action="" className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
