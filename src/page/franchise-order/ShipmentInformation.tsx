@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import apiClient from "./api/apiClient";
 import Select from "./components/ui/Select";
 import { ShipmentInformationData } from "./interface";
+import { currencyOptions } from "./config/currencyOptions";
 interface IOrderDetailsProps {
   data: ShipmentInformationData;
   onNext: (formData: ShipmentInformationData) => void;
@@ -163,16 +164,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               render={({ field }) => (
                 <Select
                   title="Invoice Currency"
-                  options={[
-                    { label: "AED", value: "AED" },
-                    { label: "AUD", value: "AUD" },
-                    { label: "CAD", value: "CAD" },
-                    { label: "EUR", value: "EUR" },
-                    { label: "GBP", value: "GBP" },
-                    { label: "INR", value: "INR" },
-                    { label: "SAR", value: "SAR" },
-                    { label: "USD", value: "USD" },
-                  ]}
+                  options={currencyOptions}
                   value={field.value}
                   className="z-40"
                   onChange={(value) => field.onChange(value)}
@@ -202,7 +194,10 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           </span>
         </p>
         {fields.map((item, index) => (
-          <div key={item.id} className={`flex flex-col md:flex-row gap-2 justify-between items-start mt-4 animate-fadeIn w-full`}>
+          <div
+            key={item.id}
+            className={`flex flex-col md:flex-row gap-2 justify-between items-start mt-4 animate-fadeIn w-full`}
+          >
             <Input
               register={register(`items.${index}.productName` as const)}
               labelData="Product Name"

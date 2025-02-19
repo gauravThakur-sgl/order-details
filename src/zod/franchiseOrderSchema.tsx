@@ -29,12 +29,12 @@ export const orderSchema = z.object({
   shippingPincode: z
     .string()
     .nonempty("The customer shipping postcode is required.")
-    .regex(/^(?! )[A-Z0-9 ]*(?<! )$/, "Invalid Pincode"),
+    .regex(/^[A-Z0-9]+(?: [A-Z0-9]+)?$/, "Invalid Pincode"),
+
   shippingState: z.string().nonempty("State is required."),
 
   isChecked: z.boolean().optional(),
 
-  // Buyer Billing Details
   billingfirstName: z
     .string()
     .nonempty("First name is required.")
@@ -57,7 +57,7 @@ export const orderSchema = z.object({
   billingPincode: z.coerce
     .string()
     .nonempty("The customer shipping postcode is required.")
-    .min(6, "Pincode must be of 6 digit"),
+    .regex(/^[A-Z0-9]+(?: [A-Z0-9]+)?$/, "Invalid Pincode"),
   billingState: z.string().nonempty("The customer shipping state is required."),
 });
 
