@@ -8,16 +8,11 @@ import { ConsignorDetail } from "./ConsignorDetail";
 import { ShipmentInformation } from "./ShipmentInformation";
 import { ShippingPartner } from "./ShippingPartner";
 import { Accordion } from "./components/Accordion";
-import { z } from "zod";
-import { consignorDetailSchema, orderDetailsSchema, orderSchema } from "../../zod/franchiseOrderSchema";
+
 import { DataAccordion } from "./components/DataAccordion";
 import { ChevronRight } from "lucide-react";
 import { FinalPriceInfo } from "./components/FinalPriceInfo";
-
-type ConsignorData = z.infer<typeof consignorDetailSchema>;
-type FormData = z.infer<typeof orderSchema>;
-type OrderDetailsFormData = z.infer<typeof orderDetailsSchema>;
-type ShippingPartnerFormData = { shippingPartner: string; est: string; price: string };
+import { ConsignorData, OrderDetailsFormData, ShippingPartnerFormData } from "../interface";
 
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -127,7 +122,7 @@ export const AddOrder = () => {
           <span className="text-sm text-franchise-sectionp pl-2">Create CSB-IV Order</span>
         </p>
         <div className="flex justify-center gap-4 mt-5">
-          <div className="flex flex-grow flex-col items-start gap-1 lg:w-2/3 overflow-y-auto" ref={containerRef}>
+          <div className="flex flex-grow flex-col items-start gap-1 lg:w-2/3 scrollable-container">
             <Accordion
               title="Consignor Detail"
               stepNumber={1}

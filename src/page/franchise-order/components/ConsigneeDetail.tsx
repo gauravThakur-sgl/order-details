@@ -1,16 +1,14 @@
 import { Check } from "lucide-react";
 import Input from "../components/ui/Input";
 import { useEffect, useState } from "react";
-import z from "zod";
 import { orderSchema } from "../../../zod/franchiseOrderSchema";
 import { Controller, useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConsigneeBillingDetail } from "./ConsigneeBillingDetail";
 import { useCountries, useStates } from "../hooks/countryState";
 import Select from "./ui/Select";
+import { FormData } from "../../interface";
 
-type FormData = z.infer<typeof orderSchema>;
 interface IBuyerDetailProps {
   data: FormData;
   onNext: (formData: FormData) => void;

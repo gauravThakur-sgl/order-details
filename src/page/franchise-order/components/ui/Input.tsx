@@ -20,6 +20,9 @@ interface InputProps {
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
   register?: UseFormRegisterReturn;
+  step?: number;
+  min?: number;
+  max?: number;
 }
 const inputColors = {
   default: "bg-black-300",
@@ -49,6 +52,9 @@ function Input({
   props,
   onKeyPress,
   register,
+  step,
+  min,
+  max,
 }: InputProps) {
   const baseClasses =
     "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
@@ -75,6 +81,9 @@ function Input({
             {...props}
             onKeyDown={onKeyPress}
             {...register}
+            step={step}
+            min={min}
+            max={max}
           />
           <div>{children}</div>
         </div>

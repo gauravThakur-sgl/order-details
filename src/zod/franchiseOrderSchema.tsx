@@ -86,24 +86,25 @@ export const orderDetailsSchema = z.object({
     .string()
     .nonempty("The actual weight is required.")
     // .regex(/^[1-9]+$/, "Weight must be atleast 0.1 KG")
-    .regex(/^(?:0\.[1-9]|[1-9]\d{0,2}(?:\.\d{1,2})?|300(?:\.0{1,2})?)$/, "Weight must be between 0.1 and 300 KG"),
+    .regex(
+      /^(?:0\.[1-9][0-9]*|[1-9]?[0-9]{1,2}|1[0-9]{2}|200|2[0-9]{2}|300)$/,
+      "Weight must be between 0.1 and 300 KG",
+    ),
+
   length: z.coerce
     .string()
     .nonempty("The length is required.")
-    .regex(/^[1-9]+$/, "Length must be atleast 1 cm")
-    .regex(/^(?:1[0-1][0-9]|120|[1-9][0-9]?|0\.[1-9])$/, "Dimension must be between 1 and 120 cm"),
+    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Dimension must be between 1 and 120 cm"),
 
   breadth: z.coerce
     .string()
     .nonempty("The breadth is required.")
-    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm")
-    .regex(/^(?:1[0-1][0-9]|120|[1-9][0-9]?|0\.[1-9])$/, "Dimension must be between 1 and 120 cm"),
+    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Dimension must be between 1 and 120 cm"),
 
   height: z.coerce
     .string()
     .nonempty("The height is required.")
-    .regex(/^[1-9]+$/, "Breadth must be atleast 1 cm")
-    .regex(/^(?:1[0-1][0-9]|120|[1-9][0-9]?|0\.[1-9])$/, "Dimension must be between 1 and 120 cm"),
+    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Dimension must be between 1 and 120 cm"),
 
   // Order Details
   invoiceNo: z.string().nonempty("The invoice value is required."),

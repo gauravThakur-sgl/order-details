@@ -1,31 +1,8 @@
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-interface IShippingPartnerProps {
-  data: {
-    consigneeDetail: {
-      shippingPincode: string;
-      country: string;
-      shippingPincodee: string;
-    };
-    shipmentInformation: {
-      actualWeight: number;
-      length: number;
-      height: number;
-      breadth: number;
-    };
-  };
-  onNext: (formData: FormData) => void;
-}
-interface ShippingRate {
-  provider_code: string;
-  display_name: string;
-  helper_text: string;
-  image: string;
-  transit_time: string;
-  rate: number;
-  bill_weight_kg: number;
-}
-export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
+import {  ShippingRate } from "../interface";
+
+export const ShippingPartner = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
   const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
   const [weightData, setWeightData] = useState({

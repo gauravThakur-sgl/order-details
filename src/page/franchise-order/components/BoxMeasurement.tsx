@@ -34,6 +34,9 @@ export const BoxMeasurement = ({ register, errors }: IShipMentMeasurementProps) 
                   type="number"
                   className="appearence-none rounded-r-none"
                   errorName={errors[data.name as keyof FormData]?.message}
+                  step={data.name === "actualWeight" ? 0.1 : 1}
+                  min={data.name === "actualWeight" ? 0.1 : 1}
+                  max={data.name === "actualWeight" ? 300 : 1000}
                 />
               </div>
               <span className="bg-gray-100 p-2 mt-5 px-3 border rounded-r-md tracking-tight">{data.default}</span>

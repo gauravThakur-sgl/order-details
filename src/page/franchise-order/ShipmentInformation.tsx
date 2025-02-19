@@ -1,4 +1,3 @@
-import z from "zod";
 import { orderDetailsSchema } from "../../zod/franchiseOrderSchema";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
@@ -11,11 +10,10 @@ import { Igst } from "./components/Igst";
 import { useEffect, useState } from "react";
 import apiClient from "./api/apiClient";
 import Select from "./components/ui/Select";
-type FormData = z.infer<typeof orderDetailsSchema> & { shippingPincode: string; country: string };
-
+import { ShipmentInformationData } from "../interface";
 interface IOrderDetailsProps {
-  data: FormData;
-  onNext: (formData: FormData) => void;
+  data: ShipmentInformationData;
+  onNext: (formData: ShipmentInformationData) => void;
 }
 
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
@@ -61,7 +59,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ShipmentInformationData>({
     resolver: zodResolver(orderDetailsSchema),
     defaultValues: { ...data, invoiceCurrency: "INR" },
   });
@@ -101,7 +99,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     }
   };
 
-  const validateData = async (data: FormData) => {
+  const validateData = async (data: ShipmentInformationData) => {
     const validatePayload = {
       csbv: "0",
       currency_code: data.invoiceCurrency,
@@ -130,11 +128,11 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     }
   };
 
-  const onSubmit = async (formData: FormData) => {
-    const isValid = await validateData(formData);
+  const onSubmit = async (ShipmentInformationData: ShipmentInformationData) => {
+    const isValid = await validateData(ShipmentInformationData);
     if (!isValid) return;
     await getRate();
-    onNext(formData);
+    onNext(ShipmentInformationData);
   };
   console.log(resError, "resError");
   console.log(errors, "errors");

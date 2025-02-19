@@ -1,12 +1,11 @@
 import { ChevronDown, Search } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import Input from "../../components/ui/Input";
-import { z } from "zod";
 import { consignorDetailSchema } from "../../zod/franchiseOrderSchema";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ConsignorData } from "../interface";
 
-type ConsignorData = z.infer<typeof consignorDetailSchema>;
 interface IConsignorDetailProps {
   data: ConsignorData;
   onNext: (formData: ConsignorData) => void;
