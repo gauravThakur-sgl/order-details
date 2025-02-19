@@ -49,6 +49,7 @@ export const ShippingPartner = () => {
     alert("Order Placed Successfully");
   };
 
+
   return (
     <div>
       <div>
@@ -82,9 +83,9 @@ export const ShippingPartner = () => {
           <p>Showing 1 Results</p>
         </div>
         <div className="flex flex-col justify-center mt-5">
-          <table className="">
-            <thead className="border rounded-xl">
-              <tr className="bg-gray-100 text-gray-700 border-collapse">
+          <table className="border-collapse w-full">
+            <thead className="rounded-xl border">
+              <tr className="bg-gray-100 text-gray-700">
                 <th className="font-xs font-normal p-2 m-8 rounded-l-lg text-left pl-4">Courier Partner</th>
                 <th className="font-xs font-normal text-left">Delivery Time</th>
                 <th className="font-xs font-normal text-left">Shipment Rate</th>
@@ -96,30 +97,28 @@ export const ShippingPartner = () => {
               {shipperRates.map((rate, index) => (
                 <>
                   <span className="w-full my-1"></span>
-                  <tr className="bg-blue-50 border rounded-md">
-                    <td className="">
-                      <span className="w-full text-xs text-franchise-error pl-4">
-                        Duties will be charged if applicable
-                      </span>
-                    </td>
-                    <td className="text-blue-50"></td>
-                    <td className="text-blue-50"></td>
-                    <td className="text-blue-50"></td>
+
+                  <tr className="bg-blue-50 text-xs border">
+                    <td dangerouslySetInnerHTML={{ __html: rate.helper_text }} className="text-text-danger px-4 py-1" />
+                    <td className="bg-blue-50"></td>
+                    <td className="bg-blue-50"></td>
+                    <td className="bg-blue-50"></td>
                   </tr>
-                  <tr key={index} className="border-b">
+                  <tr key={index} className="border-y">
                     <td className="rounded-l-lg p-2 pl-4 border-l rounded-bl-lg">{rate.display_name}</td>
                     <td>{rate.transit_time}</td>
                     <td className="pl-8">{rate.rate}</td>
                     <td className="rounded-l-full pl-8 border-r">
                       <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
                         <Check
-                          className={`h-5 w-5 m-4 p-1 text-white rounded-full border-2 border-white ring-2 ${
+                          className={`h-6 w-6 m-4 p-1 text-white rounded-full border border-white ${
                             isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
                           }  `}
                         />
                       </span>
                     </td>
                   </tr>
+                  <span className="w-full m-10"></span>
                 </>
               ))}
             </tbody>

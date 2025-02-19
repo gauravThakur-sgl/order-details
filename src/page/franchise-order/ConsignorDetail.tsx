@@ -24,19 +24,6 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
     defaultValues: data,
   });
 
-  const userDetail = [
-    {
-      firstName: "Murli",
-      lastName: "Chandani",
-      email: "murli@gmail.com",
-      mobileNo: "+91-8239989323",
-      billingAddress:
-        "S/O Assudomal Chandani, House No 6 New Frinds Colony Behind 56 Bhog, Huzur Bhopa, Madhya Pradesh - 462016",
-      documentType: "Aadhar",
-      documentDetail: "786567876545",
-    },
-  ];
-
   const userOption = userDetail.map((user) => ({
     label: `${user.mobileNo.slice(4)} / ${user.firstName} ${user.lastName} / ${user.email}`,
     value: JSON.stringify({
@@ -217,3 +204,16 @@ function Select({ title, variant, size, className, options, value, onChange, nam
 }
 
 export default Select;
+
+const userDetail = [
+  {
+    firstName: "Murli",
+    lastName: "Chandani",
+    email: "murli@gmail.com",
+    mobileNo: "+91-8239989323",
+    billingAddress:
+      "S/O Assudomal Chandani, House No 6 New Frinds Colony Behind 56 Bhog, Huzur Bhopa, Madhya Pradesh - 462016",
+    documentType: "Aadhar",
+    documentDetail: "786567876545",
+  },
+];

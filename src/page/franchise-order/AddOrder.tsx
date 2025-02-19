@@ -11,69 +11,19 @@ import { Accordion } from "./components/Accordion";
 import { DataAccordion } from "./components/DataAccordion";
 import { ChevronRight } from "lucide-react";
 import { FinalPriceInfo } from "./components/FinalPriceInfo";
-import { ConsignorData, OrderDetailsFormData, ShippingPartnerFormData } from "./interface";
+import { HandleNextData } from "./interface";
+import { initialFormData } from "./config/initialData";
 
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    consignorDetail: {
-      pickupAddress: "",
-      selectedUserDetail: "",
-    },
-    consigneeDetail: {
-      firstName: "",
-      lastName: "",
-      mobileNumber: "",
-      alternateMobileNumber: "",
-      email: "",
-      country: "",
-      landMark: "",
-      address1: "",
-      address2: "",
-      shippingcity: "",
-      shippingPincode: "",
-      shippingState: "",
-      billingfirstName: "",
-      billinglastName: "",
-      billingmobileNumber: "",
-      billingCountry: "",
-      billingLandMark: "",
-      billingAddress1: "",
-      billingAddress2: "",
-      billingcity: "",
-      billingPincode: "",
-      billingState: "",
-    },
-    shipmentInformation: {
-      actualWeight: "",
-      length: "",
-      breadth: "",
-      height: "",
-      invoiceNo: "",
-      invoiceCurrency: "",
-      orderId: "",
-      invoiceDate: "",
-      orderid: "",
-      items: [
-        {
-          productName: "",
-          sku: "",
-          hsn: "",
-          qty: "",
-          unitPrice: "",
-          igst: "",
-        },
-      ],
-    },
-    selectShippingPartner: { shippingPartner: "", est: "", price: "" },
-  });
+  const [formData, setFormData] = useState(initialFormData);
   const [openIndex, setOpenIndex] = useState<number | null>(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const accordionRef = useRef<HTMLDivElement>(null);
 
   const stepTiles = ["consignorDetail", "consigneeDetail", "shipmentInformation", "selectShippingPartner"];
 
-  const handleNext = (data: ConsignorData | FormData | OrderDetailsFormData | ShippingPartnerFormData) => {
+  const handleNext = (data: HandleNextData) => {
     const key = stepTiles[currentStep - 1]; // Adjusted indexing
     setFormData((prev) => ({
       ...prev,
