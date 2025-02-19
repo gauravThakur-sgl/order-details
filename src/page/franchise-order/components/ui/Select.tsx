@@ -101,8 +101,8 @@ function Select({ title, variant, size, className, options, value, onChange, nam
               {filteredOptions.map((option, index) => (
                 <div
                   key={option.value}
-                  className={`p-2 px-6 bg-white text-sm cursor-pointer ${
-                    index === highlightedIndex ? "bg-slate-100 text-franchise-primary" : ""
+                  className={`p-2 px-6 text-sm cursor-pointer ${
+                    index === highlightedIndex ? "text-franchise-primary bg-franchise-select-bg" : ""
                   }`}
                   onMouseEnter={() => setHighlightedIndex(index)}
                   onClick={() => {
