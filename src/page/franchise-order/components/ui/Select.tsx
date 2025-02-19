@@ -27,6 +27,7 @@ const selectSize = {
   lg: "h-12 text-lg",
 };
 function Select({ title, variant, size, className, options, value, onChange, name, errorName }: ISelectProps) {
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
@@ -43,11 +44,35 @@ function Select({ title, variant, size, className, options, value, onChange, nam
         setIsOpen(false);
       }
     };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      switch (e.key) {
+        case 'ArrowDown':
+          setHighlightedIndex((prevIndex) => (prevIndex + 1) % filteredOptions.length);
+          break;
+        case 'ArrowUp':
+          setHighlightedIndex((prevIndex) => (prevIndex - 1 + filteredOptions.length) % filteredOptions.length);
+          break;
+        case 'Enter':
+          if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
+            onChange?.(filteredOptions[highlightedIndex].value);
+            setIsOpen(false);
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
     document.addEventListener("click", handleOutsideClick);
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, highlightedIndex, filteredOptions, onChange]);
   return (
     <div ref={ref}>
       <div className="relative">
@@ -74,6 +99,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
                 <div
                   key={option.value}
                   className="p-2 px-4 bg-white hover:text-franchise-primary hover:bg-franchise-select-bg text-sm cursor-pointer"
+                  onMouseEnter={() => setHighlightedIndex(filteredOptions.indexOf(option))}
                   onClick={() => {
                     if (onChange) {
                       onChange(option.value);

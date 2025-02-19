@@ -63,7 +63,6 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
       formData.billingCountry = formData.country;
     }
     console.log(formData, "formData After filling the form");
-    // localStorage.setItem("countryName", selectedCountry);
     localStorage.setItem("country", formData.country);
     localStorage.setItem("pincode", formData.shippingPincode);
     onNext(formData);

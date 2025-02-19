@@ -32,7 +32,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
   useEffect(() => {
     const updatedPinCode = () => {
       const pincode = getPincode();
-      setShippingPincode(pincode  || "");
+      setShippingPincode(pincode || "");
     };
     updatedPinCode();
     window.addEventListener("storage", updatedPinCode);
@@ -68,7 +68,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(orderDetailsSchema),
-    defaultValues: data,
+    defaultValues: { ...data, invoiceCurrency: "INR" },
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -81,6 +81,30 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     const unitPrice = watch(`items.${index}.unitPrice`);
     return acc + Number(qty) * Number(unitPrice);
   }, 0);
+
+  const getRate = async () => {
+    const currentActualWeight = watch("actualWeight");
+    const currentLength = watch("length");
+    const currentBreadth = watch("breadth");
+    const currentHeight = watch("height");
+    const ratePayload = {
+      customer_shipping_postcode: shippingPincode,
+      customer_shipping_country_code: country,
+      package_weight: currentActualWeight,
+      package_length: currentLength,
+      package_breadth: currentBreadth,
+      package_height: currentHeight,
+    };
+    await apiClient
+      .post("/orders/get-shipper-rates", ratePayload)
+      .then((response) => {
+        console.log(response.data, "Shipper Rates Response");
+        localStorage.setItem("shipperRates", JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.error("Error in getting Shipper Rate:", error);
+      });
+  };
 
   const validateData = async (data: FormData) => {
     const validatePayload = {
@@ -99,33 +123,16 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         vendor_order_item_tax_rate: item.igst,
       })),
     };
-    try {
-      const response = await apiClient.post("/orders/validate-order-invoice", validatePayload);
-      console.log(response.data, "response");
-      setResError(null);
-    } catch (error) {
-      console.error("Error validating order invoice:", error);
-      setResError(String(error.response.data.message));
-    }
-  };
-
-  const getRate = async () => {
-    const ratePayload = {
-      customer_shipping_postcode: shippingPincode,
-      customer_shipping_country_code: country,
-      package_weight: data.actualWeight,
-      package_length: data.length,
-      package_breadth: data.breadth,
-      package_height: data.height,
-    };
-    try {
-      const response = await apiClient.post("/orders/get-shipper-rates", ratePayload);
-      console.log(response.data, "response");
-      setRate(response.data);
-      localStorage.setItem("shipperRates", JSON.stringify(response.data));
-    } catch (error) {
-      console.error("Error validating order invoice:", error);
-    }
+    await apiClient
+      .post("/orders/validate-order-invoice", validatePayload)
+      .then((response) => {
+        setResError(null);
+        console.log(response.data, "response");
+      })
+      .catch((error) => {
+        setResError(String(error.response.data.message));
+        console.error("Error validating order invoice:", error);
+      });
   };
 
   const onSubmit = (formData: FormData) => {
@@ -133,10 +140,9 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     validateData(formData);
     if (resError) return;
     getRate();
-    localStorage.setItem("shipperRates", JSON.stringify(rate));
+    // localStorage.setItem("shipperRates", JSON.stringify(rate));
     onNext(formData);
   };
-  // console.log(data, "data");
   console.log(resError, "resError");
 
   console.log(errors, "errors");
@@ -176,7 +182,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
                     { label: "SAR", value: "SAR" },
                     { label: "USD", value: "USD" },
                   ]}
-                  value={field.value || "INR"}
+                  value={field.value}
                   className="z-40"
                   onChange={(value) => field.onChange(value)}
                   errorName={errors.invoiceCurrency?.message}

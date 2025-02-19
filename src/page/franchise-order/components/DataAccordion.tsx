@@ -48,7 +48,7 @@ interface DataAccordionProps {
 }
 
 export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState<boolean>(initialIsOpen ?? true);
   const [isSameAddress, setIsSameAddress] = useState(false);
   const getCheckState = () => {
     const isChecked = localStorage.getItem("isChecked");

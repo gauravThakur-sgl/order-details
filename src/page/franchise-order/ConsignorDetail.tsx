@@ -55,7 +55,6 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
     console.log(data, "data");
     onNext(data);
   };
-  console.log(data.pickupAddress.slice(0, 10), "pickupAddress");
   return (
     <section>
       <form onSubmit={handleSubmit(onSubmit)}>

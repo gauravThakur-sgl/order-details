@@ -33,15 +33,9 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
     volumetricWeight: 0,
     billedWeight: 0,
   });
-  const handleSelectedPrice = (index: number) => {
-    setTimeout(() => {
-      setIsSelected(index);
-      localStorage.setItem("selectedRate", JSON.stringify(shipperRates[index]));
-      window.dispatchEvent(new Event("storage"));
-    }, 100);
-  };
   const getShipperRates = () => {
     const storedRates = localStorage.getItem("shipperRates");
+    console.log(storedRates, "storedRates");
     return storedRates;
   };
 
@@ -65,8 +59,12 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
     };
   }, []);
 
-  console.log(shipperRates, "shipperRates");
-  console.log(weightData, "weightData");
+  const handleSelectedPrice = (index: number) => {
+    setIsSelected(index);
+    localStorage.setItem("selectedRate", JSON.stringify(shipperRates[index]));
+    window.dispatchEvent(new Event("storage"));
+  };
+
   return (
     <div>
       <div>
