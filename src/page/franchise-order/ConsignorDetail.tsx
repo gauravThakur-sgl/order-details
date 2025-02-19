@@ -4,7 +4,7 @@ import Input from "../../components/ui/Input";
 import { consignorDetailSchema } from "../../zod/franchiseOrderSchema";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ConsignorData } from "../interface";
+import { ConsignorData } from "./interface";
 
 interface IConsignorDetailProps {
   data: ConsignorData;
@@ -206,7 +206,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
               ))}
             </div>
             <span className="text-franchise-primary px-4 text-sm font-medium">
-              <span className="text-base">+ </span>Add new Customer
+              <span className="text-base pb-4">+ </span>Add new Customer
             </span>
           </div>
         )}

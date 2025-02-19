@@ -27,7 +27,7 @@ export const Igst = ({ control, errors }: IPickupAddressProps) => {
   };
 
   return (
-    <div className="-mt-1 w-full">
+    <div className="-mt-1 w-full md:w-18">
       <Controller
         control={control}
         name="items.0.igst"
@@ -109,7 +109,7 @@ function Select({
         ))}
       </select>
       {errorName && <span className="text-franchise-error text-xs font-medium">{errorName}</span>}
-      <ChevronDown className="absolute inset-y-0 right-2 top-8 flex items-center pr-2 pointer-events-none" />
+      <ChevronDown className="absolute inset-y-0 right-1 top-8 flex items-center pr-2 pointer-events-none" />
     </div>
   );
 }

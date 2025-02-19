@@ -202,12 +202,13 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           </span>
         </p>
         {fields.map((item, index) => (
-          <div key={item.id} className={`flex flex-col md:flex-row gap-2 items-end mt-4 animate-fadeIn w-full`}>
+          <div key={item.id} className={`flex flex-col md:flex-row gap-2 justify-between items-start mt-4 animate-fadeIn w-full`}>
             <Input
               register={register(`items.${index}.productName` as const)}
               labelData="Product Name"
               required={true}
               type="text"
+              className="md:min-w-28"
               errorName={errors.items?.[index]?.productName?.message}
             />
             <Input
@@ -236,9 +237,10 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData={`Unit Price (${currency})`}
               required={true}
               type="text"
+              className="md:min-w-32"
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
-            <div className={`${fields.length < 1 ? "mr-4" : "mr-0"}`}>
+            <div className={`${fields.length === 1 ? "mr-4" : "mr-0"}`}>
               <Igst control={control} errors={errors} />
             </div>
 

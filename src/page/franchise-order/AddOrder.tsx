@@ -8,7 +8,6 @@ import { ConsignorDetail } from "./ConsignorDetail";
 import { ShipmentInformation } from "./ShipmentInformation";
 import { ShippingPartner } from "./ShippingPartner";
 import { Accordion } from "./components/Accordion";
-
 import { DataAccordion } from "./components/DataAccordion";
 import { ChevronRight } from "lucide-react";
 import { FinalPriceInfo } from "./components/FinalPriceInfo";
