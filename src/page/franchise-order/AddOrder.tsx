@@ -24,7 +24,7 @@ export const AddOrder = () => {
   const stepTiles = ["consignorDetail", "consigneeDetail", "shipmentInformation", "selectShippingPartner"];
 
   const handleNext = (data: HandleNextData) => {
-    const key = stepTiles[currentStep - 1]; // Adjusted indexing
+    const key = stepTiles[currentStep - 1];
     setFormData((prev) => ({
       ...prev,
       [key]: data,

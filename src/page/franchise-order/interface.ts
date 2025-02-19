@@ -80,7 +80,7 @@ export interface DataAccordionProps {
       sku: string;
       qty: string;
       unitPrice: string;
-    }[];
+    }[]
   };
   initialIsOpen?: boolean;
 }
