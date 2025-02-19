@@ -12,7 +12,7 @@ import { Accordion } from "./components/Accordion";
 import { DataAccordion } from "./components/DataAccordion";
 import { ChevronRight } from "lucide-react";
 import { FinalPriceInfo } from "./components/FinalPriceInfo";
-import { ConsignorData, OrderDetailsFormData, ShippingPartnerFormData } from "../interface";
+import { ConsignorData, OrderDetailsFormData, ShippingPartnerFormData } from "./interface";
 
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(1);

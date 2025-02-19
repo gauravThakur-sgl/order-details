@@ -10,7 +10,7 @@ import { Igst } from "./components/Igst";
 import { useEffect, useState } from "react";
 import apiClient from "./api/apiClient";
 import Select from "./components/ui/Select";
-import { ShipmentInformationData } from "../interface";
+import { ShipmentInformationData } from "./interface";
 interface IOrderDetailsProps {
   data: ShipmentInformationData;
   onNext: (formData: ShipmentInformationData) => void;

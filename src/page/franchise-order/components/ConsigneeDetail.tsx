@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ConsigneeBillingDetail } from "./ConsigneeBillingDetail";
 import { useCountries, useStates } from "../hooks/countryState";
 import Select from "./ui/Select";
-import { FormData } from "../../interface";
+import { FormData } from "../interface";
 
 interface IBuyerDetailProps {
   data: FormData;

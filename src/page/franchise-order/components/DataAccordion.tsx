@@ -1,60 +1,18 @@
 import { useEffect, useState } from "react";
-
-interface DataAccordionProps {
-  title: string;
-  data: {
-    firstName?: string;
-    lastName?: string;
-    mobileNumber?: string;
-    email?: string;
-    pickupAddress?: string;
-    billingAddress1?: string;
-    billingAddress2?: string;
-    landMark?: string;
-    shippingcity?: string;
-    country?: string;
-    shippingState?: string;
-    shippingPincode?: string;
-    billingcity?: string;
-    billingCountry?: string;
-    billingState?: string;
-    billingPincode?: string;
-    billingLandMark?: string;
-    address1?: string;
-    address2?: string;
-    actualWeight?: string;
-    length?: string;
-    breadth?: string;
-    height?: string;
-    invoiceNo?: string;
-    shippingPartner?: string;
-    est?: string;
-    price?: string;
-    unit?: string;
-    qty?: string;
-    total?: string;
-    productName?: string;
-    hsn: string;
-    sku: string;
-    items: {
-      productName: string;
-      hsn: string;
-      sku: string;
-      qty: string;
-      unitPrice: string;
-    }[];
-  };
-  initialIsOpen?: boolean;
-}
+import { DataAccordionProps } from "../interface";
 
 export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(initialIsOpen ?? true);
+  const [showMore, setShowMore] = useState(false);
   const [isSameAddress, setIsSameAddress] = useState(false);
+
+  const infoTitle = "text-franchise-consignor-text";
+  const infoDetail = "text-franchise-sectionp font-medium";
+
   const getCheckState = () => {
     const isChecked = localStorage.getItem("isChecked");
     return isChecked ? JSON.parse(isChecked) : false;
   };
-
   useEffect(() => {
     const updatedState = () => {
       setIsSameAddress(getCheckState());
@@ -66,7 +24,6 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
     };
   }, []);
 
-  const [showMore, setShowMore] = useState(false);
   const countryName = localStorage.getItem("countryName");
   const addressData = data.pickupAddress ? JSON.parse(data.pickupAddress) : {};
   const handleShowMore = () => {
@@ -134,18 +91,17 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
   };
 
   const relevantData = extractRelevantData(title, data);
-  // const isSameAddress = relevantData.billingAddress === relevantData.shippingAddress;
   const renderData = () => {
     if (title === "Consignor Detail") {
       return (
         <>
           <div className="space-y-1">
-            <h3 className="text-franchise-consignor-text">Name</h3>
-            <p className="text-franchise-sectionp font-medium">{`${relevantData.name} | ${relevantData.mobileNumber}`}</p>
+            <h3 className={`${infoTitle}`}>Name</h3>
+            <p className={`${infoDetail}`}>{`${relevantData.name} | ${relevantData.mobileNumber}`}</p>
             <p className="text-franchise-sectionp">{relevantData.email}</p>
           </div>
           <div className="space-y-1 pt-2">
-            <h3 className="text-franchise-consignor-text">Address</h3>
+            <h3 className={`${infoTitle}`}>Address</h3>
             <p className="text-franchise-sectionp">{relevantData.address}</p>
           </div>
         </>
@@ -154,11 +110,11 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
       return (
         <div className="space-y-2">
           <div className="space-y-1">
-            <h3 className="text-franchise-consignor-text">Name</h3>
-            <p className="text-franchise-sectionp font-medium">{`${relevantData.name} | ${relevantData.mobileNumber}`}</p>
+            <h3 className={`${infoTitle}`}>Name</h3>
+            <p className={`${infoDetail}`}>{`${relevantData.name} | ${relevantData.mobileNumber}`}</p>
           </div>
           <div className="space-y-1">
-            <h3 className="text-franchise-consignor-text">Billing Address</h3>
+            <h3 className={`${infoTitle}`}>Billing Address</h3>
             <p className="text-franchise-sectionp">
               {isSameAddress
                 ? "Same as shipping address"
@@ -166,7 +122,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
             </p>
           </div>
           <div className="space-y-1">
-            <h3 className="text-franchise-consignor-text">Shipping Address</h3>
+            <h3 className={`${infoTitle}`}>Shipping Address</h3>
             <p className="text-franchise-sectionp">{`${relevantData.shippingAddress} ${relevantData.shippingAddress2} ${relevantData.landmark} ${relevantData.city} ${relevantData.state} ${countryName} ${relevantData.pincode}`}</p>
           </div>
         </div>
@@ -176,12 +132,12 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
         <div>
           <div className="flex justify-between pr-10">
             <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">Billed Weight</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.weight} KG`}</p>
+              <h3 className={`${infoTitle}`}>Billed Weight</h3>
+              <p className={`${infoDetail}`}>{`${relevantData.weight} KG`}</p>
             </div>
             <div className="space-y-1">
-              <h3 className="text-franchise-consignor-text">Dimensions</h3>
-              <p className="text-franchise-sectionp font-medium">{`${relevantData.dimensions}`}</p>
+              <h3 className={`${infoTitle}`}>Dimensions</h3>
+              <p className={`${infoDetail}`}>{`${relevantData.dimensions}`}</p>
             </div>
           </div>
           {relevantData.items &&
@@ -191,30 +147,30 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
                   <>
                     <div key={index} className="flex justify-between pr-10 pt-4">
                       <div className="space-y-1">
-                        <h3 className="text-franchise-consignor-text">Product</h3>
-                        <p className="text-franchise-sectionp font-medium">{`${item.product}`}</p>
+                        <h3 className={`${infoTitle}`}>Product</h3>
+                        <p className={`${infoDetail}`}>{`${item.product}`}</p>
                       </div>
                       <div className="space-y-1">
-                        <h3 className="text-franchise-consignor-text">HSN</h3>
-                        <p className="text-franchise-sectionp font-medium">{`${item.hsn}`}</p>
+                        <h3 className={`${infoTitle}`}>HSN</h3>
+                        <p className={`${infoDetail}`}>{`${item.hsn}`}</p>
                       </div>
                       <div className="space-y-1">
-                        <h3 className="text-franchise-consignor-text">SKU</h3>
-                        <p className="text-franchise-sectionp font-medium">{`${item.sku}`}</p>
+                        <h3 className={`${infoTitle}`}>SKU</h3>
+                        <p className={`${infoDetail}`}>{`${item.sku}`}</p>
                       </div>
                     </div>
                     <div className="flex justify-between pr-10 pt-4">
                       <div className="space-y-1">
-                        <h3 className="text-franchise-consignor-text">Qty</h3>
-                        <p className="text-franchise-sectionp font-medium">{`${item.qty}`}</p>
+                        <h3 className={`${infoTitle}`}>Qty</h3>
+                        <p className={`${infoDetail}`}>{`${item.qty}`}</p>
                       </div>
                       <div className="space-y-1">
-                        <h3 className="text-franchise-consignor-text">Unit Price</h3>
-                        <p className="text-franchise-sectionp font-medium">{`${item.unit}`}</p>
+                        <h3 className={`${infoTitle}`}>Unit Price</h3>
+                        <p className={`${infoDetail}`}>{`${item.unit}`}</p>
                       </div>
                       <div className="space-y-1">
-                        <h3 className="text-franchise-consignor-text">Total</h3>
-                        <p className="text-franchise-sectionp font-medium">{`${item.total}`}</p>
+                        <h3 className={`${infoTitle}`}>Total</h3>
+                        <p className={`${infoDetail}`}>{`${item.total}`}</p>
                       </div>
                     </div>
                   </>

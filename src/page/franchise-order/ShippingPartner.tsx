@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
-import {  ShippingRate } from "../interface";
+import { ShippingRate } from "./interface";
 
 export const ShippingPartner = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);

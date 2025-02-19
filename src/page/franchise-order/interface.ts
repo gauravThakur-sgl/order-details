@@ -37,3 +37,50 @@ export interface IShippingPartnerProps {
   };
   onNext: (formData: FormData) => void;
 }
+
+export interface DataAccordionProps {
+  title: string;
+  data: {
+    firstName?: string;
+    lastName?: string;
+    mobileNumber?: string;
+    email?: string;
+    pickupAddress?: string;
+    billingAddress1?: string;
+    billingAddress2?: string;
+    landMark?: string;
+    shippingcity?: string;
+    country?: string;
+    shippingState?: string;
+    shippingPincode?: string;
+    billingcity?: string;
+    billingCountry?: string;
+    billingState?: string;
+    billingPincode?: string;
+    billingLandMark?: string;
+    address1?: string;
+    address2?: string;
+    actualWeight?: string;
+    length?: string;
+    breadth?: string;
+    height?: string;
+    invoiceNo?: string;
+    shippingPartner?: string;
+    est?: string;
+    price?: string;
+    unit?: string;
+    qty?: string;
+    total?: string;
+    productName?: string;
+    hsn: string;
+    sku: string;
+    items: {
+      productName: string;
+      hsn: string;
+      sku: string;
+      qty: string;
+      unitPrice: string;
+    }[];
+  };
+  initialIsOpen?: boolean;
+}
