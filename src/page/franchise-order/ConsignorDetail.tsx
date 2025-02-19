@@ -44,7 +44,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
     <section>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h5 className="pb-2 text-sm font-normal leading-none text-franchise-sectionp">Select Customer</h5>
-        <div className="relative w-3/5">
+        <div className="relative w-3/5 z-10">
           <Controller
             control={control}
             name="pickupAddress"

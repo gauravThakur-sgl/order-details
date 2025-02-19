@@ -75,25 +75,27 @@ function ConsignorSelect({ title, variant, size, className, options, value, onCh
                 <Search className="w-4 h-4 text-franchise-consignor-text" />
               </span>
             </div>
-            <div className="overflow-y-auto max-h-60 pt-2">
+            <div className="overflow-y-auto max-h-96 pt-2 pb-4">
               {filteredOptions.map((option: { value: string; label: string }) => (
-                <div
-                  key={option.value}
-                  className="p-2 px-4 bg-white hover:text-franchise-primary hover:bg-franchise-select-bg text-sm cursor-pointer"
-                  onClick={() => {
-                    if (onChange) {
-                      onChange(option.value);
-                    }
-                    setIsOpen(false);
-                  }}
-                >
-                  {option.label}
-                </div>
+                <>
+                  <div
+                    key={option.value}
+                    className="p-2 px-4 bg-white hover:text-franchise-primary hover:bg-franchise-select-bg text-sm cursor-pointer"
+                    onClick={() => {
+                      if (onChange) {
+                        onChange(option.value);
+                      }
+                      setIsOpen(false);
+                    }}
+                  >
+                    {option.label}
+                  </div>
+                  <span className="text-franchise-primary px-4 text-sm font-medium">
+                    <span className="text-base">+ </span>Add new Customer
+                  </span>
+                </>
               ))}
             </div>
-            <span className="text-franchise-primary px-4 text-sm font-medium">
-              <span className="text-base pb-4">+ </span>Add new Customer
-            </span>
           </div>
         )}
       </div>

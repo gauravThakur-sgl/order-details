@@ -196,7 +196,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         {fields.map((item, index) => (
           <div
             key={item.id}
-            className={`flex flex-col md:flex-row gap-2 justify-between items-start mt-4 animate-fadeIn w-full`}
+            className={`flex flex-col md:flex-row gap-2 justify-between items-start mt-4 animate-fadeIn w-full pb-1`}
           >
             <Input
               register={register(`items.${index}.productName` as const)}
