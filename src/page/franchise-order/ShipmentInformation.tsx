@@ -20,7 +20,6 @@ interface IOrderDetailsProps {
 
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
   const [resError, setResError] = useState<string | null>(null);
-  const [rate, setRate] = useState([]);
   const [shippingPincode, setShippingPincode] = useState("");
   const [country, setCountry] = useState("");
 
@@ -94,8 +93,8 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     try {
       const response = await apiClient.post("/orders/get-shipper-rates", ratePayload);
       console.log(response.data, "Shipper Rates Response");
-      setRate(response.data);
       localStorage.setItem("shipperRates", JSON.stringify(response.data.data));
+      window.dispatchEvent(new Event("storage"));
       console.log(response.data, "rate from response");
     } catch (error) {
       console.error("Error in getting Shipper Rate:", error);

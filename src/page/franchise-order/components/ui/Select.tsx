@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import Input from "./Input";
 import { useEffect, useRef, useState } from "react";
 
@@ -26,6 +26,7 @@ const selectSize = {
   sm: "h-8 text-sm",
   lg: "h-12 text-lg",
 };
+
 function Select({ title, variant, size, className, options, value, onChange, name, errorName }: ISelectProps) {
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [isOpen, setIsOpen] = useState(false);
@@ -48,16 +49,17 @@ function Select({ title, variant, size, className, options, value, onChange, nam
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
       switch (e.key) {
-        case 'ArrowDown':
+        case "ArrowDown":
           setHighlightedIndex((prevIndex) => (prevIndex + 1) % filteredOptions.length);
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           setHighlightedIndex((prevIndex) => (prevIndex - 1 + filteredOptions.length) % filteredOptions.length);
           break;
-        case 'Enter':
+        case "Enter":
           if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
             onChange?.(filteredOptions[highlightedIndex].value);
             setIsOpen(false);
+            setSearch("");
           }
           break;
         default:
@@ -73,6 +75,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, highlightedIndex, filteredOptions, onChange]);
+
   return (
     <div ref={ref}>
       <div className="relative">
@@ -95,19 +98,27 @@ function Select({ title, variant, size, className, options, value, onChange, nam
               name={name}
             />
             <div className="overflow-y-auto max-h-60 pt-2">
-              {filteredOptions.map((option: { value: string; label: string }) => (
+              {filteredOptions.map((option, index) => (
                 <div
                   key={option.value}
-                  className="p-2 px-4 bg-white hover:text-franchise-primary hover:bg-franchise-select-bg text-sm cursor-pointer"
-                  onMouseEnter={() => setHighlightedIndex(filteredOptions.indexOf(option))}
+                  className={`p-2 px-6 bg-white text-sm cursor-pointer ${
+                    index === highlightedIndex ? "bg-slate-100 text-franchise-primary" : ""
+                  }`}
+                  onMouseEnter={() => setHighlightedIndex(index)}
                   onClick={() => {
-                    if (onChange) {
-                      onChange(option.value);
-                    }
+                    onChange?.(option.value);
                     setIsOpen(false);
+                    setSearch(""); // Clear search on selection
                   }}
                 >
-                  {option.label}
+                  <span className="relative flex items-center">
+                    {option.value === value ? (
+                      <span className="text-franchise-primary absolute -left-6">
+                        <Check className="w-5 h-5 text-black"/>
+                      </span>
+                    ) : null}
+                    {option.label}
+                  </span>
                 </div>
               ))}
             </div>

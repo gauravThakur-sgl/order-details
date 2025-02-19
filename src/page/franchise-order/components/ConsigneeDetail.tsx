@@ -65,6 +65,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     console.log(formData, "formData After filling the form");
     localStorage.setItem("country", formData.country);
     localStorage.setItem("pincode", formData.shippingPincode);
+    window.dispatchEvent(new Event("storage"));
     onNext(formData);
   };
 
@@ -177,6 +178,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                     field.onChange(value);
                     const selectedCountryOption = countryOptions.find((option) => option.value === value);
                     localStorage.setItem("countryName", selectedCountryOption?.label || "");
+                    window.dispatchEvent(new Event("storage"));
                   }}
                   errorName={errors.country?.message}
                 />

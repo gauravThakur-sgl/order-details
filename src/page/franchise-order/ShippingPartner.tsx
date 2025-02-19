@@ -66,6 +66,12 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
     window.dispatchEvent(new Event("storage"));
   };
 
+  const handlePlaceOrder = () => {
+    localStorage.clear();
+    window.location.reload();
+    alert("Order Placed Successfully");
+  };
+
   return (
     <div>
       <div>
@@ -147,6 +153,7 @@ export const ShippingPartner = ({ onNext }: IShippingPartnerProps) => {
             type="submit"
             className={`text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 font-medium text-base tracking-tight`}
             disabled={isSelected === null}
+            onClick={handlePlaceOrder}
           >
             Pay and Order
           </button>
