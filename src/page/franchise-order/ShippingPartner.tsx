@@ -89,7 +89,7 @@ export const ShippingPartner = () => {
         <div className="flex flex-col justify-center mt-5">
           <table className="">
             <thead>
-              <tr className="bg-gray-100 text-gray-700 rounded-lg ring-1 ring-slate-200">
+              <tr className="bg-gray-100 text-gray-700 rounded-lg ring-border ring-1 ring-slate-200">
                 <th className="font-xs font-normal p-2 m-8 text-left pl-4 rounded-l-lg">Courier Partner</th>
                 <th className="font-xs font-normal text-left">Delivery Time</th>
                 <th className="font-xs font-normal text-left">Shipment Rate</th>
@@ -110,7 +110,7 @@ export const ShippingPartner = () => {
                     <td className="bg-blue-50"></td>
                     <td className="bg-blue-50 rounded-tr-lg"></td>
                   </tr>
-                  <tr key={index} className="rounded-bl-lg ring-1 ring-slate-200">
+                  <tr key={index} className="rounded-bl-lg rounded-br-lg ring-1 ring-slate-200">
                     <td className="rounded-l-lg p-2 pl-4 rounded-bl-lg">{rate.display_name}</td>
                     <td>{rate.transit_time}</td>
                     <td className="pl-8">{rate.rate}</td>
