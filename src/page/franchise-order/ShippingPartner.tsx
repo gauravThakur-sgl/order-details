@@ -80,13 +80,13 @@ export const ShippingPartner = () => {
               <p>Showing 1 Results</p>
             </div>
             <div className="flex flex-col justify-center mt-5 overflow-x-auto sm:min-w-96 w-full p-1 ">
-              <table>
-                <thead>
-                  <tr className="bg-gray-100 text-gray-700 rounded-lg ring-border ring-1 ring-slate-200">
-                    <th className="font-xs font-normal p-2 m-8 text-left pl-4 rounded-l-lg">Courier Partner</th>
-                    <th className="font-xs font-normal text-left">Delivery Time</th>
-                    <th className="font-xs font-normal text-left">Shipment Rate</th>
-                    <th className="font-xs font-normal p-2 rounded-r-lg">Select</th>
+              <table className="border-separate border-spacing-0 rounded-lg">
+                <thead className="">
+                  <tr className="bg-gray-100 text-gray-600 text-sm border rounded-lg">
+                    <th className="font-xs font-normal p-2 m-8 text-left pl-4 border border-r-0 rounded-l-lg">Courier Partner</th>
+                    <th className="font-xs font-normal text-left border-y">Delivery Time</th>
+                    <th className="font-xs font-normal text-left border-y">Shipment Rate</th>
+                    <th className="font-xs font-normal p-2 border border-l-0 rounded-r-lg">Select</th>
                   </tr>
                 </thead>
                 <div className="p-1"></div>
@@ -94,18 +94,18 @@ export const ShippingPartner = () => {
                   {shipperRates.map((rate, index) => (
                     <>
                       <span className="w-full my-1"></span>
-                      <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg ring-1 ring-slate-200">
+                      <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg">
                         <td
                           colSpan={4}
                           dangerouslySetInnerHTML={{ __html: rate.helper_text }}
-                          className="text-text-danger px-4 rounded-tl-lg"
+                          className="text-text-danger px-4 rounded-tl-lg rounded-tr-lg border border-b-0"
                         />
                       </tr>
-                      <tr key={index} className="rounded-bl-lg rounded-br-lg ring-1 ring-slate-200">
-                        <td className="rounded-l-lg p-2 pl-4 rounded-bl-lg">{rate.display_name}</td>
-                        <td>{rate.transit_time}</td>
-                        <td className="pl-8">{rate.rate}</td>
-                        <td className="pl-8">
+                      <tr key={index} className="rounded-bl-lg rounded-br-lg">
+                        <td className="p-2 pl-4 rounded-bl-lg border border-r-0 text-sm font-semibold text-franchise-sectionp">{rate.display_name}</td>
+                        <td className="text-sm text-franchise-sectionp border-y">{rate.transit_time}</td>
+                        <td className="pl-8 text-sm text-franchise-sectionp border-y">{`Rs. ${rate.rate}`}</td>
+                        <td className="pl-8 rounded-br-lg border border-l-0">
                           <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
                             {isLoading && isSelected === index ? (
                               <Loader className="h-5 w-5 m-4 animate-spin" />
