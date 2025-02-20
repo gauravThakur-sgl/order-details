@@ -27,7 +27,7 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
           >
             {stepNumber < activeState ? (
               <span className="text-white text-sm">
-                <Check className="bg-green-500 rounded-sm w-5 h-5 text-white" />
+                <Check className="bg-franchise-success rounded-sm w-5 h-5 text-white" />
               </span>
             ) : (
               <span className="h-5 w-5">{stepNumber}</span>

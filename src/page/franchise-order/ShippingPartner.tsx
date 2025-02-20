@@ -68,38 +68,38 @@ export const ShippingPartner = () => {
             011-422 77777
           </a>
         </p>
-        <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
-          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
-            <p>{`${weightData.deadWeight} KG`}</p>
-            <p className="text-sm text-slate-400">Dead Weight</p>
-          </div>
-          <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
-            <p>{`${weightData.volumetricWeight} KG`}</p>
-            <p className="text-sm text-slate-400">Volumetric Weight</p>
-          </div>
-          <div className="flex flex-col justify-center items-center border border-orange-600 rounded-md bg-franchise-weight-bg text-franchise-weight-text py-2 px-5">
-            <p>{`${weightData.billedWeight} KG`}</p>
-            <p className="text-sm">Billed Weight</p>
-          </div>
-        </div>
+        {shipperRates.length > 0 ? (
+          <>
+            <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
+              <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
+                <p>{`${weightData.deadWeight} KG`}</p>
+                <p className="text-sm text-slate-400">Dead Weight</p>
+              </div>
+              <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
+                <p>{`${weightData.volumetricWeight} KG`}</p>
+                <p className="text-sm text-slate-400">Volumetric Weight</p>
+              </div>
+              <div className="flex flex-col justify-center items-center border border-orange-600 rounded-md bg-franchise-weight-bg text-franchise-weight-text py-2 px-5">
+                <p>{`${weightData.billedWeight} KG`}</p>
+                <p className="text-sm">Billed Weight</p>
+              </div>
+            </div>
 
-        <div className="text-sm font-semibold">
-          <p>Showing 1 Results</p>
-        </div>
-        <div className="flex flex-col justify-center mt-5">
-          <table className="">
-            <thead>
-              <tr className="bg-gray-100 text-gray-700 rounded-lg ring-border ring-1 ring-slate-200">
-                <th className="font-xs font-normal p-2 m-8 text-left pl-4 rounded-l-lg">Courier Partner</th>
-                <th className="font-xs font-normal text-left">Delivery Time</th>
-                <th className="font-xs font-normal text-left">Shipment Rate</th>
-                <th className="font-xs font-normal p-2 rounded-r-lg">Select</th>
-              </tr>
-            </thead>
-            <div className="p-1"></div>
-            <tbody className="mt-2">
-              {shipperRates.length > 0 ? (
-                <>
+            <div className="text-sm font-semibold">
+              <p>Showing 1 Results</p>
+            </div>
+            <div className="flex flex-col justify-center mt-5 pb-20">
+              <table>
+                <thead>
+                  <tr className="bg-gray-100 text-gray-700 rounded-lg ring-border ring-1 ring-slate-200">
+                    <th className="font-xs font-normal p-2 m-8 text-left pl-4 rounded-l-lg">Courier Partner</th>
+                    <th className="font-xs font-normal text-left">Delivery Time</th>
+                    <th className="font-xs font-normal text-left">Shipment Rate</th>
+                    <th className="font-xs font-normal p-2 rounded-r-lg">Select</th>
+                  </tr>
+                </thead>
+                <div className="p-1"></div>
+                <tbody className="mt-2">
                   {shipperRates.map((rate, index) => (
                     <>
                       <span className="w-full my-1"></span>
@@ -131,19 +131,19 @@ export const ShippingPartner = () => {
                       <span className="w-full m-10"></span>
                     </>
                   ))}
-                </>
-              ) : (
-                <>
-                  <tr>
-                    <td colSpan={4} bg-blue-50>
-                      <p className="text-center">No Shipping Partner Available</p>
-                    </td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
-        </div>
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="bg-gray-100 rounded-lg border mt-5">
+              <span className="rounded-lg ring-1 ring-slate-200">
+                <p className="text-sm text-center px-4 py-3">No Shipping Partner Available</p>
+              </span>
+            </div>
+          </>
+        )}
         <div className="flex justify-end py-6">
           <button
             type="submit"
