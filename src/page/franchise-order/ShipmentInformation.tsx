@@ -1,9 +1,7 @@
-import { orderDetailsSchema } from "../../zod/franchiseOrderSchema";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "./components/ui/Input";
-import { DateComponent } from "../../components/Date";
 import { BoxMeasurement } from "./components/BoxMeasurement";
 import { Trash2 } from "lucide-react";
 import { Igst } from "./components/Igst";
@@ -12,6 +10,8 @@ import apiClient from "./api/apiClient";
 import Select from "./components/ui/Select";
 import { ShipmentInformationData } from "./interface";
 import { currencyOptions } from "./config/currencyOptions";
+import { DateComponent } from "@/components/Date";
+import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
 interface IOrderDetailsProps {
   data: ShipmentInformationData;
   onNext: (formData: ShipmentInformationData) => void;

@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Header } from "../../components/Header";
-import { SideBar } from "../../components/SideBar";
 import { ConsigneeDetail } from "./ConsigneeDetail";
 import { Container } from "./components/Container";
 import { OrderInformation } from "./components/OrderInformation";
@@ -12,8 +10,9 @@ import { DataAccordion } from "./components/DataAccordion";
 import { ChevronRight } from "lucide-react";
 import { FinalPriceInfo } from "./components/FinalPriceInfo";
 import { HandleNextData } from "./interface";
+import { Header } from "@/components/Header";
+import { SideBar } from "@/components/SideBar";
 import { initialFormData } from "./config/initialData";
-
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(() => {
     const storedStep = localStorage.getItem("currentStep");

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import Input from "./ui/Input";
-import { orderDetailsSchema } from "../../../zod/franchiseOrderSchema";
+import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 const shipmentData = [
   { name: "actualWeight", required: true, default: "Kg" },

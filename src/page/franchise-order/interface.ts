@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { consignorDetailSchema, orderDetailsSchema, orderSchema } from "../../zod/franchiseOrderSchema";
+import { consignorDetailSchema, orderDetailsSchema, orderSchema } from "@/zod/franchiseOrderSchema";
 
 export type ConsignorData = z.infer<typeof consignorDetailSchema>;
 export type FormData = z.infer<typeof orderSchema>;
@@ -80,7 +80,7 @@ export interface DataAccordionProps {
       sku: string;
       qty: string;
       unitPrice: string;
-    }[]
+    }[];
   };
   initialIsOpen?: boolean;
 }

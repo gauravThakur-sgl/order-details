@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import z from "zod";
-import { orderDetailsSchema } from "../../../zod/franchiseOrderSchema";
+import { orderDetailsSchema } from "@/zod/franchiseOrderSchema"; 
 import { Control, Controller, FieldErrors } from "react-hook-form";
 type FormData = z.infer<typeof orderDetailsSchema>;
 
