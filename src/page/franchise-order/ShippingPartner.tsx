@@ -79,7 +79,7 @@ export const ShippingPartner = () => {
             <div className="text-sm font-semibold">
               <p>Showing 1 Results</p>
             </div>
-            <div className="flex flex-col justify-center mt-5">
+            <div className="flex flex-col justify-center mt-5 overflow-x-auto sm:min-w-96 w-full p-1 ">
               <table>
                 <thead>
                   <tr className="bg-gray-100 text-gray-700 rounded-lg ring-border ring-1 ring-slate-200">
