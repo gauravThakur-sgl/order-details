@@ -1,6 +1,7 @@
 import { Check, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ShippingRate } from "./interface";
+import { ContactCard } from "./components/ContactCard";
 
 export const ShippingPartner = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
@@ -57,17 +58,7 @@ export const ShippingPartner = () => {
   return (
     <div>
       <div>
-        <p className="text-franchise-sectionp text-sm">
-          All shipments via ShipGlobal services are <span className="font-bold">Delivered Duty Paid (DDP)</span>, hence{" "}
-          <span className="font-bold">no extra duty</span> will be billed on the consignee or the shipper. Rates are
-          inclusive of covid & fuel surcharge, exclusive of GST and ex-Delhi Hub.
-        </p>
-        <p className="pt-5">
-          In case any doubt, please call/whatsapp at{" "}
-          <a href="" className="text-franchise-primary font-semibold">
-            011-422 77777
-          </a>
-        </p>
+        <ContactCard />
         {shipperRates.length > 0 ? (
           <>
             <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
@@ -88,7 +79,7 @@ export const ShippingPartner = () => {
             <div className="text-sm font-semibold">
               <p>Showing 1 Results</p>
             </div>
-            <div className="flex flex-col justify-center mt-5 pb-20">
+            <div className="flex flex-col justify-center mt-5">
               <table>
                 <thead>
                   <tr className="bg-gray-100 text-gray-700 rounded-lg ring-border ring-1 ring-slate-200">
@@ -99,7 +90,7 @@ export const ShippingPartner = () => {
                   </tr>
                 </thead>
                 <div className="p-1"></div>
-                <tbody className="mt-2">
+                <tbody>
                   {shipperRates.map((rate, index) => (
                     <>
                       <span className="w-full my-1"></span>
@@ -128,7 +119,7 @@ export const ShippingPartner = () => {
                           </span>
                         </td>
                       </tr>
-                      <span className="w-full m-10"></span>
+                      <span className="w-full m-2"></span>
                     </>
                   ))}
                 </tbody>

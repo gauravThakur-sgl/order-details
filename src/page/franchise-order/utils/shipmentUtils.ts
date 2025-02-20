@@ -1,11 +1,18 @@
 import apiClient from "../api/apiClient";
 import { ShipmentInformationData } from "../interface";
 
-export const getRate = async (shippingPincode, country, currentActualWeight, currentLength, currentBreadth, currentHeight) => {
-//   const currentActualWeight = watch("actualWeight");
-//   const currentLength = watch("length");
-//   const currentBreadth = watch("breadth");
-//   const currentHeight = watch("height");
+export const getRate = async (
+  shippingPincode: string,
+  country: string,
+  currentActualWeight: string,
+  currentLength: string,
+  currentBreadth: string,
+  currentHeight: string,
+) => {
+  //   const currentActualWeight = watch("actualWeight");
+  //   const currentLength = watch("length");
+  //   const currentBreadth = watch("breadth");
+  //   const currentHeight = watch("height");
   const ratePayload = {
     customer_shipping_postcode: shippingPincode,
     customer_shipping_country_code: country,
@@ -25,7 +32,10 @@ export const getRate = async (shippingPincode, country, currentActualWeight, cur
   }
 };
 
-export const validateData = async (data: ShipmentInformationData, setResError) => {
+export const validateData = async (
+  data: ShipmentInformationData,
+  setResError: React.Dispatch<React.SetStateAction<string | null>>,
+) => {
   const validatePayload = {
     csbv: "0",
     currency_code: data.invoiceCurrency,
