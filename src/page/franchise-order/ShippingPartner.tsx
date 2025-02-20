@@ -1,4 +1,4 @@
-import { Check, Loader } from "lucide-react";
+import { CheckCircle2, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ShippingRate } from "./interface";
 import { ContactCard } from "./components/ContactCard";
@@ -54,7 +54,10 @@ export const ShippingPartner = () => {
     window.location.reload();
     alert("Order Placed Successfully");
   };
-
+  
+  const extractText = (text: string) => {
+    return text.replace(/<[^>]+>/g, "").trim();
+  }
   return (
     <div>
       <div>
@@ -83,10 +86,12 @@ export const ShippingPartner = () => {
               <table className="border-separate border-spacing-0 rounded-lg">
                 <thead className="">
                   <tr className="bg-gray-100 text-gray-600 text-sm border rounded-lg">
-                    <th className="font-xs font-normal p-2 m-8 text-left pl-4 border border-r-0 rounded-l-lg">Courier Partner</th>
+                    <th className="font-xs font-normal p-2 m-8 text-left pl-4 border border-r-0 rounded-l-lg">
+                      Courier Partner
+                    </th>
                     <th className="font-xs font-normal text-left border-y">Delivery Time</th>
                     <th className="font-xs font-normal text-left border-y">Shipment Rate</th>
-                    <th className="font-xs font-normal p-2 border border-l-0 rounded-r-lg">Select</th>
+                    <th className="font-xs font-normal p-2 pl-0 border border-l-0 rounded-r-lg">Select</th>
                   </tr>
                 </thead>
                 <div className="p-1"></div>
@@ -97,29 +102,34 @@ export const ShippingPartner = () => {
                       <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg">
                         <td
                           colSpan={4}
-                          dangerouslySetInnerHTML={{ __html: rate.helper_text }}
-                          className="text-text-danger px-4 rounded-tl-lg rounded-tr-lg border border-b-0"
-                        />
+                          className="text-danger px-4 rounded-tl-lg rounded-tr-lg border border-b-0"
+                        >
+                          {extractText(rate.helper_text)}
+                        </td>
                       </tr>
                       <tr key={index} className="rounded-bl-lg rounded-br-lg">
-                        <td className="p-2 pl-4 rounded-bl-lg border border-r-0 text-sm font-semibold text-franchise-sectionp">{rate.display_name}</td>
-                        <td className="text-sm text-franchise-sectionp border-y">{rate.transit_time}</td>
-                        <td className="pl-8 text-sm text-franchise-sectionp border-y">{`Rs. ${rate.rate}`}</td>
+                        <td className="p-2 pl-4 rounded-bl-lg border border-r-0 text-sm font-semibold text-franchise-sectionp text-left">
+                          {rate.display_name}
+                        </td>
+                        <td className="text-sm text-franchise-sectionp border-y text-left">{rate.transit_time}</td>
+                        <td className="pl-8 text-sm text-franchise-sectionp border-y text-left">{`Rs. ${rate.rate}`}</td>
                         <td className="pl-8 rounded-br-lg border border-l-0">
                           <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
                             {isLoading && isSelected === index ? (
                               <Loader className="h-5 w-5 m-4 animate-spin" />
                             ) : (
-                              <Check
-                                className={`h-5 w-5 m-4 p-1 text-white rounded-full border border-white ${
-                                  isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
+                              <CheckCircle2
+                                className={`h-5 w-5 m-4 text-white rounded-full border border-white ${
+                                  isSelected === index ? "bg-green-500" : "bg-gray-400"
                                 }  `}
                               />
                             )}
                           </span>
                         </td>
                       </tr>
-                      <span className="w-full m-2"></span>
+                      <tr>
+                        <td className="p-1"></td>
+                      </tr>
                     </>
                   ))}
                 </tbody>
