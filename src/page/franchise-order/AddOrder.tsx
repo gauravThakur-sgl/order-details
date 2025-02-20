@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Header } from "../../components/Header";
 import { SideBar } from "../../components/SideBar";
 import { ConsigneeDetail } from "./ConsigneeDetail";
@@ -15,14 +15,24 @@ import { HandleNextData } from "./interface";
 import { initialFormData } from "./config/initialData";
 
 export const AddOrder = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState(initialFormData);
-  const [openIndex, setOpenIndex] = useState<number | null>(1);
+  const [currentStep, setCurrentStep] = useState(initialFormData.currentStep);
+  const [formData, setFormData] = useState(() => {
+    const storedData = localStorage.getItem("formData");
+    return storedData ? JSON.parse(storedData) : initialFormData;
+  });
+  const [openIndex, setOpenIndex] = useState<number | null>(initialFormData.openIndex);
   const containerRef = useRef<HTMLDivElement>(null);
   const accordionRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
+
   const stepTiles = ["consignorDetail", "consigneeDetail", "shipmentInformation", "selectShippingPartner"];
 
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
   const handleNext = (data: HandleNextData) => {
     const key = stepTiles[currentStep - 1];
     setFormData((prev) => ({

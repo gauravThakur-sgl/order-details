@@ -1,4 +1,6 @@
 export const initialFormData = {
+  currentStep: 1,
+  openIndex: 1,
   consignorDetail: {
     pickupAddress: "",
     selectedUserDetail: "",
