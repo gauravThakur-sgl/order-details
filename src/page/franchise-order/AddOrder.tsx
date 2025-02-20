@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Header } from "../../components/Header";
 import { SideBar } from "../../components/SideBar";
-import { ConsigneeDetail } from "./components/ConsigneeDetail";
+import { ConsigneeDetail } from "./ConsigneeDetail";
 import { Container } from "./components/Container";
 import { OrderInformation } from "./components/OrderInformation";
 import { ConsignorDetail } from "./ConsignorDetail";
