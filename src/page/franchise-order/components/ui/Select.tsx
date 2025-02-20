@@ -83,7 +83,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
           className={`${baseClasses} ${variantClasses} ${sizeClasses} ${className || ""}`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <div className="truncate whitespace-nowrap overflow-hidden pr-4 font-normal text-sm">
+          <div className="truncate whitespace-nowrap overflow-hidden pr-4 font-normal">
             {value ? options.find((option) => option.value === value)?.label : title}
           </div>
           <ChevronDown className="absolute top-3 right-3 h-4 w-4" />

@@ -1,7 +1,7 @@
 import { Control, Controller, FieldErrors, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 import { orderSchema } from "../../../zod/franchiseOrderSchema";
-import Input from "../../../components/ui/Input";
+import Input from "../components/ui/Input";
 import Select from "./ui/Select";
 import { useCountries, useStates } from "../hooks/countryState";
 import { useState } from "react";

@@ -1,10 +1,11 @@
-import { Check } from "lucide-react";
+import { Check, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ShippingRate } from "./interface";
 
 export const ShippingPartner = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
   const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [weightData, setWeightData] = useState({
     deadWeight: 0,
     volumetricWeight: 0,
@@ -39,8 +40,12 @@ export const ShippingPartner = () => {
 
   const handleSelectedPrice = (index: number) => {
     setIsSelected(index);
-    localStorage.setItem("selectedRate", JSON.stringify(shipperRates[index]));
-    window.dispatchEvent(new Event("storage"));
+    setIsLoading(true);
+    setTimeout(() => {
+      localStorage.setItem("selectedRate", JSON.stringify(shipperRates[index]));
+      window.dispatchEvent(new Event("storage"));
+      setIsLoading(false);
+    }, 1000);
   };
 
   const handlePlaceOrder = () => {
@@ -48,7 +53,6 @@ export const ShippingPartner = () => {
     window.location.reload();
     alert("Order Placed Successfully");
   };
-
 
   return (
     <div>
@@ -83,38 +87,44 @@ export const ShippingPartner = () => {
           <p>Showing 1 Results</p>
         </div>
         <div className="flex flex-col justify-center mt-5">
-          <table className="border-collapse w-full">
-            <thead className="rounded-xl border">
-              <tr className="bg-gray-100 text-gray-700">
-                <th className="font-xs font-normal p-2 m-8 rounded-l-lg text-left pl-4">Courier Partner</th>
+          <table className="">
+            <thead>
+              <tr className="bg-gray-100 text-gray-700 rounded-lg ring-1 ring-slate-200">
+                <th className="font-xs font-normal p-2 m-8 text-left pl-4 rounded-l-lg">Courier Partner</th>
                 <th className="font-xs font-normal text-left">Delivery Time</th>
                 <th className="font-xs font-normal text-left">Shipment Rate</th>
                 <th className="font-xs font-normal p-2 rounded-r-lg">Select</th>
               </tr>
             </thead>
             <div className="p-1"></div>
-            <tbody className="mt-2 border-spacing-2">
+            <tbody className="mt-2">
               {shipperRates.map((rate, index) => (
                 <>
                   <span className="w-full my-1"></span>
-
-                  <tr className="bg-blue-50 text-xs border">
-                    <td dangerouslySetInnerHTML={{ __html: rate.helper_text }} className="text-text-danger px-4 py-1" />
+                  <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg ring-1 ring-slate-200">
+                    <td
+                      dangerouslySetInnerHTML={{ __html: rate.helper_text }}
+                      className="text-text-danger px-4 rounded-tl-lg"
+                    />
                     <td className="bg-blue-50"></td>
                     <td className="bg-blue-50"></td>
-                    <td className="bg-blue-50"></td>
+                    <td className="bg-blue-50 rounded-tr-lg"></td>
                   </tr>
-                  <tr key={index} className="border-y">
-                    <td className="rounded-l-lg p-2 pl-4 border-l rounded-bl-lg">{rate.display_name}</td>
+                  <tr key={index} className="rounded-bl-lg ring-1 ring-slate-200">
+                    <td className="rounded-l-lg p-2 pl-4 rounded-bl-lg">{rate.display_name}</td>
                     <td>{rate.transit_time}</td>
                     <td className="pl-8">{rate.rate}</td>
-                    <td className="rounded-l-full pl-8 border-r">
+                    <td className="pl-8">
                       <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
-                        <Check
-                          className={`h-6 w-6 m-4 p-1 text-white rounded-full border border-white ${
-                            isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
-                          }  `}
-                        />
+                        {isLoading && isSelected === index ? (
+                          <Loader className="h-5 w-5 m-4 animate-spin" />
+                        ) : (
+                          <Check
+                            className={`h-5 w-5 m-4 p-1 text-white rounded-full border border-white ${
+                              isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
+                            }  `}
+                          />
+                        )}
                       </span>
                     </td>
                   </tr>

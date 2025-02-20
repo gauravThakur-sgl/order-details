@@ -160,7 +160,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             errorName={errors.landMark?.message}
           />
           <div>
-            <label htmlFor="billingCountry" className="text-franchise-sectionp">
+            <label htmlFor="billingCountry" className="text-franchise-sectionp text-sm">
               Country <span className="text-red-500">*</span>
             </label>
             <Controller
@@ -184,7 +184,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             />
           </div>
           <div>
-            <label htmlFor="billingCountry" className="text-franchise-sectionp">
+            <label htmlFor="billingCountry" className="text-franchise-sectionp text-sm">
               State <span className="text-red-500">*</span>
             </label>
             <Controller
