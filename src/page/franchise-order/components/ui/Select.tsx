@@ -1,4 +1,4 @@
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Search } from "lucide-react";
 import Input from "./Input";
 import { useEffect, useRef, useState } from "react";
 
@@ -89,14 +89,19 @@ function Select({ title, variant, size, className, options, value, onChange, nam
           <ChevronDown className="absolute top-3 right-3 h-4 w-4" />
         </div>
         {isOpen && (
-          <div className="absolute z-10 pt-2 w-full bg-white border border-gray-300 shadow-lg">
-            <Input
-              type="text"
-              className="w-full p-1 border-b border-gray-300 mx-3"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              name={name}
-            />
+          <div className="absolute z-10 w-full bg-white border border-gray-300 shadow-lg">
+            <div className="relative">
+              <Input
+                type="text"
+                className="w-full border-b border-gray-300 rounded-none m-0 -mt-2 placeholder:text-sm px-8 focus-visible:ring-0"
+                placeholder="Search country..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                name={name}
+                autofocus={true}
+              />
+              <Search className="absolute top-3 left-2 h-4 w-4 text-franchise-consignor-text" />
+            </div>
             <div className="overflow-y-auto max-h-60 pt-2">
               {filteredOptions.map((option, index) => (
                 <div
@@ -114,7 +119,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
                   <span className="relative flex items-center">
                     {option.value === value ? (
                       <span className="text-franchise-primary absolute -left-6">
-                        <Check className="w-5 h-5 text-black"/>
+                        <Check className="w-5 h-5 text-black" />
                       </span>
                     ) : null}
                     {option.label}

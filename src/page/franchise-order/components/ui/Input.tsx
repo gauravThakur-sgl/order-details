@@ -23,6 +23,7 @@ interface InputProps {
   step?: number;
   min?: number;
   max?: number;
+  autofocus?: boolean;
 }
 const inputColors = {
   default: "bg-black-300",
@@ -55,6 +56,7 @@ function Input({
   step,
   min,
   max,
+  autofocus
 }: InputProps) {
   const baseClasses =
     "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-franchise-primary disabled:cursor-not-allowed disabled:opacity-50";
@@ -84,6 +86,7 @@ function Input({
             step={step}
             min={min}
             max={max}
+            autoFocus={autofocus}
           />
           <div>{children}</div>
         </div>
