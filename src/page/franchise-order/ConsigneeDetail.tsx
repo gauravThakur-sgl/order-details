@@ -37,6 +37,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     value: country.code,
     label: country.name,
   }));
+
   const stateOptions = states.map((state) => ({
     value: state.code,
     label: state.name,
@@ -46,6 +47,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     setIsChecked(!isChecked);
     localStorage.setItem("isChecked", JSON.stringify(!isChecked));
   };
+
   const onSubmit = (formData: FormData) => {
     if (isChecked) {
       formData.billingfirstName = formData.firstName;
@@ -234,7 +236,8 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
-        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} control={control} />}
+        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} control={control} />}{" "}
+        {/* renders consignee as according to the checkbox*/}
         <div className="flex justify-end mt-4">
           <button
             type="submit"

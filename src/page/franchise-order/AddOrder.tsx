@@ -13,19 +13,24 @@ import { HandleNextData } from "./interface";
 import { Header } from "@/components/Header";
 import { SideBar } from "@/components/SideBar";
 import { initialFormData } from "./config/initialData";
+import { stepTiles } from "./config/stepsInfo";
+
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(() => {
     const storedStep = localStorage.getItem("currentStep");
     return storedStep ? JSON.parse(storedStep) : 1;
   });
+
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
     return storedData ? JSON.parse(storedData) : initialFormData;
   });
+
   const [openIndex, setOpenIndex] = useState<number | null>(() => {
     const storedIndex = localStorage.getItem("openIndex");
     return storedIndex ? JSON.parse(storedIndex) : 1;
   });
+
   const containerRef = useRef<HTMLDivElement>(null);
   const accordionRef = useRef<HTMLDivElement>(null);
 
@@ -41,11 +46,10 @@ export const AddOrder = () => {
     localStorage.setItem("openIndex", JSON.stringify(openIndex));
   }, [openIndex]);
 
-  const stepTiles = ["consignorDetail", "consigneeDetail", "shipmentInformation", "selectShippingPartner"];
-
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
+
   const handleNext = (data: HandleNextData) => {
     const key = stepTiles[currentStep - 1];
     setFormData((prev) => ({
@@ -79,7 +83,7 @@ export const AddOrder = () => {
       containerRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-  console.log(formData, "formData");
+
   return (
     <section className="bg-gray-50 font-poppins">
       <Header />
@@ -132,6 +136,7 @@ export const AddOrder = () => {
               <ShippingPartner data={formData.selectShippingPartner} onBack={handleBack} />
             </Accordion>
           </div>
+
           <div className="hidden md:block lg:w-1/3">
             {currentStep > 1 ? (
               <>

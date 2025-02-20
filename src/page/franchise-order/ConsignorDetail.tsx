@@ -40,6 +40,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
     console.log(data, "data");
     onNext(data);
   };
+  
   return (
     <section>
       <form onSubmit={handleSubmit(onSubmit)}>
