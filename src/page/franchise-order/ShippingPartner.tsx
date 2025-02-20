@@ -98,46 +98,58 @@ export const ShippingPartner = () => {
             </thead>
             <div className="p-1"></div>
             <tbody className="mt-2">
-              {shipperRates.map((rate, index) => (
+              {shipperRates.length > 0 ? (
                 <>
-                  <span className="w-full my-1"></span>
-                  <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg ring-1 ring-slate-200">
-                    <td
-                      dangerouslySetInnerHTML={{ __html: rate.helper_text }}
-                      className="text-text-danger px-4 rounded-tl-lg"
-                    />
-                    <td className="bg-blue-50"></td>
-                    <td className="bg-blue-50"></td>
-                    <td className="bg-blue-50 rounded-tr-lg"></td>
-                  </tr>
-                  <tr key={index} className="rounded-bl-lg rounded-br-lg ring-1 ring-slate-200">
-                    <td className="rounded-l-lg p-2 pl-4 rounded-bl-lg">{rate.display_name}</td>
-                    <td>{rate.transit_time}</td>
-                    <td className="pl-8">{rate.rate}</td>
-                    <td className="pl-8">
-                      <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
-                        {isLoading && isSelected === index ? (
-                          <Loader className="h-5 w-5 m-4 animate-spin" />
-                        ) : (
-                          <Check
-                            className={`h-5 w-5 m-4 p-1 text-white rounded-full border border-white ${
-                              isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
-                            }  `}
-                          />
-                        )}
-                      </span>
+                  {shipperRates.map((rate, index) => (
+                    <>
+                      <span className="w-full my-1"></span>
+                      <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg ring-1 ring-slate-200">
+                        <td
+                          colSpan={4}
+                          dangerouslySetInnerHTML={{ __html: rate.helper_text }}
+                          className="text-text-danger px-4 rounded-tl-lg"
+                        />
+                      </tr>
+                      <tr key={index} className="rounded-bl-lg rounded-br-lg ring-1 ring-slate-200">
+                        <td className="rounded-l-lg p-2 pl-4 rounded-bl-lg">{rate.display_name}</td>
+                        <td>{rate.transit_time}</td>
+                        <td className="pl-8">{rate.rate}</td>
+                        <td className="pl-8">
+                          <span onClick={() => handleSelectedPrice(index)} className="cursor-pointer">
+                            {isLoading && isSelected === index ? (
+                              <Loader className="h-5 w-5 m-4 animate-spin" />
+                            ) : (
+                              <Check
+                                className={`h-5 w-5 m-4 p-1 text-white rounded-full border border-white ${
+                                  isSelected === index ? "bg-green-500 ring-green-500" : "bg-gray-400 ring-gray-400"
+                                }  `}
+                              />
+                            )}
+                          </span>
+                        </td>
+                      </tr>
+                      <span className="w-full m-10"></span>
+                    </>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <tr>
+                    <td colSpan={4} bg-blue-50>
+                      <p className="text-center">No Shipping Partner Available</p>
                     </td>
                   </tr>
-                  <span className="w-full m-10"></span>
                 </>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
         <div className="flex justify-end py-6">
           <button
             type="submit"
-            className={`text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 font-medium text-base tracking-tight`}
+            className={`text-franchise-button-text ${
+              isSelected === null && !isLoading ? "bg-franchise-primary bg-opacity-75" : "bg-franchise-primary"
+            } rounded-md p-2 px-4 font-medium text-base tracking-tight`}
             disabled={isSelected === null}
             onClick={handlePlaceOrder}
           >

@@ -15,18 +15,32 @@ import { HandleNextData } from "./interface";
 import { initialFormData } from "./config/initialData";
 
 export const AddOrder = () => {
-  const [currentStep, setCurrentStep] = useState(initialFormData.currentStep);
+  const [currentStep, setCurrentStep] = useState(() => {
+    const storedStep = localStorage.getItem("currentStep");
+    return storedStep ? JSON.parse(storedStep) : 1;
+  });
   const [formData, setFormData] = useState(() => {
     const storedData = localStorage.getItem("formData");
     return storedData ? JSON.parse(storedData) : initialFormData;
   });
-  const [openIndex, setOpenIndex] = useState<number | null>(initialFormData.openIndex);
+  const [openIndex, setOpenIndex] = useState<number | null>(() => {
+    const storedIndex = localStorage.getItem("openIndex");
+    return storedIndex ? JSON.parse(storedIndex) : 1;
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const accordionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem("currentStep", JSON.stringify(currentStep));
+  }, [currentStep]);
+
+  useEffect(() => {
+    localStorage.setItem("openIndex", JSON.stringify(openIndex));
+  }, [openIndex]);
 
   const stepTiles = ["consignorDetail", "consigneeDetail", "shipmentInformation", "selectShippingPartner"];
 

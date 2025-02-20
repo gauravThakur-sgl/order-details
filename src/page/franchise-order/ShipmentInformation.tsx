@@ -235,7 +235,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               className="md:min-w-32"
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
-            <div className={`${fields.length === 1 ? "mr-4" : "mr-0"}`}>
+            <div className={`${fields.length === 1 ? "mr-4" : "mr-0"} w-full md:w-18`}>
               <Igst control={control} errors={errors} />
             </div>
 
