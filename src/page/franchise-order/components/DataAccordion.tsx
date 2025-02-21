@@ -7,7 +7,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
   const [isSameAddress, setIsSameAddress] = useState(false);
 
   const infoTitle = "text-franchise-consignor-text";
-  const infoDetail = "text-franchise-sectionp font-medium";
+  const infoDetail = "text-franchise-sectionp text-sm font-medium";
 
   const getCheckState = () => {
     const isChecked = localStorage.getItem("isChecked");

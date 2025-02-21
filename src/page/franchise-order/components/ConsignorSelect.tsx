@@ -31,7 +31,7 @@ function ConsignorSelect({ title, variant, size, className, options, value, onCh
   const ref = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
   const baseClasses =
-    "flex items-center border rounded-md text-text-primary font-medium text-sm font-semibold tracking-tight px-2 cursor-pointer";
+    "flex items-center border rounded-md tracking-tight px-2 cursor-pointer";
   const variantClasses = selectColors[variant || "default"];
   const sizeClasses = selectSize[size || "default"];
 
@@ -55,7 +55,7 @@ function ConsignorSelect({ title, variant, size, className, options, value, onCh
           className={`${baseClasses} ${variantClasses} ${sizeClasses} ${className || ""}`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <div className="truncate whitespace-nowrap overflow-hidden pr-4 text-franchise-consignor-text">
+          <div className="truncate whitespace-nowrap overflow-hidden pr-4 text-franchise-consignor-text text-sm font-medium px-4 -py-1">
             {value ? options.find((option) => option.value === value)?.label : title}
           </div>
           <ChevronDown className="absolute top-3 right-3 h-4 w-4" />

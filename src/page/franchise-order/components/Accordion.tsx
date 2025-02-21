@@ -22,7 +22,8 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
         <h2 className="text-black text-sm font-medium flex justify-center">
           <span
             className={clsx("py-1 mx-3 rounded-sm font-semibold text-xs", {
-              "px-2 bg-black text-white": stepNumber >= activeState,
+              "px-2 bg-black text-white text-xs": stepNumber === activeState,
+              "px-2 bg-slate-100 text-black text-xs": stepNumber > activeState,
             })}
           >
             {stepNumber < activeState ? (
@@ -30,7 +31,7 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
                 <Check className="bg-franchise-success rounded-sm w-5 h-5 text-white" />
               </span>
             ) : (
-              <span className="h-5 w-5">{stepNumber}</span>
+              <span className="h-4 w-4">{stepNumber}</span>
             )}
           </span>
           <span className="pt-1">{title}</span>

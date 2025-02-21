@@ -13,12 +13,12 @@ const volumetricWeightInfo = [
 export const OrderInformation = () => {
   return (
     <div className="flex flex-col justify-center rounded-md items-center p-4 bg-white gap-2">
-      <p className="text-franchise-textp text-base font-semibold mt-4">Quick tips</p>
+      <p className="text-franchise-textp text-base font-semibold mt-2">Quick tips</p>
       <img src="/box.svg" className="h-40 w-40" />
       <div className="space-y-4">
         <p className="text-franchise-textp text-sm font-semibold mt-4 text-left">Dead Weight</p>
         {tips.map((tip, index) => (
-          <p key={index} className="text-franchise-textp text-sm">
+          <p key={index} className="text-franchise-textp text-xs">
             {tip}
           </p>
         ))}
@@ -26,7 +26,7 @@ export const OrderInformation = () => {
       <div className="space-y-4">
         <p className="text-franchise-textp text-sm font-semibold mt-4">Volumetric Weight:(L x W x H / 5000)</p>
         {volumetricWeightInfo.map((info, index) => (
-          <p key={index} className="text-franchise-textp text-sm">
+          <p key={index} className="text-franchise-textp text-xs">
             {info}
           </p>
         ))}
