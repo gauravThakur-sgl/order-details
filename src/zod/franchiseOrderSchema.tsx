@@ -31,7 +31,7 @@ export const orderSchema = z.object({
     .nonempty("The customer shipping postcode is required.")
     .regex(/^[A-Z0-9]+(?: [A-Z0-9]+)?$/, "Invalid Pincode"),
 
-  shippingState: z.string().nonempty("Please select a state."),
+  shippingState: z.string().nonempty("Please select a state"),
 
   isChecked: z.boolean().optional(),
 
@@ -49,7 +49,7 @@ export const orderSchema = z.object({
     .min(10, "Mobile number must be 10 digits")
     .max(10, "Mobile number must be 10 digits")
     .regex(/^[0-9]+$/, "Please enter numeric characters"),
-  billingCountry: z.string().nonempty("The customer shipping address 1 is required."),
+  billingCountry: z.string().nonempty("Please select a country"),
   billingAddress1: z.string().nonempty("Address 1 is required"),
   billingLandMark: z.string(),
   billingAddress2: z.string().nonempty("Address 2 is required"),
@@ -58,7 +58,7 @@ export const orderSchema = z.object({
     .string()
     .nonempty("The customer shipping postcode is required.")
     .regex(/^[A-Z0-9]+(?: [A-Z0-9]+)?$/, "Invalid Pincode"),
-  billingState: z.string().nonempty("The customer shipping state is required."),
+  billingState: z.string().nonempty("Please select a state"),
 });
 
 const iteamArray = z.object({

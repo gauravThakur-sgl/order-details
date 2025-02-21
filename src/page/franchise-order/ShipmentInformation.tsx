@@ -142,7 +142,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           />
         </div>
         <BoxMeasurement register={register} errors={errors} />
-        <p className="text-sm font-semibold pt-5">
+        <p className="text-sm font-semibold pt-5 text-franchise-sectionp">
           Item(s) Details{" "}
           <span className="text-xs font-normal bg-franchise-tag-bg text-franchise-tag-text px-1 rounded-sm">
             Items that can export

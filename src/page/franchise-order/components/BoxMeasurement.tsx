@@ -19,7 +19,7 @@ interface IShipMentMeasurementProps {
 export const BoxMeasurement = ({ register, errors }: IShipMentMeasurementProps) => {
   return (
     <div className="space-y-2 pt-4">
-      <h2 className="text-sm font-semibold">Box Measurements</h2>
+      <h2 className="text-sm font-semibold text-franchise-sectionp">Box Measurements</h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {shipmentData.map((data, index) => (
           <div className="flex flex-col w-full">

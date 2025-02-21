@@ -28,7 +28,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
 
   const getCurrency = () => {
     const storedCurrency = localStorage.getItem("currency");
-    return storedCurrency ? storedCurrency : "INR";
+    return storedCurrency ? JSON.parse(storedCurrency) : "INR";
   };
 
   useEffect(() => {

@@ -17,6 +17,7 @@ interface IBuyerDetailProps {
 export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   const [isChecked, setIsChecked] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  
 
   const {
     register,
@@ -65,6 +66,8 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     console.log(formData, "formData After filling the form");
     localStorage.setItem("country", formData.country);
     localStorage.setItem("pincode", formData.shippingPincode);
+    window.dispatchEvent(new Event("storage"));
+    localStorage.setItem("billingState", formData.billingState);
     window.dispatchEvent(new Event("storage"));
     onNext(formData);
   };
@@ -198,7 +201,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   title="Select State"
                   placeholder="Search state..."
                   options={stateOptions}
-                  value={field.value}
+                  value={data.shippingState}
                   onChange={(value) => {
                     field.onChange(value);
                   }}
