@@ -71,40 +71,39 @@ const iteamArray = z.object({
     .regex(/^\d{4,8}$/, "HSN must be between 4 and 8 digits"),
   unitPrice: z.coerce
     .string()
-    .min(1, { message: "Product price is required" })
+    .regex(/^(?!0$)\d+$/, "Unit Price must not be Zero")
     .regex(/^\d+(\.\d{1,2})?$/, "Unit price must be a valid number with up to two decimal places"),
   igst: z.coerce.string().optional(),
   qty: z.coerce
     .string()
-    .min(1, { message: "Quantity is required" })
-    .regex(/^\d+(\.\d+)?$/, "Quantity must be a valid number"),
+    .regex(/^(?!0$)\d+$/, "Quantity must not be Zero")
+    .regex(/^\d+$/, "Quantity must be an integer"),
 });
 
 export const orderDetailsSchema = z.object({
   // ShipMent Details
   actualWeight: z.coerce
     .string()
-    .nonempty("The actual weight is required.")
-    // .regex(/^[1-9]+$/, "Weight must be atleast 0.1 KG")
-    .regex(
-      /^(?:0\.[1-9][0-9]*|[1-9]?[0-9]{1,2}|1[0-9]{2}|200|2[0-9]{2}|300)$/,
-      "Weight must be between 0.1 and 300 KG",
-    ),
+    .nonempty("Weight must be at least 0.01 KG.")
+    .refine((val) => parseFloat(val) >= 0.01, "Weight must be at least 0.01 KG.")
+    .refine((val) => parseFloat(val) <= 300, {
+      message: "Weight must not be more than 300 KG",
+    }),
 
   length: z.coerce
     .string()
-    .nonempty("The length is required.")
-    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Dimension must be between 1 and 120 cm"),
+    .nonempty("Length must be atleast 1 cm.")
+    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Length must not be more than 120 cm"),
 
   breadth: z.coerce
     .string()
-    .nonempty("The breadth is required.")
-    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Dimension must be between 1 and 120 cm"),
+    .nonempty("Breaddth must be atleast 1 cm.")
+    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Breadth must not be more than 120 cm"),
 
   height: z.coerce
     .string()
-    .nonempty("The height is required.")
-    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Dimension must be between 1 and 120 cm"),
+    .nonempty("Height must be atleast 1 cm.")
+    .regex(/^(?:[1-9]|[1-9][0-9]|1[01][0-9]|120)$/, "Height must not be more than 120 cm"),
 
   // Order Details
   invoiceNo: z.string().nonempty("The invoice value is required."),

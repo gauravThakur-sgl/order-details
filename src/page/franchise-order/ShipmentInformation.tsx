@@ -183,7 +183,8 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData="Qty"
               placeholder="Enter Qty..."
               required={true}
-              type="text"
+              type="number"
+              min={1}
               errorName={errors.items?.[index]?.qty?.message}
             />
             <Input
@@ -191,8 +192,9 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
               labelData={`Unit Price (${currency})`}
               placeholder={`Enter Unit Price (${currency})...`}
               required={true}
-              type="text"
+              type="number"
               className="md:min-w-32"
+              min={1}
               errorName={errors.items?.[index]?.unitPrice?.message}
             />
             <div className={`${fields.length === 1 ? "mr-4" : "mr-0"} w-full md:w-18`}>
