@@ -21,7 +21,7 @@ export const orderSchema = z.object({
   alternateMobileNumber: z.string(),
 
   email: z.string().nonempty("Please entetr a valid email address").email("Invalid email address"),
-  country: z.string().nonempty("Country is required."),
+  country: z.string().nonempty("Please select a country"),
   landMark: z.string(),
   address1: z.string().nonempty("Address 1 is required"),
   address2: z.string().nonempty("Address 2 is required"),
@@ -31,7 +31,7 @@ export const orderSchema = z.object({
     .nonempty("The customer shipping postcode is required.")
     .regex(/^[A-Z0-9]+(?: [A-Z0-9]+)?$/, "Invalid Pincode"),
 
-  shippingState: z.string().nonempty("State is required."),
+  shippingState: z.string().nonempty("Please select a state."),
 
   isChecked: z.boolean().optional(),
 
@@ -110,7 +110,7 @@ export const orderDetailsSchema = z.object({
   invoiceNo: z.string().nonempty("The invoice value is required."),
   invoiceDate: z.string().nonempty("The invoice date is required."),
   invoiceCurrency: z.string().nonempty("The invoice currency is required."),
-  orderid: z.string().nonempty("The order id is required."),
+  orderid: z.string().optional(),
   iossNumber: z.coerce.string().optional(),
   items: z.array(iteamArray),
 });

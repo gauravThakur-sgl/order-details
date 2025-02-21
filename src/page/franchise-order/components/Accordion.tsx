@@ -37,7 +37,7 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
           <span className="pt-1">{title}</span>
         </h2>
         {stepNumber < activeState && (
-          <div className="text-franchise-primary font-medium" onClick={onToggle}>
+          <div className="text-franchise-primary text-sm font-medium" onClick={onToggle}>
             <u>Change</u>
           </div>
         )}

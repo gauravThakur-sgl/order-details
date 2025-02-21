@@ -12,7 +12,7 @@ const volumetricWeightInfo = [
 
 export const OrderInformation = () => {
   return (
-    <div className="flex flex-col justify-center rounded-md items-center p-4 bg-white gap-2">
+    <div className="flex flex-col justify-center rounded-md items-center py-4 px-6 bg-white gap-2">
       <p className="text-franchise-textp text-base font-semibold mt-2">Quick tips</p>
       <img src="/box.svg" className="h-40 w-40" />
       <div className="space-y-4">

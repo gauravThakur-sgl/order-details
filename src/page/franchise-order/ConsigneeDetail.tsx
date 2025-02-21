@@ -101,8 +101,8 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   return (
     <div className="w-full">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="text-sm font-semibold">Personal Details</h2>
-        <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-start gap-4 mt-2 `}>
+        <h2 className="text-sm font-semibold text-franchise-sectionp">Personal Details</h2>
+        <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-start gap-6 mt-2 `}>
           <Input
             register={register("firstName")}
             type="text"
@@ -130,13 +130,13 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
           <Input
             register={register("email")}
             type="email"
-            labelData="Email Id"
+            labelData="Email Address"
             required={true}
             placeholder="Enter Email . . ."
             errorName={errors.email?.message}
           />
         </div>
-        <h2 className="text-sm font-semibold mt-5"> Shipping Address</h2>
+        <h2 className="text-sm font-semibold mt-5 text-franchise-sectionp"> Shipping Address</h2>
         <div className={`grid grid-cols-1 sm:grid-cols-3 justify-start items-start gap-4 mt-2`}>
           <Input
             register={register("address1")}
@@ -171,6 +171,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
               render={({ field }) => (
                 <Select
                   title="Country"
+                  placeholder="Search country..."
                   options={countryOptions}
                   value={field.value}
                   onChange={(value) => {
@@ -195,6 +196,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
               render={({ field }) => (
                 <Select
                   title="Select State"
+                  placeholder="Search state..."
                   options={stateOptions}
                   value={field.value}
                   onChange={(value) => {
