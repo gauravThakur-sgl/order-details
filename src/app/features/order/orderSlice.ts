@@ -1,108 +1,43 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { z } from "zod";
-import { orderDetailsSchema, orderSchema } from "@/src/zod/ordersSchema";
+import { initialFormData } from "@/page/franchise-order/config/initialData";
+import {
+  ConsignorData,
+  FormData,
+  ShipmentInformationData,
+  ShippingPartnerFormData,
+} from "@/page/franchise-order/interface";
 
-type OrderState = z.infer<typeof orderSchema> & {
-  currentStep: number;
-  isChecked: boolean;
-} & z.infer<typeof orderDetailsSchema>;
-
-const initialState: OrderState = {
-  pickupAddress: "",
-  firstName: "",
-  lastName: "",
-  mobileNumber: "",
-  alternateMobileNumber: "",
-  email: "",
-  country: "",
-  landMark: "",
-  address1: "",
-  address2: "",
-  shippingcity: "",
-  shippingPincode: "",
-  shippingState: "",
-
-  isChecked: true,
-
-  billingfirstName: "",
-  billinglastName: "",
-  billingmobileNumber: "",
-  billingCountry: "",
-  billingLandMark: "",
-  billingAddress1: "",
-  billingAddress2: "",
-  billingcity: "",
-  billingPincode: "",
-  billingState: "",
-
-  actualWeight: "",
-  length: "",
-  breadth: "",
-  height: "",
-  invoiceNo: "",
-  invoiceCurrency: "",
-  invoiceDate: "",
-  orderid: "",
-  items: [
-    {
-      productName: "",
-      sku: "",
-      hsn: "",
-      qty: "",
-      unitPrice: "",
-      igst: "",
-    },
-  ],
-
-  currentStep: 0,
-};
+const initialState = initialFormData && { isChecked: false, currentStep: 1, openIndex: 1, ...initialFormData };
 
 const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setBuyerDetail: (state, action: PayloadAction<Partial<OrderState>>) => {
+    setConsignorDetail: (state, action: PayloadAction<Partial<ConsignorData>>) => {
       Object.assign(state, action.payload);
-      if (state.isChecked) {
-        state.billingfirstName = state.firstName;
-        state.billinglastName = state.lastName;
-        state.billingmobileNumber = state.mobileNumber;
-        state.billingCountry = state.country;
-        state.billingLandMark = state.landMark;
-        state.billingAddress1 = state.address1;
-        state.billingAddress2 = state.address2;
-        state.billingcity = state.shippingcity;
-        state.billingPincode = state.shippingPincode;
-        state.billingState = state.shippingState;
-      }
     },
-    setBillingDetail: (state, action: PayloadAction<Partial<OrderState>>) => {
+    setConsigneeDetail: (state, action: PayloadAction<Partial<FormData>>) => {
+      Object.assign(state, action.payload);
+    },
+    setShippingPartnerFormData: (state, action: PayloadAction<Partial<ShippingPartnerFormData>>) => {
+      Object.assign(state, action.payload);
+    },
+    setShipmentInformation: (state, action: PayloadAction<Partial<ShipmentInformationData>>) => {
       Object.assign(state, action.payload);
     },
     toggleCheckbox: (state) => {
       state.isChecked = !state.isChecked;
-
       if (state.isChecked) {
-        state.billingfirstName = state.firstName;
-        state.billinglastName = state.lastName;
-        state.billingmobileNumber = state.mobileNumber;
-        state.billingCountry = state.country;
-        state.billingLandMark = state.landMark;
-        state.billingAddress1 = state.address1;
-        state.billingAddress2 = state.address2;
-        state.billingcity = state.shippingcity;
-        state.billingPincode = state.shippingPincode;
-        state.billingState = state.shippingState;
-      }
-    },
-    setShippingField: (state, action: PayloadAction<{ field: keyof OrderState; value: string }>) => {
-      (state[action.payload.field] as string) = action.payload.value;
-
-      if (state.isChecked) {
-        const billingField = ("billing" +
-          action.payload.field.charAt(0).toUpperCase() +
-          action.payload.field.slice(1)) as keyof typeof initialState;
-        state[billingField] = action.payload.value as never;
+        state.consigneeDetail.billingfirstName = state.consigneeDetail.firstName;
+        state.consigneeDetail.billinglastName = state.consigneeDetail.lastName;
+        state.consigneeDetail.billingmobileNumber = state.consigneeDetail.mobileNumber;
+        state.consigneeDetail.billingCountry = state.consigneeDetail.country;
+        state.consigneeDetail.billingLandMark = state.consigneeDetail.landMark;
+        state.consigneeDetail.billingAddress1 = state.consigneeDetail.address1;
+        state.consigneeDetail.billingAddress2 = state.consigneeDetail.address2;
+        state.consigneeDetail.billingcity = state.consigneeDetail.shippingcity;
+        state.consigneeDetail.billingPincode = state.consigneeDetail.shippingPincode;
+        state.consigneeDetail.billingState = state.consigneeDetail.shippingState;
       }
     },
     nextStep: (state) => {
@@ -117,6 +52,14 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setBuyerDetail, setBillingDetail, toggleCheckbox, setShippingField, nextStep, prevStep, setStep } =
-  orderSlice.actions;
+export const {
+  setConsignorDetail,
+  setConsigneeDetail,
+  setShippingPartnerFormData,
+  setShipmentInformation,
+  toggleCheckbox,
+  nextStep,
+  prevStep,
+  setStep,
+} = orderSlice.actions;
 export default orderSlice.reducer;
