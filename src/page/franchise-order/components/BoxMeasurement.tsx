@@ -3,10 +3,10 @@ import Input from "./ui/Input";
 import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 const shipmentData = [
-  { name: "actualWeight", required: true, default: "Kg" },
-  { name: "length", required: true, default: "cm" },
-  { name: "breadth", required: true, default: "cm" },
-  { name: "height", required: true, default: "cm" },
+  { name: "actualWeight", required: true, default: "Kg", placeholder: "Eg. 1.25" },
+  { name: "length", required: true, default: "cm", placeholder: "Eg. 10" },
+  { name: "breadth", required: true, default: "cm", placeholder: "Eg. 10" },
+  { name: "height", required: true, default: "cm", placeholder: "Eg. 10" },
 ];
 
 type FormData = z.infer<typeof orderDetailsSchema>;
@@ -32,6 +32,7 @@ export const BoxMeasurement = ({ register, errors }: IShipMentMeasurementProps) 
                   labelData={data.name === "actualWeight" ? "Dead Weight" : data.name}
                   required={data.required}
                   type="number"
+                  placeholder={data.placeholder}
                   className="appearence-none rounded-r-none"
                   errorName={errors[data.name as keyof FormData]?.message}
                   step={data.name === "actualWeight" ? 0.1 : 1}

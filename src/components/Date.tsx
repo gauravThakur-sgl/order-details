@@ -45,6 +45,7 @@ export const DateComponent = ({ control, errors }: IPickupAddressProps) => {
           <div className="relative cursor-pointer">
             <input
               type="text"
+              placeholder="Pick a Date"
               readOnly
               value={
                 field.value

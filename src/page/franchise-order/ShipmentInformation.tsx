@@ -72,6 +72,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
   });
 
   const currency = watch("invoiceCurrency");
+
   const total = fields.reduce((acc, _, index) => {
     const qty = watch(`items.${index}.qty`);
     const unitPrice = watch(`items.${index}.unitPrice`);
@@ -82,6 +83,8 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     const isValid = await validateData(ShipmentInformationData, setResError);
     if (!isValid) return;
     await getRate(shippingPincode, country, watch("actualWeight"), watch("length"), watch("breadth"), watch("height"));
+    localStorage.setItem('currency', JSON.stringify(currency));
+    window.dispatchEvent(new Event("storage"));
     onNext(ShipmentInformationData);
   };
   console.log(resError, "resError");
@@ -94,6 +97,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           <Input
             register={register("invoiceNo")}
             labelData="Invoice No."
+            placeholder="Enter Invoice Number..."
             required={true}
             type="text"
             errorName={errors.invoiceNo?.message}
@@ -125,12 +129,14 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
           <Input
             register={register("orderid")}
             labelData="Order/Reference ID"
+            placeholder="Enter Order/Reference ID..."
             type="text"
             errorName={errors.orderid?.message}
           />
           <Input
             register={register("iossNumber")}
             labelData="IOSS Number"
+            placeholder="Enter IOSS Number..."
             type="text"
             errorName={errors.iossNumber?.message}
           />
@@ -145,11 +151,12 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         {fields.map((item, index) => (
           <div
             key={item.id}
-            className={`flex flex-col md:flex-row gap-2 justify-between items-start mt-4 animate-fadeIn w-full pb-1`}
+            className={`flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-start mt-4 animate-fadeIn w-full pb-1`}
           >
             <Input
               register={register(`items.${index}.productName` as const)}
               labelData="Product Name"
+              placeholder="Enter Product Name..."
               required={true}
               type="text"
               className="md:min-w-28"
@@ -158,6 +165,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             <Input
               register={register(`items.${index}.sku` as const)}
               labelData="SKU"
+              placeholder="Enter SKU..."
               required={false}
               type="text"
               errorName={errors.items?.[index]?.sku?.message}
@@ -165,6 +173,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             <Input
               register={register(`items.${index}.hsn` as const)}
               labelData="HSN"
+              placeholder="Enter HSN..."
               required={true}
               type="text"
               errorName={errors.items?.[index]?.hsn?.message}
@@ -172,6 +181,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             <Input
               register={register(`items.${index}.qty` as const)}
               labelData="Qty"
+              placeholder="Enter Qty..."
               required={true}
               type="text"
               errorName={errors.items?.[index]?.qty?.message}
@@ -179,6 +189,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
             <Input
               register={register(`items.${index}.unitPrice` as const)}
               labelData={`Unit Price (${currency})`}
+              placeholder={`Enter Unit Price (${currency})...`}
               required={true}
               type="text"
               className="md:min-w-32"
@@ -210,9 +221,9 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
         <div className="flex justify-end py-6">
           <button
             type="submit"
-            className="text-franchise-button-text bg-franchise-primary rounded-md p-1 px-4 font-medium text-lg"
+            className="text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 text-sm font-medium"
           >
-            Continue
+            Select Shipping
           </button>
         </div>
       </form>
