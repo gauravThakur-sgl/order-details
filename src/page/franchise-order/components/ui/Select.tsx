@@ -14,6 +14,7 @@ interface ISelectProps {
   onChange?: (value: string) => void;
   name?: string;
   errorName?: string;
+  placeholder?: string;
 }
 
 const selectColors = {
@@ -27,7 +28,7 @@ const selectSize = {
   lg: "h-12 text-lg",
 };
 
-function Select({ title, variant, size, className, options, value, onChange, name, errorName }: ISelectProps) {
+function Select({ title, variant, size, className, options, value, onChange, name, errorName,placeholder }: ISelectProps) {
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -93,8 +94,8 @@ function Select({ title, variant, size, className, options, value, onChange, nam
             <div className="relative">
               <Input
                 type="text"
-                className="w-full border-b border-gray-300 rounded-none m-0 -mt-2 placeholder:text-sm px-8 focus-visible:ring-0"
-                placeholder="Search country..."
+                className="w-full border-b border-gray-300 rounded-none m-0 -mt-2 placeholder:text-sm px-8 appearance-none"
+                placeholder={placeholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 name={name}
@@ -130,7 +131,7 @@ function Select({ title, variant, size, className, options, value, onChange, nam
           </div>
         )}
       </div>
-      {errorName && <p className="text-franchise-error text-xs font-medium">{errorName}</p>}
+      {errorName && <p className="text-franchise-error text-xs font-medium mt-1">{errorName}</p>}
     </div>
   );
 }

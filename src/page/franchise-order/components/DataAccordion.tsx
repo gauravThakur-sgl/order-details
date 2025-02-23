@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { DataAccordionProps } from "../interface";
+import { ChevronDown } from "lucide-react";
 
 export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(initialIsOpen ?? true);
   const [showMore, setShowMore] = useState(false);
-  const [isSameAddress, setIsSameAddress] = useState(false);
+  const [isSameAddress, setIsSameAddress] = useState(true);
+  const [currency, setCurrency] = useState<string>("INR");
 
   const infoTitle = "text-franchise-consignor-text";
-  const infoDetail = "text-franchise-sectionp font-medium";
+  const infoDetail = "text-franchise-sectionp text-sm font-medium";
 
   const getCheckState = () => {
     const isChecked = localStorage.getItem("isChecked");
-    return isChecked ? JSON.parse(isChecked) : false;
+    return isChecked ? JSON.parse(isChecked) : true;
   };
   useEffect(() => {
     const updatedState = () => {
@@ -21,6 +23,22 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
     window.addEventListener("storage", updatedState);
     return () => {
       window.removeEventListener("storage", updatedState);
+    };
+  }, []);
+
+  const getCurrency = () => {
+    const storedCurrency = localStorage.getItem("currency");
+    return storedCurrency ? JSON.parse(storedCurrency) : "INR";
+  };
+
+  useEffect(() => {
+    const updatedCurrency = () => {
+      setCurrency(getCurrency());
+    };
+    updatedCurrency();
+    window.addEventListener("storage", updatedCurrency);
+    return () => {
+      window.removeEventListener("storage", updatedCurrency);
     };
   }, []);
 
@@ -64,7 +82,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
       case "Item Details":
         return {
           weight: data.actualWeight,
-          dimensions: `${data.length} x ${data.breadth} x ${data.height}`,
+          dimensions: `${data.length} cm x ${data.breadth} cm x ${data.height} cm`,
           items: data.items.map(
             (item: { productName: string; hsn: string; sku: string; qty: string; unitPrice: string }) => ({
               product: item.productName,
@@ -145,7 +163,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
               <div key={index}>
                 {index === 0 || showMore ? (
                   <>
-                    <div key={index} className="flex justify-between pr-10 pt-4">
+                    <div key={index} className="grid grid-cols-3 justify-between pr-4 pt-4">
                       <div className="space-y-1">
                         <h3 className={`${infoTitle}`}>Product</h3>
                         <p className={`${infoDetail}`}>{`${item.product}`}</p>
@@ -159,18 +177,18 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
                         <p className={`${infoDetail}`}>{`${item.sku}`}</p>
                       </div>
                     </div>
-                    <div className="flex justify-between pr-10 pt-4">
+                    <div className="grid grid-cols-3 justify-between pr-4 pt-4">
                       <div className="space-y-1">
                         <h3 className={`${infoTitle}`}>Qty</h3>
                         <p className={`${infoDetail}`}>{`${item.qty}`}</p>
                       </div>
                       <div className="space-y-1">
                         <h3 className={`${infoTitle}`}>Unit Price</h3>
-                        <p className={`${infoDetail}`}>{`${item.unit}`}</p>
+                        <p className={`${infoDetail}`}>{`${currency} ${item.unit}.00`}</p>
                       </div>
                       <div className="space-y-1">
                         <h3 className={`${infoTitle}`}>Total</h3>
-                        <p className={`${infoDetail}`}>{`${item.total}`}</p>
+                        <p className={`${infoDetail}`}>{`${currency} ${item.total}.00`}</p>
                       </div>
                     </div>
                   </>
@@ -214,8 +232,14 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
 
   return (
     <div className="border-b border-gray-300 rounded bg-white w-full p-3">
-      <h2 className="font-semibold mb-2 text-base" onClick={toggleAccordion}>
+      <h2
+        className="font-semibold mb-2 text-base flex justify-between items-center cursor-pointer"
+        onClick={toggleAccordion}
+      >
         {title}
+        <span>
+          <ChevronDown className={`h-5 w-5 text-slate-400 ${isOpen ? "rotate-180" : ""}`} />
+        </span>
       </h2>
       {isOpen && <div className="text-sm text-gray-700">{renderData()}</div>}
     </div>

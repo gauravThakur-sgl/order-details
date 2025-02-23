@@ -4,7 +4,7 @@ import { orderSchema } from "@/zod/franchiseOrderSchema";
 import Input from "../components/ui/Input";
 import Select from "./ui/Select";
 import { useCountries, useStates } from "../hooks/countryState";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type BillingData = z.infer<typeof orderSchema>;
 interface ConsigneeBillingDetailProps {
@@ -15,6 +15,7 @@ interface ConsigneeBillingDetailProps {
 export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeBillingDetailProps) => {
   const { countries } = useCountries();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedState, setSelectedState] = useState<string>("");
   const { states } = useStates(selectedCountry);
 
   const countryOptions = countries.map((country) => ({
@@ -25,6 +26,21 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
     value: state.code,
     label: state.name,
   }));
+  const getState = () => {
+    const storedState = localStorage.getItem("billingState");
+    return storedState;
+  };
+  useEffect(() => {
+    const updatedState = () => {
+      const state = getState();
+      setSelectedState(state || "");
+    };
+    updatedState();
+    window.addEventListener("storage", updatedState);
+    return () => {
+      window.removeEventListener("storage", updatedState);
+    };
+  });
   return (
     <section className="mt-5">
       <h2 className="text-sm font-semibold">Buyer Shipping Details</h2>
@@ -78,7 +94,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
           errorName={errors.billingAddress2?.message}
         />
         <div>
-          <label htmlFor="billingCountry" className="text-franchise-sectionp">
+          <label htmlFor="billingCountry" className="text-franchise-sectionp text-sm">
             Country <span className="text-red-500">*</span>
           </label>
           <Controller
@@ -101,7 +117,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
           />
         </div>
         <div>
-          <label htmlFor="billingCountry" className="text-franchise-sectionp">
+          <label htmlFor="billingCountry" className="text-franchise-sectionp text-sm">
             State <span className="text-red-500">*</span>
           </label>
           <Controller
@@ -111,7 +127,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
               <Select
                 title="Select State"
                 options={stateOptions}
-                value={field.value}
+                value={selectedState || field.value}
                 onChange={(value) => {
                   field.onChange(value);
                 }}
