@@ -17,7 +17,6 @@ interface IBuyerDetailProps {
 export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   const [isChecked, setIsChecked] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
-  
 
   const {
     register,
@@ -32,7 +31,10 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   });
 
   const { countries } = useCountries();
+  // console.log(countries) //countries
+
   const { states } = useStates(selectedCountry);
+  // console.log(states) //states
 
   const countryOptions = countries.map((country) => ({
     value: country.code,
@@ -43,6 +45,21 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     value: state.code,
     label: state.name,
   }));
+
+  useEffect(() => {
+    // Check if there's a saved country in localStorage and set it to the form
+    const savedCountry = localStorage.getItem("country");
+    const savedState = localStorage.getItem("shippingState");
+
+    if (savedCountry) {
+      setSelectedCountry(savedCountry);
+      setValue("country", savedCountry); // Initialize country in form
+    }
+
+    if (savedState) {
+      setValue("shippingState", savedState); // Initialize state in form
+    }
+  }, [setValue]); // Only run when component is mounted
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -180,7 +197,9 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   onChange={(value) => {
                     setSelectedCountry(value);
                     field.onChange(value);
+                    // Save selected country to localStorage
                     const selectedCountryOption = countryOptions.find((option) => option.value === value);
+                    localStorage.setItem("country", value);
                     localStorage.setItem("countryName", selectedCountryOption?.label || "");
                     window.dispatchEvent(new Event("storage"));
                   }}
@@ -201,9 +220,13 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   title="Select State"
                   placeholder="Search state..."
                   options={stateOptions}
-                  value={data.shippingState}
+                  value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
+
+                    // Save selected state to localStorage
+                    localStorage.setItem("shippingState", value);
+                    window.dispatchEvent(new Event("storage"));
                   }}
                   errorName={errors.country?.message}
                 />
@@ -241,7 +264,9 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
-        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} control={control} />}{" "}
+        {!isChecked && (
+          <ConsigneeBillingDetail register={register} errors={errors} control={control} />
+        )}{" "}
         {/* renders consignee as according to the checkbox*/}
         <div className="flex justify-end mt-4">
           <button
