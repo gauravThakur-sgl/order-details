@@ -41,6 +41,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control }: ConsigneeB
       window.removeEventListener("storage", updatedState);
     };
   });
+  
   return (
     <section className="mt-5">
       <h2 className="text-sm font-semibold">Buyer Shipping Details</h2>

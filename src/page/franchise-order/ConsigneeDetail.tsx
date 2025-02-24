@@ -31,10 +31,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   });
 
   const { countries } = useCountries();
-  // console.log(countries) //countries
-
   const { states } = useStates(selectedCountry);
-  // console.log(states) //states
 
   const countryOptions = countries.map((country) => ({
     value: country.code,
@@ -47,19 +44,18 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   }));
 
   useEffect(() => {
-    // Check if there's a saved country in localStorage and set it to the form
     const savedCountry = localStorage.getItem("country");
     const savedState = localStorage.getItem("shippingState");
 
     if (savedCountry) {
       setSelectedCountry(savedCountry);
-      setValue("country", savedCountry); // Initialize country in form
+      setValue("country", savedCountry);
     }
 
     if (savedState) {
-      setValue("shippingState", savedState); // Initialize state in form
+      setValue("shippingState", savedState);
     }
-  }, [setValue]); // Only run when component is mounted
+  }, [setValue]);
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
@@ -223,7 +219,6 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
-
                     // Save selected state to localStorage
                     localStorage.setItem("shippingState", value);
                     window.dispatchEvent(new Event("storage"));
@@ -264,9 +259,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
-        {!isChecked && (
-          <ConsigneeBillingDetail register={register} errors={errors} control={control} />
-        )}{" "}
+        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} control={control} />}{" "}
         {/* renders consignee as according to the checkbox*/}
         <div className="flex justify-end mt-4">
           <button
