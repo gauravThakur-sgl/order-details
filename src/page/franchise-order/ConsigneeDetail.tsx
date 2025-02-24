@@ -80,6 +80,8 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     localStorage.setItem("country", formData.country);
     localStorage.setItem("pincode", formData.shippingPincode);
     window.dispatchEvent(new Event("storage"));
+    localStorage.setItem("billingCountry", formData.billingCountry);
+    window.dispatchEvent(new Event("storage"));
     localStorage.setItem("billingState", formData.billingState);
     window.dispatchEvent(new Event("storage"));
     onNext(formData);
@@ -259,7 +261,9 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
             <p>Shipping & Billing Address are same.</p>
           </span>
         </div>
-        {!isChecked && <ConsigneeBillingDetail register={register} errors={errors} control={control} />}{" "}
+        {!isChecked && (
+          <ConsigneeBillingDetail register={register} errors={errors} control={control} setValue={setValue} />
+        )}{" "}
         {/* renders consignee as according to the checkbox*/}
         <div className="flex justify-end mt-4">
           <button
