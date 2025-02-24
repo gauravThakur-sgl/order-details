@@ -83,7 +83,6 @@ export const AddOrder = () => {
       containerRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   return (
     <section className="bg-gray-50 font-poppins">
       <Header />

@@ -37,10 +37,9 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
   }));
 
   const onSubmit = (data: ConsignorData) => {
-    console.log(data, "data");
     onNext(data);
   };
-  
+
   return (
     <section>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -66,7 +65,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
         </div>
 
         <div className="flex justify-between">
-          {selectedUser && (
+          {(data.pickupAddress || selectedUser) && (
             <div className="flex flex-col tablet:flex-row justify-start items-center gap-4">
               {userDetail.map((user) => (
                 <div className="flex flex-col tablet:flex-row justify-start gap-4 md:gap-10 py-5 text-xs text-franchise-sectionp pt-6">
@@ -89,10 +88,10 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
               ))}
             </div>
           )}
-          <div className={`flex justify-end items-end ${!selectedUser && "w-full"} mt-4`}>
+          <div className={`flex justify-end items-end ${(!data.pickupAddress || selectedUser) && "w-5/4"} mt-4`}>
             <button
               type="submit"
-              className="text-franchise-button-text bg-franchise-primary rounded-md py-2 px-4 font-medium"
+              className="text-franchise-button-text bg-franchise-primary text-sm rounded-md py-2 px-4 font-medium"
             >
               Continue
             </button>

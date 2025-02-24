@@ -115,7 +115,6 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
       setValue("billingState", shippingFields[8] || "");
     }
   }, [isChecked, shippingFields, setValue]);
-
   return (
     <div className="w-full">
       <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -268,7 +267,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
         <div className="flex justify-end mt-4">
           <button
             type="submit"
-            className="text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 py-2 font-medium text-sm"
+            className="text-franchise-button-text bg-franchise-primary text-sm rounded-md py-2 px-4 font-medium"
           >
             Continue
           </button>
