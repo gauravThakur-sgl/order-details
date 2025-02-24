@@ -21,9 +21,9 @@ export const Accordion = ({ title, children, stepNumber, onToggle, isOpen, activ
       >
         <h2 className="text-black text-sm font-medium flex justify-center">
           <span
-            className={clsx("py-1 mx-3 rounded-sm font-medium text-xs", {
-              "px-2 bg-black text-white text-xs": stepNumber === activeState,
-              "px-2 bg-slate-100 text-black text-xs": stepNumber > activeState,
+            className={clsx("py-2 mx-3 rounded-sm font-medium text-xs", {
+              "w-5 h-5 bg-black text-white text-xs text-center": stepNumber === activeState,
+              "w-5 h-5 bg-slate-100 text-black text-xs text-center": stepNumber > activeState,
             })}
           >
             {stepNumber < activeState ? (
