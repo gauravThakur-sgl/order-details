@@ -12,54 +12,52 @@ import { FinalPriceInfo } from "./components/FinalPriceInfo";
 import { HandleNextData } from "./interface";
 import { Header } from "@/components/Header";
 import { SideBar } from "@/components/SideBar";
-import { initialFormData } from "./config/initialData";
+// import { initialFormData } from "./config/initialData";
 import { stepTiles } from "./config/stepsInfo";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/app/store";
+import { nextStep, prevStep, setFormData } from "@/app/features/order/orderSlice";
 
 export const AddOrder = () => {
-  const [currentStep, setCurrentStep] = useState(() => {
-    const storedStep = localStorage.getItem("currentStep");
-    return storedStep ? JSON.parse(storedStep) : 1;
-  });
+  // const [currentStep, setCurrentStep] = useState(() => {
+  //   const storedStep = localStorage.getItem("currentStep");
+  //   return storedStep ? JSON.parse(storedStep) : 1;
+  // });
 
-  const [formData, setFormData] = useState(() => {
-    const storedData = localStorage.getItem("formData");
-    return storedData ? JSON.parse(storedData) : initialFormData;
-  });
+  const dispatch = useDispatch();
+  const formData = useSelector((state:RootState) => state.order);
+  const currentStep = formData.currentStep;
+  const openIndex = formData.openIndex;
 
-  const [openIndex, setOpenIndex] = useState<number | null>(() => {
-    const storedIndex = localStorage.getItem("openIndex");
-    return storedIndex ? JSON.parse(storedIndex) : 1;
-  });
+  // const [formData, setFormData] = useState(() => {
+  //   const storedData = localStorage.getItem("formData");
+  //   return storedData ? JSON.parse(storedData) : initialFormData;
+  // });
+
+  // const [openIndex, setOpenIndex] = useState<number | null>(() => {
+  //   const storedIndex = localStorage.getItem("openIndex");
+  //   return storedIndex ? JSON.parse(storedIndex) : 1;
+  // });
 
   const containerRef = useRef<HTMLDivElement>(null);
   const accordionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
-  }, [formData]);
-
-  useEffect(() => {
-    localStorage.setItem("currentStep", JSON.stringify(currentStep));
-  }, [currentStep]);
-
-  useEffect(() => {
-    localStorage.setItem("openIndex", JSON.stringify(openIndex));
-  }, [openIndex]);
-
-  useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("formData", JSON.stringify(formData));
+  //   localStorage.setItem("currentStep", JSON.stringify(currentStep));
+  //   localStorage.setItem("openIndex", JSON.stringify(openIndex));
+  // }, [formData, currentStep, openIndex]);
 
   const handleNext = (data: HandleNextData) => {
     const key = stepTiles[currentStep - 1];
-    setFormData((prev) => ({
-      ...prev,
-      [key]: data,
-    }));
+    dispatch(setFormData({ [key]: data }));
     if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
+      dispatch(nextStep());
     }
-    setOpenIndex((prev) => (prev !== null ? prev + 1 : null));
+    // setOpenIndex((prev) => (prev !== null ? prev + 1 : null));
+    if (openIndex !== null) {
+      dispatch(setFormData({ openIndex: openIndex + 1 }));
+    }
     const nextAccordion = accordionRef.current?.querySelectorAll<HTMLDivElement>(".accordion")[currentStep];
     if (nextAccordion) {
       nextAccordion.scrollIntoView({ behavior: "smooth" });
@@ -68,7 +66,7 @@ export const AddOrder = () => {
 
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      prevStep();
     }
   };
 
@@ -77,8 +75,11 @@ export const AddOrder = () => {
       console.log("errorState");
       return;
     }
-    setOpenIndex(openIndex === index ? null : index);
-    setCurrentStep(index);
+    // setOpenIndex(openIndex === index ? null : index);
+    if (openIndex !== index) {
+      dispatch(setFormData({ openIndex: index }));
+    }
+    dispatch(setFormData({ currentStep: index }));
     if (containerRef.current) {
       containerRef.current.scrollIntoView({ behavior: "smooth" });
     }

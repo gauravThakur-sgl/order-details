@@ -7,24 +7,24 @@ import {
   ShippingPartnerFormData,
 } from "@/page/franchise-order/interface";
 
-const initialState = initialFormData && { isChecked: false, currentStep: 1, openIndex: 1, ...initialFormData };
+const initialState = initialFormData && { isChecked: true, currentStep: 1, openIndex: 1, ...initialFormData };
 
 const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setConsignorDetail: (state, action: PayloadAction<Partial<ConsignorData>>) => {
-      Object.assign(state, action.payload);
+    setFormData: (
+      state,
+      action:
+        | PayloadAction<Partial<ConsignorData>>
+        | PayloadAction<Partial<FormData>>
+        | PayloadAction<Partial<ShippingPartnerFormData>>
+        | PayloadAction<Partial<ShipmentInformationData>>,
+    ) => {
+      // Object.assign(state, action.payload);
+      return { ...state, ...action.payload };
     },
-    setConsigneeDetail: (state, action: PayloadAction<Partial<FormData>>) => {
-      Object.assign(state, action.payload);
-    },
-    setShippingPartnerFormData: (state, action: PayloadAction<Partial<ShippingPartnerFormData>>) => {
-      Object.assign(state, action.payload);
-    },
-    setShipmentInformation: (state, action: PayloadAction<Partial<ShipmentInformationData>>) => {
-      Object.assign(state, action.payload);
-    },
+
     toggleCheckbox: (state) => {
       state.isChecked = !state.isChecked;
       if (state.isChecked) {
@@ -52,14 +52,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const {
-  setConsignorDetail,
-  setConsigneeDetail,
-  setShippingPartnerFormData,
-  setShipmentInformation,
-  toggleCheckbox,
-  nextStep,
-  prevStep,
-  setStep,
-} = orderSlice.actions;
+export const { setFormData, toggleCheckbox, nextStep, prevStep, setStep } = orderSlice.actions;
 export default orderSlice.reducer;

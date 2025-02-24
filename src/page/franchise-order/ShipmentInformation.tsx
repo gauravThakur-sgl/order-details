@@ -4,56 +4,63 @@ import Input from "./components/ui/Input";
 import { BoxMeasurement } from "./components/BoxMeasurement";
 import { Trash2 } from "lucide-react";
 import { Igst } from "./components/Igst";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Select from "./components/ui/Select";
 import { ShipmentInformationData } from "./interface";
 import { currencyOptions } from "./config/currencyOptions";
 import { DateComponent } from "@/components/Date";
 import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
 import { getRate, validateData } from "./utils/shipmentUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { setFormData } from "@/app/features/order/orderSlice";
 interface IOrderDetailsProps {
   data: ShipmentInformationData;
   onNext: (formData: ShipmentInformationData) => void;
 }
 
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
+  const dispatch = useDispatch();
   const [resError, setResError] = useState<string | null>(null);
-  const [shippingPincode, setShippingPincode] = useState("");
-  const [country, setCountry] = useState("");
+  // const [shippingPincode, setShippingPincode] = useState("");
+  // const [country, setCountry] = useState("");
+  const formData = useSelector((state: RootState) => state.order);
+  const shippingPincode = useSelector((state:RootState) => state.order.consigneeDetail.shippingPincode);
+  const country = useSelector((state:RootState) => state.order.consigneeDetail.country);
 
-  const getPincode = () => {
-    const pincode = localStorage.getItem("pincode");
-    return pincode;
-  };
+  // const getPincode = () => {
+  //   const pincode = localStorage.getItem("pincode");
+  //   return pincode;
+  // };
 
-  useEffect(() => {
-    const updatedPinCode = () => {
-      const pincode = getPincode();
-      setShippingPincode(pincode || "");
-    };
-    updatedPinCode();
-    window.addEventListener("storage", updatedPinCode);
-    return () => {
-      window.removeEventListener("storage", updatedPinCode);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const updatedPinCode = () => {
+  //     const pincode = getPincode();
+  //     setShippingPincode(pincode || "");
+  //   };
+  //   updatedPinCode();
+  //   window.addEventListener("storage", updatedPinCode);
+  //   return () => {
+  //     window.removeEventListener("storage", updatedPinCode);
+  //   };
+  // }, []);
 
-  const getCountry = () => {
-    const country = localStorage.getItem("country");
-    return country;
-  };
+  // const getCountry = () => {
+  //   const country = localStorage.getItem("country");
+  //   return country;
+  // };
 
-  useEffect(() => {
-    const updatedCountry = () => {
-      const country = getCountry();
-      setCountry(country || "");
-    };
-    updatedCountry();
-    window.addEventListener("storage", updatedCountry);
-    return () => {
-      window.removeEventListener("storage", updatedCountry);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const updatedCountry = () => {
+  //     const country = getCountry();
+  //     setCountry(country || "");
+  //   };
+  //   updatedCountry();
+  //   window.addEventListener("storage", updatedCountry);
+  //   return () => {
+  //     window.removeEventListener("storage", updatedCountry);
+  //   };
+  // }, []);
 
   const {
     register,

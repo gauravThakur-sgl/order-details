@@ -9,6 +9,7 @@ export type ShippingPartnerFormData = { shippingPartner: string; est: string; pr
 export type ShipmentInformationData = z.infer<typeof orderDetailsSchema> & {
   shippingPincode: string;
   country: string;
+  shipperRate: string;
 };
 
 export interface ShippingRate {

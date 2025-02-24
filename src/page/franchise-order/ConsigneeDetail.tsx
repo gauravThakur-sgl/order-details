@@ -8,6 +8,9 @@ import { useCountries, useStates } from "./hooks/countryState";
 import Select from "./components/ui/Select";
 import { FormData } from "./interface";
 import { orderSchema } from "@/zod/franchiseOrderSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { toggleCheckbox } from "@/app/features/order/orderSlice";
 
 interface IBuyerDetailProps {
   data: FormData;
@@ -15,7 +18,9 @@ interface IBuyerDetailProps {
 }
 
 export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
-  const [isChecked, setIsChecked] = useState(true);
+  const dispatch = useDispatch();
+  const isChecked = useSelector((state: RootState) => state.order.isChecked);
+  // const [isChecked, setIsChecked] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
 
   const {
@@ -57,33 +62,33 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     }
   }, [setValue]);
 
-  const handleCheckBox = () => {
-    setIsChecked(!isChecked);
-    localStorage.setItem("isChecked", JSON.stringify(!isChecked));
-  };
+  // const handleCheckBox = () => {
+  //   setIsChecked(!isChecked);
+  //   localStorage.setItem("isChecked", JSON.stringify(!isChecked));
+  // };
 
   const onSubmit = (formData: FormData) => {
-    if (isChecked) {
-      formData.billingfirstName = formData.firstName;
-      formData.billinglastName = formData.lastName;
-      formData.billingmobileNumber = formData.mobileNumber;
-      formData.billingCountry = formData.country;
-      formData.billingAddress1 = formData.address1;
-      formData.billingAddress2 = formData.address2;
-      formData.billingLandMark = formData.landMark;
-      formData.billingcity = formData.shippingcity;
-      formData.billingPincode = formData.shippingPincode;
-      formData.billingState = formData.shippingState;
-      formData.billingCountry = formData.country;
-    }
-    console.log(formData, "formData After filling the form");
-    localStorage.setItem("country", formData.country);
-    localStorage.setItem("pincode", formData.shippingPincode);
-    window.dispatchEvent(new Event("storage"));
-    localStorage.setItem("billingCountry", formData.billingCountry);
-    window.dispatchEvent(new Event("storage"));
-    localStorage.setItem("billingState", formData.billingState);
-    window.dispatchEvent(new Event("storage"));
+    // if (isChecked) {
+    //   formData.billingfirstName = formData.firstName;
+    //   formData.billinglastName = formData.lastName;
+    //   formData.billingmobileNumber = formData.mobileNumber;
+    //   formData.billingCountry = formData.country;
+    //   formData.billingAddress1 = formData.address1;
+    //   formData.billingAddress2 = formData.address2;
+    //   formData.billingLandMark = formData.landMark;
+    //   formData.billingcity = formData.shippingcity;
+    //   formData.billingPincode = formData.shippingPincode;
+    //   formData.billingState = formData.shippingState;
+    //   formData.billingCountry = formData.country;
+    // }
+    // console.log(formData, "formData After filling the form");
+    // localStorage.setItem("country", formData.country);
+    // localStorage.setItem("pincode", formData.shippingPincode);
+    // window.dispatchEvent(new Event("storage"));
+    // localStorage.setItem("billingCountry", formData.billingCountry);
+    // window.dispatchEvent(new Event("storage"));
+    // localStorage.setItem("billingState", formData.billingState);
+    // window.dispatchEvent(new Event("storage"));
     onNext(formData);
   };
 
@@ -195,10 +200,10 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                     setSelectedCountry(value);
                     field.onChange(value);
                     // Save selected country to localStorage
-                    const selectedCountryOption = countryOptions.find((option) => option.value === value);
-                    localStorage.setItem("country", value);
-                    localStorage.setItem("countryName", selectedCountryOption?.label || "");
-                    window.dispatchEvent(new Event("storage"));
+                    // const selectedCountryOption = countryOptions.find((option) => option.value === value);
+                    // localStorage.setItem("country", value);
+                    // localStorage.setItem("countryName", selectedCountryOption?.label || "");
+                    // window.dispatchEvent(new Event("storage"));
                   }}
                   errorName={errors.country?.message}
                 />
@@ -221,8 +226,8 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   onChange={(value) => {
                     field.onChange(value);
                     // Save selected state to localStorage
-                    localStorage.setItem("shippingState", value);
-                    window.dispatchEvent(new Event("storage"));
+                    // localStorage.setItem("shippingState", value);
+                    // window.dispatchEvent(new Event("storage"));
                   }}
                   errorName={errors.country?.message}
                 />
@@ -247,7 +252,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
           />
         </div>
         <div className="flex justify-start items-center text-sm gap-2 mt-6 w-full">
-          <span onClick={handleCheckBox} className="relative flex items-center gap-2 cursor-pointer">
+          <span onClick={() => dispatch(toggleCheckbox())} className="relative flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               className="peer h-4 w-4 rounded-sm border border-gray-800 text-white appearance-none checked:bg-franchise-primary checked:border-transparent checked:focus:ring-0"
