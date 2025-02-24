@@ -10,7 +10,7 @@ import { FormData } from "./interface";
 import { orderSchema } from "@/zod/franchiseOrderSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { toggleCheckbox } from "@/app/features/order/orderSlice";
+import { setFormData, toggleCheckbox } from "@/app/features/order/orderSlice";
 
 interface IBuyerDetailProps {
   data: FormData;
@@ -200,10 +200,11 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                     setSelectedCountry(value);
                     field.onChange(value);
                     // Save selected country to localStorage
-                    // const selectedCountryOption = countryOptions.find((option) => option.value === value);
+                    const selectedCountryOption = countryOptions.find((option) => option.value === value);
                     // localStorage.setItem("country", value);
                     // localStorage.setItem("countryName", selectedCountryOption?.label || "");
                     // window.dispatchEvent(new Event("storage"));
+                    dispatch(setFormData({ countryName: selectedCountryOption?.label || "" }));
                   }}
                   errorName={errors.country?.message}
                 />

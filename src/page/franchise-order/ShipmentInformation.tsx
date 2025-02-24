@@ -90,8 +90,8 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     const isValid = await validateData(ShipmentInformationData, setResError);
     if (!isValid) return;
     await getRate(shippingPincode, country, watch("actualWeight"), watch("length"), watch("breadth"), watch("height"));
-    localStorage.setItem('currency', JSON.stringify(currency));
-    window.dispatchEvent(new Event("storage"));
+    // localStorage.setItem('currency', JSON.stringify(currency));
+    // window.dispatchEvent(new Event("storage"));
     onNext(ShipmentInformationData);
   };
   console.log(resError, "resError");

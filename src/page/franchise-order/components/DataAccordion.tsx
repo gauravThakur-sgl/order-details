@@ -47,7 +47,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
   //   };
   // }, []);
 
-  const countryName = localStorage.getItem("countryName");
+  const countryName = userData.consigneeDetail.country;
   const addressData = data.pickupAddress ? JSON.parse(data.pickupAddress) : {};
   const handleShowMore = () => {
     setShowMore(!showMore);

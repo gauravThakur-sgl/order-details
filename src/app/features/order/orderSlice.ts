@@ -7,7 +7,7 @@ import {
   ShippingPartnerFormData,
 } from "@/page/franchise-order/interface";
 
-const initialState = initialFormData && { isChecked: true, currentStep: 1, openIndex: 1, ...initialFormData };
+const initialState = initialFormData && { isChecked: true, currentStep: 1, openIndex: 1, countryName: "", billingCountryName: "", ...initialFormData };
 
 const orderSlice = createSlice({
   name: "order",

@@ -5,6 +5,8 @@ import Input from "../components/ui/Input";
 import Select from "./ui/Select";
 import { useCountries, useStates } from "../hooks/countryState";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 type BillingData = z.infer<typeof orderSchema>;
 interface ConsigneeBillingDetailProps {
@@ -13,7 +15,7 @@ interface ConsigneeBillingDetailProps {
   control: Control<BillingData>;
   setValue: UseFormSetValue<BillingData>;
 }
-export const ConsigneeBillingDetail = ({ register, errors, control,setValue }: ConsigneeBillingDetailProps) => {
+export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: ConsigneeBillingDetailProps) => {
   const { countries } = useCountries();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const { states } = useStates(selectedCountry);
@@ -26,21 +28,19 @@ export const ConsigneeBillingDetail = ({ register, errors, control,setValue }: C
     value: state.code,
     label: state.name,
   }));
+  const savedCountry = useSelector((state: RootState) => state.order.consigneeDetail.billingCountry);
+  const savedState = useSelector((state: RootState) => state.order.consigneeDetail.billingState);
 
   useEffect(() => {
-      const savedCountry = localStorage.getItem("billingCountry");
-      const savedState = localStorage.getItem("billingState");
-  
-      if (savedCountry) {
-        setSelectedCountry(savedCountry);
-        setValue("billingCountry", savedCountry);
-      }
-  
-      if (savedState) {
-        setValue("billingState", savedState);
-      }
-    }, [setValue]);
-  
+    if (savedCountry) {
+      setSelectedCountry(savedCountry);
+      setValue("billingCountry", savedCountry);
+    }
+
+    if (savedState) {
+      setValue("billingState", savedState);
+    }
+  }, [savedCountry, savedState, setValue]);
 
   return (
     <section className="mt-5">
