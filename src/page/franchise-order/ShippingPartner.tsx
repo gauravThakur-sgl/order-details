@@ -84,9 +84,9 @@ export const ShippingPartner = () => {
             </div>
             <div className="flex flex-col justify-center mt-5 overflow-x-auto sm:min-w-96 w-full p-1 ">
               <table className="border-separate border-spacing-0 rounded-lg">
-                <thead className="">
+                <thead>
                   <tr className="bg-gray-100 text-gray-600 text-sm border rounded-lg">
-                    <th className="font-xs font-normal p-2 m-8 text-left pl-4 border border-r-0 rounded-l-lg">
+                    <th className="font-xs font-normal p-2 py-3 m-8 text-left pl-4 border border-r-0 rounded-l-lg">
                       Courier Partner
                     </th>
                     <th className="font-xs font-normal text-left border-y">Delivery Time</th>
