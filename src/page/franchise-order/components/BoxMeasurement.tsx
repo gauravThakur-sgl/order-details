@@ -22,7 +22,7 @@ export const BoxMeasurement = ({ register, errors }: IShipMentMeasurementProps) 
       <h2 className="text-sm font-semibold text-franchise-sectionp">Box Measurements</h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {shipmentData.map((data, index) => (
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full" key={index}>
             <div className="flex justify-center items-start">
               <div className="w-full">
                 <Input

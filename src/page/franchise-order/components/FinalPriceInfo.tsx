@@ -2,12 +2,15 @@ import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
 
 export const FinalPriceInfo = () => {
-  const finalPrice = useSelector(
-    (state: RootState) => (state.order.selectedRate as { LOGISTIC_FEE: number }).LOGISTIC_FEE,
-  );
+  const getSelectedRate: { LOGISTIC_FEE: number } = useSelector((state: RootState) => state.order.selectedRate) || {
+    LOGISTIC_FEE: 0,
+  };
+  console.log(getSelectedRate, "getSelectedRate");
 
+  const finalPrice = getSelectedRate.LOGISTIC_FEE;
+  console.log(finalPrice, "finalPrice");
   const gst = ((Number(finalPrice) / 100) * 18).toFixed(2);
-  const totalPrice = (finalPrice + Number(gst)).toFixed(2);
+  const totalPrice = (Number(finalPrice) + Number(gst)).toFixed(2);
 
   return (
     <>

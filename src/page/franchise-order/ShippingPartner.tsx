@@ -19,19 +19,13 @@ export const ShippingPartner = () => {
     bill_weight: 0,
     rate: [],
   };
-  
-  const packageWeight = shipperRates.package_weight;
-  const volumetricWeight = shipperRates.volume_weight;
-  const billedWeight = shipperRates.bill_weight;
-
-  console.log(packageWeight, volumetricWeight, billedWeight, "packageWeight, volumetricWeight, billedWeight");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleSelectedPrice = (index: number) => {
     setIsSelected(index);
     setIsLoading(true);
     setTimeout(() => {
-      dispatch(setFormData({ selectedRate: shipperRates.rate[index] }));
+      dispatch(setFormData({ selectedRate: shipperRates?.rate[index] }));
       setIsLoading(false);
     }, 1000);
   };
@@ -53,15 +47,15 @@ export const ShippingPartner = () => {
           <>
             <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
               <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
-                <p>{`${shipperRates.package_weight} KG`}</p>
+                <p>{`${shipperRates.package_weight/1000} KG`}</p>
                 <p className="text-sm text-slate-400">Dead Weight</p>
               </div>
               <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
-                <p>{`${shipperRates.volume_weight} KG`}</p>
+                <p>{`${shipperRates.volume_weight/1000} KG`}</p>
                 <p className="text-sm text-slate-400">Volumetric Weight</p>
               </div>
               <div className="flex flex-col justify-center items-center border border-orange-600 rounded-md bg-franchise-weight-bg text-franchise-weight-text py-2 px-5">
-                <p>{`${shipperRates.bill_weight} KG`}</p>
+                <p>{`${shipperRates.bill_weight/1000} KG`}</p>
                 <p className="text-sm">Billed Weight</p>
               </div>
             </div>
@@ -83,7 +77,7 @@ export const ShippingPartner = () => {
                 </thead>
                 <div className="p-1"></div>
                 <tbody>
-                  {shipperRates.rate.map((rate, index) => (
+                  {shipperRates?.rate?.map((rate, index) => (
                     <>
                       <span className="w-full my-1"></span>
                       <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg">
