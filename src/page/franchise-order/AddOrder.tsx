@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { ConsigneeDetail } from "./ConsigneeDetail";
 import { Container } from "./components/Container";
 import { OrderInformation } from "./components/OrderInformation";
@@ -12,41 +12,19 @@ import { FinalPriceInfo } from "./components/FinalPriceInfo";
 import { HandleNextData } from "./interface";
 import { Header } from "@/components/Header";
 import { SideBar } from "@/components/SideBar";
-// import { initialFormData } from "./config/initialData";
 import { stepTiles } from "./config/stepsInfo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/app/store";
 import { nextStep, prevStep, setFormData } from "@/app/features/order/orderSlice";
 
 export const AddOrder = () => {
-  // const [currentStep, setCurrentStep] = useState(() => {
-  //   const storedStep = localStorage.getItem("currentStep");
-  //   return storedStep ? JSON.parse(storedStep) : 1;
-  // });
-
   const dispatch = useDispatch();
-  const formData = useSelector((state:RootState) => state.order);
+  const formData = useSelector((state: RootState) => state.order);
   const currentStep = formData.currentStep;
   const openIndex = formData.openIndex;
 
-  // const [formData, setFormData] = useState(() => {
-  //   const storedData = localStorage.getItem("formData");
-  //   return storedData ? JSON.parse(storedData) : initialFormData;
-  // });
-
-  // const [openIndex, setOpenIndex] = useState<number | null>(() => {
-  //   const storedIndex = localStorage.getItem("openIndex");
-  //   return storedIndex ? JSON.parse(storedIndex) : 1;
-  // });
-
   const containerRef = useRef<HTMLDivElement>(null);
   const accordionRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   localStorage.setItem("formData", JSON.stringify(formData));
-  //   localStorage.setItem("currentStep", JSON.stringify(currentStep));
-  //   localStorage.setItem("openIndex", JSON.stringify(openIndex));
-  // }, [formData, currentStep, openIndex]);
 
   const handleNext = (data: HandleNextData) => {
     const key = stepTiles[currentStep - 1];

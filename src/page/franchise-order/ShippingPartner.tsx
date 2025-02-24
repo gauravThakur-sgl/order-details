@@ -1,50 +1,37 @@
 import { CheckCircle2, Loader } from "lucide-react";
-import { useEffect, useState } from "react";
-import { ShippingRate } from "./interface";
+import { useState } from "react";
 import { ContactCard } from "./components/ContactCard";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { setFormData } from "@/app/features/order/orderSlice";
 
 export const ShippingPartner = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);
-  const [shipperRates, setShipperRates] = useState<ShippingRate[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [weightData, setWeightData] = useState({
-    deadWeight: 0,
-    volumetricWeight: 0,
-    billedWeight: 0,
-  });
-  const getShipperRates = () => {
-    const storedRates = localStorage.getItem("shipperRates");
-    console.log(storedRates, "storedRates");
-    return storedRates;
+  const dispatch = useDispatch();
+  const shipperRates: {
+    package_weight: number;
+    volume_weight: number;
+    bill_weight: number;
+    rate: { display_name: string; transit_time: string; rate: number; helper_text: string }[];
+  } = useSelector((state: RootState) => state.order.shipperRate) || {
+    package_weight: 0,
+    volume_weight: 0,
+    bill_weight: 0,
+    rate: [],
   };
+  
+  const packageWeight = shipperRates.package_weight;
+  const volumetricWeight = shipperRates.volume_weight;
+  const billedWeight = shipperRates.bill_weight;
 
-  useEffect(() => {
-    const updatedShipperRates = () => {
-      const rates = getShipperRates();
-      const parsedRates = rates ? JSON.parse(rates) : null;
-      console.log(parsedRates, "parsedRates");
-      setShipperRates(parsedRates ? parsedRates.rate : []);
-      if (parsedRates) {
-        setWeightData({
-          deadWeight: parsedRates.package_weight / 1000,
-          volumetricWeight: parsedRates.volume_weight / 1000,
-          billedWeight: parsedRates.bill_weight / 1000,
-        });
-      }
-    };
-    updatedShipperRates();
-    window.addEventListener("storage", updatedShipperRates);
-    return () => {
-      window.removeEventListener("storage", updatedShipperRates);
-    };
-  }, []);
-
+  console.log(packageWeight, volumetricWeight, billedWeight, "packageWeight, volumetricWeight, billedWeight");
+  const [isLoading, setIsLoading] = useState(false);
+  
   const handleSelectedPrice = (index: number) => {
     setIsSelected(index);
     setIsLoading(true);
     setTimeout(() => {
-      localStorage.setItem("selectedRate", JSON.stringify(shipperRates[index]));
-      window.dispatchEvent(new Event("storage"));
+      dispatch(setFormData({ selectedRate: shipperRates.rate[index] }));
       setIsLoading(false);
     }, 1000);
   };
@@ -54,27 +41,27 @@ export const ShippingPartner = () => {
     window.location.reload();
     alert("Order Placed Successfully");
   };
-  
+
   const extractText = (text: string) => {
     return text.replace(/<[^>]+>/g, "").trim();
-  }
+  };
   return (
     <div>
       <div>
         <ContactCard />
-        {shipperRates.length > 0 ? (
+        {shipperRates ? (
           <>
             <div className="flex justify-center items-center gap-4 text-franchise-sectionp mt-5 px-12">
               <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
-                <p>{`${weightData.deadWeight} KG`}</p>
+                <p>{`${shipperRates.package_weight} KG`}</p>
                 <p className="text-sm text-slate-400">Dead Weight</p>
               </div>
               <div className="flex flex-col justify-center items-center border rounded-md bg-gray-50 text-slate-700 py-2 px-5">
-                <p>{`${weightData.volumetricWeight} KG`}</p>
+                <p>{`${shipperRates.volume_weight} KG`}</p>
                 <p className="text-sm text-slate-400">Volumetric Weight</p>
               </div>
               <div className="flex flex-col justify-center items-center border border-orange-600 rounded-md bg-franchise-weight-bg text-franchise-weight-text py-2 px-5">
-                <p>{`${weightData.billedWeight} KG`}</p>
+                <p>{`${shipperRates.bill_weight} KG`}</p>
                 <p className="text-sm">Billed Weight</p>
               </div>
             </div>
@@ -96,14 +83,11 @@ export const ShippingPartner = () => {
                 </thead>
                 <div className="p-1"></div>
                 <tbody>
-                  {shipperRates.map((rate, index) => (
+                  {shipperRates.rate.map((rate, index) => (
                     <>
                       <span className="w-full my-1"></span>
                       <tr className="bg-blue-50 text-xs rounded-tl-lg rounded-tr-lg">
-                        <td
-                          colSpan={4}
-                          className="text-danger px-4 rounded-tl-lg rounded-tr-lg border border-b-0"
-                        >
+                        <td colSpan={4} className="text-danger px-4 rounded-tl-lg rounded-tr-lg border border-b-0">
                           {extractText(rate.helper_text)}
                         </td>
                       </tr>

@@ -11,56 +11,17 @@ import { currencyOptions } from "./config/currencyOptions";
 import { DateComponent } from "@/components/Date";
 import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
 import { getRate, validateData } from "./utils/shipmentUtils";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { setFormData } from "@/app/features/order/orderSlice";
 interface IOrderDetailsProps {
   data: ShipmentInformationData;
   onNext: (formData: ShipmentInformationData) => void;
 }
 
 export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
-  const dispatch = useDispatch();
   const [resError, setResError] = useState<string | null>(null);
-  // const [shippingPincode, setShippingPincode] = useState("");
-  // const [country, setCountry] = useState("");
-  const formData = useSelector((state: RootState) => state.order);
-  const shippingPincode = useSelector((state:RootState) => state.order.consigneeDetail.shippingPincode);
-  const country = useSelector((state:RootState) => state.order.consigneeDetail.country);
-
-  // const getPincode = () => {
-  //   const pincode = localStorage.getItem("pincode");
-  //   return pincode;
-  // };
-
-  // useEffect(() => {
-  //   const updatedPinCode = () => {
-  //     const pincode = getPincode();
-  //     setShippingPincode(pincode || "");
-  //   };
-  //   updatedPinCode();
-  //   window.addEventListener("storage", updatedPinCode);
-  //   return () => {
-  //     window.removeEventListener("storage", updatedPinCode);
-  //   };
-  // }, []);
-
-  // const getCountry = () => {
-  //   const country = localStorage.getItem("country");
-  //   return country;
-  // };
-
-  // useEffect(() => {
-  //   const updatedCountry = () => {
-  //     const country = getCountry();
-  //     setCountry(country || "");
-  //   };
-  //   updatedCountry();
-  //   window.addEventListener("storage", updatedCountry);
-  //   return () => {
-  //     window.removeEventListener("storage", updatedCountry);
-  //   };
-  // }, []);
+  const shippingPincode = useSelector((state: RootState) => state.order.consigneeDetail.shippingPincode);
+  const country = useSelector((state: RootState) => state.order.consigneeDetail.country);
 
   const {
     register,
@@ -90,8 +51,6 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     const isValid = await validateData(ShipmentInformationData, setResError);
     if (!isValid) return;
     await getRate(shippingPincode, country, watch("actualWeight"), watch("length"), watch("breadth"), watch("height"));
-    // localStorage.setItem('currency', JSON.stringify(currency));
-    // window.dispatchEvent(new Event("storage"));
     onNext(ShipmentInformationData);
   };
   console.log(resError, "resError");

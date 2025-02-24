@@ -1,5 +1,7 @@
 import apiClient from "../api/apiClient";
 import { ShipmentInformationData } from "../interface";
+import { setFormData } from "@/app/features/order/orderSlice";
+import { store } from "@/app/store"
 
 export const getRate = async (
   shippingPincode: string,
@@ -25,6 +27,7 @@ export const getRate = async (
     const response = await apiClient.post("/orders/get-shipper-rates", ratePayload);
     console.log(response.data, "Shipper Rates Response");
     localStorage.setItem("shipperRates", JSON.stringify(response.data.data));
+    store.dispatch(setFormData({ shipperRate: response.data.data }));
     window.dispatchEvent(new Event("storage"));
     console.log(response.data, "rate from response");
   } catch (error) {

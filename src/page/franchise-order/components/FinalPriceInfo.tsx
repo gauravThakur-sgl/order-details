@@ -1,24 +1,10 @@
-import { useEffect, useState } from "react";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
 
 export const FinalPriceInfo = () => {
-  const [finalPrice, setFinalPrice] = useState(0);
-  const getFinalPrice = () => {
-    const finalPriceInfo = localStorage.getItem("selectedRate");
-    const price = finalPriceInfo ? JSON.parse(finalPriceInfo) : {};
-    return price.LOGISTIC_FEE || 0;
-  };
-
-  useEffect(() => {
-    const updateFinalPrice = () => {
-      const logisticFee = getFinalPrice();
-      setFinalPrice(logisticFee);
-    };
-    updateFinalPrice();
-    window.addEventListener("storage", updateFinalPrice);
-    return () => {
-      window.removeEventListener("storage", updateFinalPrice);
-    };
-  }, []);
+  const finalPrice = useSelector(
+    (state: RootState) => (state.order.selectedRate as { LOGISTIC_FEE: number }).LOGISTIC_FEE,
+  );
 
   const gst = ((Number(finalPrice) / 100) * 18).toFixed(2);
   const totalPrice = (finalPrice + Number(gst)).toFixed(2);

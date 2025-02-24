@@ -47,7 +47,8 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
   //   };
   // }, []);
 
-  const countryName = userData.consigneeDetail.country;
+  const countryName = userData.countryName;
+  const billingCountryName = userData.billingCountryName;
   const addressData = data.pickupAddress ? JSON.parse(data.pickupAddress) : {};
   const handleShowMore = () => {
     setShowMore(!showMore);
@@ -141,7 +142,7 @@ export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps
             <p className="text-franchise-sectionp">
               {isSameAddress
                 ? "Same as shipping address"
-                : `${relevantData.billingAddress} ${relevantData.billingAddress2} ${relevantData.billingLandMark} ${relevantData.billingCity} ${relevantData.billingState} ${relevantData.billingCountry} ${relevantData.billingPincode}`}
+                : `${relevantData.billingAddress} ${relevantData.billingAddress2} ${relevantData.billingLandMark} ${relevantData.billingCity} ${relevantData.billingState} ${billingCountryName} ${relevantData.billingPincode}`}
             </p>
           </div>
           <div className="space-y-1">

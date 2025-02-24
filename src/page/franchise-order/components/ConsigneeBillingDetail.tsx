@@ -5,8 +5,9 @@ import Input from "../components/ui/Input";
 import Select from "./ui/Select";
 import { useCountries, useStates } from "../hooks/countryState";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { setFormData } from "@/app/features/order/orderSlice";
 
 type BillingData = z.infer<typeof orderSchema>;
 interface ConsigneeBillingDetailProps {
@@ -16,6 +17,7 @@ interface ConsigneeBillingDetailProps {
   setValue: UseFormSetValue<BillingData>;
 }
 export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: ConsigneeBillingDetailProps) => {
+  const dispatch = useDispatch();
   const { countries } = useCountries();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const { states } = useStates(selectedCountry);
@@ -109,6 +111,8 @@ export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: 
                 onChange={(value) => {
                   setSelectedCountry(value);
                   field.onChange(value);
+                  const selectedCountryOption = countryOptions.find((option) => option.value === value);
+                  dispatch(setFormData({ billingCountry: selectedCountryOption?.label || "" }));
                 }}
                 errorName={errors.country?.message}
               />

@@ -62,33 +62,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     }
   }, [setValue]);
 
-  // const handleCheckBox = () => {
-  //   setIsChecked(!isChecked);
-  //   localStorage.setItem("isChecked", JSON.stringify(!isChecked));
-  // };
-
   const onSubmit = (formData: FormData) => {
-    // if (isChecked) {
-    //   formData.billingfirstName = formData.firstName;
-    //   formData.billinglastName = formData.lastName;
-    //   formData.billingmobileNumber = formData.mobileNumber;
-    //   formData.billingCountry = formData.country;
-    //   formData.billingAddress1 = formData.address1;
-    //   formData.billingAddress2 = formData.address2;
-    //   formData.billingLandMark = formData.landMark;
-    //   formData.billingcity = formData.shippingcity;
-    //   formData.billingPincode = formData.shippingPincode;
-    //   formData.billingState = formData.shippingState;
-    //   formData.billingCountry = formData.country;
-    // }
-    // console.log(formData, "formData After filling the form");
-    // localStorage.setItem("country", formData.country);
-    // localStorage.setItem("pincode", formData.shippingPincode);
-    // window.dispatchEvent(new Event("storage"));
-    // localStorage.setItem("billingCountry", formData.billingCountry);
-    // window.dispatchEvent(new Event("storage"));
-    // localStorage.setItem("billingState", formData.billingState);
-    // window.dispatchEvent(new Event("storage"));
     onNext(formData);
   };
 
