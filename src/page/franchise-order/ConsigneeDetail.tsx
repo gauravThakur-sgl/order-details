@@ -268,7 +268,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
         <div className="flex justify-end mt-4">
           <button
             type="submit"
-            className="text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 font-medium text-sm"
+            className="text-franchise-button-text bg-franchise-primary rounded-md p-2 px-4 py-2 font-medium text-sm"
           >
             Continue
           </button>
