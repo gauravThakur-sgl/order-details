@@ -36,19 +36,9 @@ export const AddOrder = () => {
 
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
-  }, [formData]);
-
-  useEffect(() => {
     localStorage.setItem("currentStep", JSON.stringify(currentStep));
-  }, [currentStep]);
-
-  useEffect(() => {
     localStorage.setItem("openIndex", JSON.stringify(openIndex));
-  }, [openIndex]);
-
-  useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
-  }, [formData]);
+  }, [formData, currentStep, openIndex]);
 
   const handleNext = (data: HandleNextData) => {
     const key = stepTiles[currentStep - 1];
