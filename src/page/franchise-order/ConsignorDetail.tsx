@@ -88,7 +88,7 @@ export const ConsignorDetail = ({ data, onNext }: IConsignorDetailProps) => {
               ))}
             </div>
           )}
-          <div className={`flex justify-end items-end ${(!data.pickupAddress || selectedUser) && "w-5/4"} mt-4`}>
+          <div className={`flex justify-end items-end ${data.pickupAddress || selectedUser ? "w-1/4" : "w-full"} mt-4`}>
             <button
               type="submit"
               className="text-franchise-button-text bg-franchise-primary text-sm rounded-md py-2 px-4 font-medium"
