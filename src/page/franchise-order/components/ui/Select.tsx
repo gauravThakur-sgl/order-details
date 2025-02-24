@@ -1,5 +1,5 @@
 import { Check, ChevronDown, Search } from "lucide-react";
-import Input from "./Input";
+import Input from "@/page/franchise-order/components/ui/Input";
 import { useEffect, useRef, useState } from "react";
 
 interface ISelectProps {

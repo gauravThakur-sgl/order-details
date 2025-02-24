@@ -1,9 +1,9 @@
 import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { z } from "zod";
 import { orderSchema } from "@/zod/franchiseOrderSchema";
-import Input from "../components/ui/Input";
-import Select from "./ui/Select";
-import { useCountries, useStates } from "../hooks/countryState";
+import Input from "@/page/franchise-order/components/ui/Input";
+import Select from "@/page/franchise-order/components/ui/Select";
+import { useCountries, useStates } from "@/page/franchise-order/hooks/countryState";
 import { useEffect, useState } from "react";
 
 type BillingData = z.infer<typeof orderSchema>;
@@ -13,7 +13,7 @@ interface ConsigneeBillingDetailProps {
   control: Control<BillingData>;
   setValue: UseFormSetValue<BillingData>;
 }
-export const ConsigneeBillingDetail = ({ register, errors, control,setValue }: ConsigneeBillingDetailProps) => {
+export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: ConsigneeBillingDetailProps) => {
   const { countries } = useCountries();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const { states } = useStates(selectedCountry);
@@ -28,19 +28,18 @@ export const ConsigneeBillingDetail = ({ register, errors, control,setValue }: C
   }));
 
   useEffect(() => {
-      const savedCountry = localStorage.getItem("billingCountry");
-      const savedState = localStorage.getItem("billingState");
-  
-      if (savedCountry) {
-        setSelectedCountry(savedCountry);
-        setValue("billingCountry", savedCountry);
-      }
-  
-      if (savedState) {
-        setValue("billingState", savedState);
-      }
-    }, [setValue]);
-  
+    const savedCountry = localStorage.getItem("billingCountry");
+    const savedState = localStorage.getItem("billingState");
+
+    if (savedCountry) {
+      setSelectedCountry(savedCountry);
+      setValue("billingCountry", savedCountry);
+    }
+
+    if (savedState) {
+      setValue("billingState", savedState);
+    }
+  }, [setValue]);
 
   return (
     <section className="mt-5">

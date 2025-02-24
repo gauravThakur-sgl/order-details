@@ -1,16 +1,16 @@
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "./components/ui/Input";
-import { BoxMeasurement } from "./components/BoxMeasurement";
+import Input from "@/page/franchise-order/components/ui/Input";
+import { BoxMeasurement } from "@/page/franchise-order/components/BoxMeasurement";
 import { Trash2 } from "lucide-react";
-import { Igst } from "./components/Igst";
+import { Igst } from "@/page/franchise-order/components/Igst";
 import { useEffect, useState } from "react";
-import Select from "./components/ui/Select";
-import { ShipmentInformationData } from "./interface";
-import { currencyOptions } from "./config/currencyOptions";
+import Select from "@/page/franchise-order/components/ui/Select";
+import { ShipmentInformationData } from "@/page/franchise-order/interface";
+import { currencyOptions } from "@/page/franchise-order/config/currencyOptions";
 import { DateComponent } from "@/components/Date";
 import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
-import { getRate, validateData } from "./utils/shipmentUtils";
+import { getRate, validateData } from "@/page/franchise-order/utils/shipmentUtils";
 interface IOrderDetailsProps {
   data: ShipmentInformationData;
   onNext: (formData: ShipmentInformationData) => void;
@@ -83,7 +83,7 @@ export const ShipmentInformation = ({ data, onNext }: IOrderDetailsProps) => {
     const isValid = await validateData(ShipmentInformationData, setResError);
     if (!isValid) return;
     await getRate(shippingPincode, country, watch("actualWeight"), watch("length"), watch("breadth"), watch("height"));
-    localStorage.setItem('currency', JSON.stringify(currency));
+    localStorage.setItem("currency", JSON.stringify(currency));
     window.dispatchEvent(new Event("storage"));
     onNext(ShipmentInformationData);
   };

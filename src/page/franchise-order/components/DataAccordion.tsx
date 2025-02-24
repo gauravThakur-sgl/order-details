@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DataAccordionProps } from "../interface";
+import { DataAccordionProps } from "@/page/franchise-order/interface";
 import { ChevronDown } from "lucide-react";
 
 export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {

@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { ConsigneeDetail } from "./ConsigneeDetail";
-import { Container } from "./components/Container";
-import { OrderInformation } from "./components/OrderInformation";
-import { ConsignorDetail } from "./ConsignorDetail";
-import { ShipmentInformation } from "./ShipmentInformation";
-import { ShippingPartner } from "./ShippingPartner";
-import { Accordion } from "./components/Accordion";
-import { DataAccordion } from "./components/DataAccordion";
+import { ConsigneeDetail } from "@/page/franchise-order/ConsigneeDetail";
+import { Container } from "@/page/franchise-order/components/Container";
+import { OrderInformation } from "@/page/franchise-order/components/OrderInformation";
+import { ConsignorDetail } from "@/page/franchise-order/ConsignorDetail";
+import { ShipmentInformation } from "@/page/franchise-order/ShipmentInformation";
+import { ShippingPartner } from "@/page/franchise-order/ShippingPartner";
+import { Accordion } from "@/page/franchise-order/components/Accordion";
+import { DataAccordion } from "@/page/franchise-order/components/DataAccordion";
 import { ChevronRight } from "lucide-react";
-import { FinalPriceInfo } from "./components/FinalPriceInfo";
-import { HandleNextData } from "./interface";
+import { FinalPriceInfo } from "@/page/franchise-order/components/FinalPriceInfo";
+import { HandleNextData } from "@/page/franchise-order/interface";
 import { Header } from "@/components/Header";
 import { SideBar } from "@/components/SideBar";
-import { initialFormData } from "./config/initialData";
-import { stepTiles } from "./config/stepsInfo";
+import { initialFormData } from "@/page/franchise-order/config/initialData";
+import { stepTiles } from "@/page/franchise-order/config/stepsInfo";
 
 export const AddOrder = () => {
   const [currentStep, setCurrentStep] = useState(() => {

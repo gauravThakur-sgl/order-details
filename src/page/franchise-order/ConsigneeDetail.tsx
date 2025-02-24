@@ -1,12 +1,12 @@
 import { Check } from "lucide-react";
-import Input from "./components/ui/Input";
+import Input from "@/page/franchise-order/components/ui/Input";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ConsigneeBillingDetail } from "./components/ConsigneeBillingDetail";
-import { useCountries, useStates } from "./hooks/countryState";
-import Select from "./components/ui/Select";
-import { FormData } from "./interface";
+import { ConsigneeBillingDetail } from "@/page/franchise-order/components/ConsigneeBillingDetail";
+import { useCountries, useStates } from "@/page/franchise-order/hooks/countryState";
+import Select from "@/page/franchise-order/components/ui/Select";
+import { FormData } from "@/page/franchise-order/interface";
 import { orderSchema } from "@/zod/franchiseOrderSchema";
 
 interface IBuyerDetailProps {

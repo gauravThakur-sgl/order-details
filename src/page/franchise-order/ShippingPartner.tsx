@@ -1,7 +1,7 @@
 import { CheckCircle2, Loader } from "lucide-react";
 import { useEffect, useState } from "react";
-import { ShippingRate } from "./interface";
-import { ContactCard } from "./components/ContactCard";
+import { ShippingRate } from "@/page/franchise-order/interface";
+import { ContactCard } from "@/page/franchise-order/components/ContactCard";
 
 export const ShippingPartner = () => {
   const [isSelected, setIsSelected] = useState<number | null>(null);

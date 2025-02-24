@@ -1,5 +1,5 @@
 import { z } from "zod";
-import Input from "./ui/Input";
+import Input from "@/page/franchise-order/components/ui/Input";
 import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 const shipmentData = [
