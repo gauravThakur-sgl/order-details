@@ -1,6 +1,5 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { ShippingDataCard } from "./franchise-order/components/ShippingDataCard";
 
 interface ShippingPartnerProps {
   data: ShippingPartnerData;
@@ -53,7 +52,6 @@ export const ShippingPartner = ({ data, onNext, onBack }: ShippingPartnerProps) 
 
   return (
     <form onSubmit={handleSubmit}>
-      <ShippingDataCard />
       <div>
         <WeightInfo />
         <div className="flex flex-col gap-4 w-full pb-16">

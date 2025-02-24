@@ -1,5 +1,5 @@
-import apiClient from "../api/apiClient";
-import { ShipmentInformationData } from "../interface";
+import apiClient from "@/page/franchise-order/api/apiClient";
+import { ShipmentInformationData } from "@/page/franchise-order/interface";
 
 export const getRate = async (
   shippingPincode: string,
