@@ -1,12 +1,12 @@
 import { Check } from "lucide-react";
-import Input from "./components/ui/Input";
+import Input from "@/page/franchise-order/components/ui/Input";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConsigneeBillingDetail } from "./components/ConsigneeBillingDetail";
 import { useCountries, useStates } from "./hooks/countryState";
-import Select from "./components/ui/Select";
-import { FormData } from "./interface";
+import Select from "@/page/franchise-order/components/ui/Select";
+import { FormData } from "@/page/franchise-order/interface";
 import { orderSchema } from "@/zod/franchiseOrderSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -194,7 +194,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   onChange={(value) => {
                     field.onChange(value);
                   }}
-                  errorName={errors.country?.message}
+                  errorName={errors.shippingState?.message}
                 />
               )}
             />

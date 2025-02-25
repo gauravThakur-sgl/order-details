@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import orderReducer from "./features/order/orderSlice";
+import orderReducer from "@/app/features/order/orderSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import sessionStorage from "redux-persist/lib/storage/session";
 

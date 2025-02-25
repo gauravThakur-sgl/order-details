@@ -1,5 +1,5 @@
-import apiClient from "../api/apiClient";
-import { ShipmentInformationData } from "../interface";
+import apiClient from "@/page/franchise-order/api/apiClient";
+import { ShipmentInformationData } from "@/page/franchise-order/interface";
 import { setFormData } from "@/app/features/order/orderSlice";
 import { store } from "@/app/store";
 

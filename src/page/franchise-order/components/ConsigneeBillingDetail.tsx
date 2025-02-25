@@ -114,7 +114,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: 
                   const selectedCountryOption = countryOptions.find((option) => option.value === value);
                   dispatch(setFormData({ billingCountry: selectedCountryOption?.label || "" }));
                 }}
-                errorName={errors.country?.message}
+                errorName={errors.billingCountry?.message}
               />
             )}
           />
@@ -134,7 +134,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: 
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                errorName={errors.country?.message}
+                errorName={errors.billingState?.message}
               />
             )}
           />
