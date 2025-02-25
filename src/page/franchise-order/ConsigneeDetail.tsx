@@ -210,7 +210,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                     localStorage.setItem("shippingState", value);
                     window.dispatchEvent(new Event("storage"));
                   }}
-                  errorName={errors.country?.message}
+                  errorName={errors.shippingState?.message}
                 />
               )}
             />

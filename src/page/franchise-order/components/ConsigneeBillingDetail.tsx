@@ -109,7 +109,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: 
                   setSelectedCountry(value);
                   field.onChange(value);
                 }}
-                errorName={errors.country?.message}
+                errorName={errors.billingCountry?.message}
               />
             )}
           />
@@ -129,7 +129,7 @@ export const ConsigneeBillingDetail = ({ register, errors, control, setValue }: 
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                errorName={errors.country?.message}
+                errorName={errors.billingState?.message}
               />
             )}
           />
