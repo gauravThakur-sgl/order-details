@@ -20,6 +20,10 @@ interface InputProps {
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>;
   register?: UseFormRegisterReturn;
+  step?: number;
+  min?: number;
+  max?: number;
+  autofocus?: boolean;
 }
 const inputColors = {
   default: "bg-black-300",
@@ -49,15 +53,21 @@ function Input({
   props,
   onKeyPress,
   register,
+  step,
+  min,
+  max,
+  autofocus
 }: InputProps) {
   const baseClasses =
-    "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
+    "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 ring-offset-background text-sm placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-franchise-primary disabled:cursor-not-allowed disabled:opacity-50";
   const variantClasses = inputColors[variant] || inputColors.default;
   const sizeClasses = inputSize[size] || inputSize.default;
   return (
-    <div>
+    <div className="w-full">
       <div className="flex flex-col justify-start gap-2 appearance-none">
-        <label htmlFor={id} className="text-sm text-franchise-sectionp font-medium leading-none text-black/2"> {/*text-text-primary */}
+        <label htmlFor={id} className="text-sm text-franchise-sectionp leading-none text-black/2">
+          {" "}
+          {/*text-text-primary */}
           {labelData} <span className="text-red-500">{required ? "*" : ""}</span>
         </label>
         <div className="flex justify-center items-center bg-white rounded-md">
@@ -73,11 +83,15 @@ function Input({
             {...props}
             onKeyDown={onKeyPress}
             {...register}
+            step={step}
+            min={min}
+            max={max}
+            autoFocus={autofocus}
           />
           <div>{children}</div>
         </div>
       </div>
-      {errorName && <p className="text-franchise-error text-xs font-semibold">{errorName}</p>}
+      {errorName && <p className="text-franchise-error text-xs font-medium mt-1">{errorName}</p>}
     </div>
   );
 }

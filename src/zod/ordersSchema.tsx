@@ -125,5 +125,6 @@ export const orderDetailsSchema = z.object({
   invoiceDate: z.string().optional(),
   invoiceCurrency: z.string().nonempty("The invoice currency is required."),
   orderid: z.string().nonempty("The order id is required."),
+  iossNumber: z.string().optional(),
   items: z.array(iteamArray),
 });
