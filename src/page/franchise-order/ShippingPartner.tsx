@@ -31,7 +31,7 @@ export const ShippingPartner = () => {
   };
 
   const handlePlaceOrder = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.reload();
     alert("Order Placed Successfully");
   };
