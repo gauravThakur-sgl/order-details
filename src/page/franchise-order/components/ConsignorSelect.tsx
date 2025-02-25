@@ -1,6 +1,6 @@
 import { ChevronDown, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import Input from "./ui/Input";
+import Input from "@/page/franchise-order/components/ui/Input";
 
 interface ISelectProps {
   title: string;
@@ -30,8 +30,7 @@ function ConsignorSelect({ title, variant, size, className, options, value, onCh
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [search, setSearch] = useState("");
-  const baseClasses =
-    "flex items-center border rounded-md tracking-tight px-2 cursor-pointer";
+  const baseClasses = "flex items-center border rounded-md tracking-tight px-2 cursor-pointer";
   const variantClasses = selectColors[variant || "default"];
   const sizeClasses = selectSize[size || "default"];
 

@@ -20,7 +20,6 @@ interface IBuyerDetailProps {
 export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
   const dispatch = useDispatch();
   const isChecked = useSelector((state: RootState) => state.order.isChecked);
-  // const [isChecked, setIsChecked] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
 
   const {
@@ -47,20 +46,18 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
     value: state.code,
     label: state.name,
   }));
+  const savedCountry = useSelector((state: RootState) => state.order.consigneeDetail.country);
+  const savedState = useSelector((state: RootState) => state.order.consigneeDetail.shippingState);
 
   useEffect(() => {
-    const savedCountry = localStorage.getItem("country");
-    const savedState = localStorage.getItem("shippingState");
-
     if (savedCountry) {
       setSelectedCountry(savedCountry);
       setValue("country", savedCountry);
     }
-
     if (savedState) {
       setValue("shippingState", savedState);
     }
-  }, [setValue]);
+  }, [setValue, savedCountry, savedState]);
 
   const onSubmit = (formData: FormData) => {
     onNext(formData);
@@ -173,11 +170,7 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   onChange={(value) => {
                     setSelectedCountry(value);
                     field.onChange(value);
-                    // Save selected country to localStorage
                     const selectedCountryOption = countryOptions.find((option) => option.value === value);
-                    // localStorage.setItem("country", value);
-                    // localStorage.setItem("countryName", selectedCountryOption?.label || "");
-                    // window.dispatchEvent(new Event("storage"));
                     dispatch(setFormData({ countryName: selectedCountryOption?.label || "" }));
                   }}
                   errorName={errors.country?.message}
@@ -200,9 +193,6 @@ export const ConsigneeDetail = ({ data, onNext }: IBuyerDetailProps) => {
                   value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
-                    // Save selected state to localStorage
-                    // localStorage.setItem("shippingState", value);
-                    // window.dispatchEvent(new Event("storage"));
                   }}
                   errorName={errors.country?.message}
                 />

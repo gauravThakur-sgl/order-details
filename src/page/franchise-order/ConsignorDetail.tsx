@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ConsignorData } from "./interface";
-import ConsignorSelect from "./components/ConsignorSelect";
+import { ConsignorData } from "@/page/franchise-order/interface";
+import ConsignorSelect from "@/page/franchise-order/components/ConsignorSelect";
 import { consignorDetailSchema } from "@/zod/franchiseOrderSchema";
 
 interface IConsignorDetailProps {

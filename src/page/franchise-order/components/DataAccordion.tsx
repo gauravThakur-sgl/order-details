@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DataAccordionProps } from "../interface";
+import { DataAccordionProps } from "@/page/franchise-order/interface";
 import { ChevronDown } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -7,45 +7,12 @@ import { RootState } from "@/app/store";
 export const DataAccordion = ({ title, data, initialIsOpen }: DataAccordionProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(initialIsOpen ?? true);
   const [showMore, setShowMore] = useState(false);
-  // const [isSameAddress, setIsSameAddress] = useState(true);
-  // const [currency, setCurrency] = useState<string>("INR");
 
   const infoTitle = "text-franchise-consignor-text";
   const infoDetail = "text-franchise-sectionp text-sm font-medium";
   const userData = useSelector((state: RootState) => state.order);
   const isSameAddress = userData.isChecked;
   const currency = userData.shipmentInformation.invoiceCurrency;
-
-  // const getCheckState = () => {
-  //   const isChecked = localStorage.getItem("isChecked");
-  //   return isChecked ? JSON.parse(isChecked) : true;
-  // };
-  // useEffect(() => {
-  //   const updatedState = () => {
-  //     setIsSameAddress(getCheckState());
-  //   };
-  //   updatedState();
-  //   window.addEventListener("storage", updatedState);
-  //   return () => {
-  //     window.removeEventListener("storage", updatedState);
-  //   };
-  // }, []);
-
-  // const getCurrency = () => {
-  //   const storedCurrency = localStorage.getItem("currency");
-  //   return storedCurrency ? JSON.parse(storedCurrency) : "INR";
-  // };
-
-  // useEffect(() => {
-  //   const updatedCurrency = () => {
-  //     setCurrency(getCurrency());
-  //   };
-  //   updatedCurrency();
-  //   window.addEventListener("storage", updatedCurrency);
-  //   return () => {
-  //     window.removeEventListener("storage", updatedCurrency);
-  //   };
-  // }, []);
 
   const countryName = userData.countryName;
   const billingCountryName = userData.billingCountryName;

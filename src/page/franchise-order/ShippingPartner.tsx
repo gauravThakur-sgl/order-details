@@ -1,6 +1,6 @@
 import { CheckCircle2, Loader } from "lucide-react";
 import { useState } from "react";
-import { ContactCard } from "./components/ContactCard";
+import { ContactCard } from "@/page/franchise-order/components/ContactCard";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { setFormData } from "@/app/features/order/orderSlice";

@@ -1,7 +1,7 @@
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import z from "zod";
-import { orderDetailsSchema } from "../zod/franchiseOrderSchema";
-import { Calendar } from "../components/ui/Calendar";
+import { orderDetailsSchema } from "@/zod/franchiseOrderSchema";
+import { Calendar } from "@/components/ui/Calendar";
 import { useState, useRef, useEffect } from "react";
 import { CalendarIcon } from "lucide-react";
 

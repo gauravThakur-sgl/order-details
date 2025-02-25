@@ -1,5 +1,5 @@
 import { Check, ChevronDown, Search } from "lucide-react";
-import Input from "./Input";
+import Input from "@/page/franchise-order/components/ui/Input";
 import { useEffect, useRef, useState } from "react";
 
 interface ISelectProps {
@@ -28,7 +28,18 @@ const selectSize = {
   lg: "h-12 text-lg",
 };
 
-function Select({ title, variant, size, className, options, value, onChange, name, errorName,placeholder }: ISelectProps) {
+function Select({
+  title,
+  variant,
+  size,
+  className,
+  options,
+  value,
+  onChange,
+  name,
+  errorName,
+  placeholder,
+}: ISelectProps) {
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
