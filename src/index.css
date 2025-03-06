@@ -56,4 +56,21 @@
   body {
     @apply font-roboto antialiased bg-background text-foreground;
   }
+  .scrollable-container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .scrollable-container::-webkit-scrollbar {
+    width: 4px;
+  }
+  .scrollable-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .scrollable-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  .scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
